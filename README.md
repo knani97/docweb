@@ -1,11 +1,11 @@
 # CyberClan
 
-Gestion Compte - Knani
-Gestion Recherche - Siwar
-Gestion News/Article - Mongi
-Gestion Espace Vidéo - Yessin
-Gestion Panier - Yessin
-Gestion RDV - Mouheb
-Gestion Calendrier - Mouheb
-Gestion Forum - Andolssi
-Gestion ChatBot - Andolssi
+Gestion Compte - Mohamed Lahbib Knani
+Gestion Recherche - Siwar Guermassi
+Gestion News/Article - Mongi Hammemi
+Gestion Espace Vidéo - Yessin Akaichi
+Gestion Panier - Yessin Akaichi
+Gestion RDV - Mouheb Ben Abdallah
+Gestion Calendrier - Mouheb Ben Abdallah
+Gestion Forum - Mariem Andolssi
+Gestion ChatBot - Mariem Andolssi
