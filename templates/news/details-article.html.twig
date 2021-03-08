@@ -1,0 +1,313 @@
+{% extends 'base.html.twig' %}
+    {% block title %}
+        <title>News et articles</title>
+        <style>
+            .categoriesanim {
+                margin: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+
+
+            }
+
+            #wrapper {
+                border-radius:5px;
+                padding:30px;
+                box-shadow: 0px 2px 20px rgba(1, 1, 1, 0.05);
+                position: relative;
+            }
+
+            #carousel {
+                overflow: auto;
+                scroll-behavior: smooth;
+                scrollbar-width: none;
+            }
+
+            #carousel::-webkit-scrollbar {
+                height: 0;
+            }
+
+            #prev,
+            #next {
+                display: flex;
+                justify-content: center;
+                align-content: center;
+                background: white;
+                border: none;
+                padding: 8px;
+                border-radius: 50%;
+                outline: 0;
+                cursor: pointer;
+                position: absolute;
+            }
+
+            #prev {
+                top: 50%;
+                left: 0;
+                transform: translate(50%, -50%);
+                display: none;
+            }
+
+            #next {
+                top: 50%;
+                right: 0;
+                transform: translate(-50%, -50%);
+            }
+
+            #content {
+                display: grid;
+                grid-gap: 16px;
+                grid-auto-flow: column;
+                margin: auto;
+                box-sizing: border-box;
+            }
+
+            .item {
+                width: 180px;
+                height: 180px;
+                background: green;
+            }
+
+        </style>
+
+    {% endblock %}
+{% block sessionProfil%}
+    <li><a class="getstarted scrollto" href="{{ path('mes-articles') }}">
+            <div class="col-2 d-flex justify-content-start">
+                <img src="{{ asset('assets/img/team/team-3.jpg') }}" style="width:30px;border-radius:100%;">
+
+            </div>
+            <div class="col-10 d-flex justify-content-end" style="padding-left: 5px;">
+                {{ app.session.get('prenom') }}
+
+            </div>
+        </a></li>
+{% endblock %}
+
+{% block hero %}
+    <section class="col-lg-12" style="padding-top: 100px;">
+
+        <div class="container">
+
+
+
+
+            <div class="col-lg-12 d-flex justify-content-end">
+                <a class="btn btn-info" style="color:white;background-color:#4154f1;border: none;text-decoration: none;" href="{{ path('ajoutArticle') }}">
+                    Ajouter un article
+                </a>
+            </div>
+
+        </div>
+    </section><!-- End Breadcrumbs -->
+
+{% endblock %}
+{% block main %}
+
+    <section id="blog" class="blog">
+        <div class="container" data-aos="fade-up">
+
+            <div class="row">
+
+                <div class="col-lg-8 entries">
+
+
+
+
+                    <article class="entry">
+
+                        <div class="col-xs-12 col-lg-12" style="background-color: white;">
+                            <!-- l'article ajouter par -->
+                            <div class="col-xs-12 col-lg-12  d-flex justify-content-between" >
+                                <div class="col-xs-1 col-md-1 col-lg-1 userpdp">
+                                    <img style="width:60px;height:60px;border-radius:100%" src="{{ details.image }}">
+
+                                </div>
+                                <div class="col-xs-5 col-sm-7 col-md-9 col-lg-9
+
+                                 flex-column">
+                                    <h5 style="font-family: 'Roboto Medium';color: #606060;">Hammmami Mongi</h5>
+                                    <h6 style="font-family: 'Roboto Medium';color: #B1B1B1;">Dentiste</h6>
+                                </div>
+
+                                <div class="col-xs-1 col-sm-1 col-lg-2 btndetails d-lg-flex justify-content-around" style="background-color: #F5F5F5;height: 40px; border-radius: 8%;padding-top:7px">
+                                    <a href="{{ path('modArt',{'id':details.id}) }}" class="details_article_a"style="display: flex;justify-content: center;">
+                                        <i class="bi bi-pen"></i>
+                                    </a>
+                                    <a href="{{ path('supp',{'id':details.id}) }}" class="details_article_a"style="display: flex;justify-content: center;">
+                                        <i class="bi bi-trash" style="color: darkred"></i>
+
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-xs-12 col-xl-12 col-lg-12 entry-img" style="padding-top: 50px;padding-left: 35px;">
+
+                                <img class="img-fluid" style="width:max-content;height: 400px;width: 100%;object-fit: cover;border-radius: 15px;" src="/assets/img/article/{{ details.image }}">
+
+                        </div>
+
+                        <h2 class="entry-title">
+                            <a href="blog-single.html">{{ details.titre }}</a>
+                        </h2>
+
+                        <h5 class="">
+                            <a href="blog-single.html"style="font-family: 'Roboto Medium';color: #B1B1B1;font-size: 13px">Catégorie</a>
+                        </h5>
+
+
+                        <div class="entry-content">
+                            <p>{{ details.text }}  </p>
+                            <div class="entry-meta">
+                                <ul>
+                                    <li class="d-flex align-items-center"><i class="bi bi-hand-thumbs-up"></i> <a href="blog-single.html">6K</a></li>
+                                    <li class="d-flex align-items-center"><i class="bi bi-hand-thumbs-down" style="color:#FF6666;"></i> <a href="blog-single.html">102</a></li>
+                                    <li class="d-flex align-items-center"><i class="bi bi-chat-dots"></i> <a href="blog-single.html">12 Comments</a></li>
+                                    <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="blog-single.html"><time datetime="2020-01-01">
+                                                {{ details.dateAjout()|date('d-m-Y H:i:s') }}
+                                            </time></a></li>
+                                </ul>
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+
+                </div><!-- End blog entries list -->
+
+                <div class="col-lg-4">
+
+                    <div class="sidebar"><h3 class="sidebar-title">Autre(s) </h3>
+                        <div class="sidebar-item tags">
+                            <ul>
+
+                            </ul>
+                        </div><!-- End sidebar tags-->
+                        <hr>
+                        <h3 class="sidebar-title">Article Publier</h3>
+
+                        <div class="sidebar-item recent-posts">
+                            <div class="col-lg-12">
+                                <div class="col-xs-12 col-lg-12  d-flex justify-content-between" >
+                                    <div class="col-xs-1 col-md-1 col-lg-2 userpdp">
+                                        <img style="width:60px;height:60px;border-radius:100%" src="{{ details.image }}">
+                                    </div>
+
+                                    <div class=" col-lg-8 flex-column" style="padding-left: 10px;">
+                                        <h6 style="font-family: 'Roboto Medium';color: #606060;font-size: 16px;">Hammmami Mongi</h6>
+                                        <h6 style="font-family: 'Roboto Medium';color: #B1B1B1;font-size: 14px;">Dentiste</h6>
+                                    </div>
+
+                                    <div class="col-xs-1 col-sm-1 col-lg-2 btndetails d-lg-flex justify-content-around" style="background-color: #F5F5F5;height: 40px; border-radius: 8%;padding-top:7px">
+                                        <a href="{{ path('modArt',{'id':details.id}) }}" class="details_article_a"style="display: flex;justify-content: center;">
+                                            <i class="bi bi-pen"></i>
+                                        </a>
+                                        <a href="{{ path('supp',{'id':details.id}) }}" class="details_article_a"style="display: flex;justify-content: center;">
+                                            <i class="bi bi-trash" style="color: darkred"></i>
+
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-12 col-lg-12 " style="padding-top: 20px;">
+
+                                    <div class="col-xs-12 col-xl-12 col-lg-12">
+                                        <img class="col-xs-12 col-lg-12 img-fluid" style="width:max-content;height: 200px;object-fit: cover;border-radius: 15px;" src="{{ asset('/assets/img/team/team-1.jpg') }}">
+                                    </div>
+                                    <!-- Details a propos l'article -->
+
+                                    <div class="col-xs-12 col-xl-12  col-lg-12">
+
+
+                                        <div class="entry-content">
+                                            <h3 class="entry-title">
+                                                <a href="blog-single.html"style="font-family: 'Roboto Medium';color: #606060;font-size: 18px">Titre</a>
+                                            </h3>
+                                            <h5 class="entry-title">
+                                                <a href="blog-single.html"style="font-family: 'Roboto Medium';color: #B1B1B1;font-size: 13px">Sous titre</a>
+                                            </h5>
+                                            <p style="color: #606060;text-align: justify;font-size: 12px;">
+
+                                            </p>
+                                        </div>
+                                        <div class="entry-meta">
+                                            <ul class="d-flex  justify-content-between">
+                                                <span class="align-items-center"><i class="bi bi-hand-thumbs-up"></i> <a href="blog-single.html">6K</a></span>
+                                                <span class="align-items-center"><i class="bi bi-hand-thumbs-down" style="color:#FF6666;"></i> <a href="blog-single.html">102</a></span>
+                                                <span class="align-items-center"><i class="bi bi-chat-dots"></i> <a href="blog-single.html">12 Comments</a></span>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+                            <h3 class="sidebar-title">Article en Attente</h3>
+                        </div>
+
+
+
+                    </div><!-- End sidebar recent posts-->
+
+
+
+
+                </div><!-- End sidebar -->
+
+            </div><!-- End blog sidebar -->
+
+        </div>
+
+        </div>
+    </section><!-- End Blog Section -->
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.js') }}"></script>
+    <script src="{{ asset('assets/vendor/aos/aos.js') }}"></script>
+    <script src="{{ asset('assets/vendor/php-email-form/validate.js') }}"></script>
+    <script src="{{ asset('assets/vendor/swiper/swiper-bundle.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/purecounter/purecounter.js') }}"></script>
+    <script src="{{ asset('assets/vendor/isotope-layout/isotope.pkgd.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/glightbox/js/glightbox.min.js') }}"></script>
+
+    <!-- Template Main JS File -->
+    <script src="{{ asset('assets/js/main.js') }}"></script>
+    <script>
+        const gap = 16;
+
+        const carousel = document.getElementById("carousel"),
+            content = document.getElementById("content"),
+            next = document.getElementById("next"),
+            prev = document.getElementById("prev");
+
+        next.addEventListener("click", e => {
+            carousel.scrollBy(width + gap, 0);
+            if (carousel.scrollWidth !== 0) {
+                prev.style.display = "flex";
+            }
+            if (content.scrollWidth - width - gap <= carousel.scrollLeft + width) {
+                next.style.display = "none";
+            }
+        });
+        prev.addEventListener("click", e => {
+            carousel.scrollBy(-(width + gap), 0);
+            if (carousel.scrollLeft - width - gap <= 0) {
+                prev.style.display = "none";
+            }
+            if (!content.scrollWidth - width - gap <= carousel.scrollLeft + width) {
+                next.style.display = "flex";
+            }
+        });
+
+        let width = carousel.offsetWidth;
+        window.addEventListener("resize", e => (width = carousel.offsetWidth));
+    </script>
+
+
+{% endblock %}

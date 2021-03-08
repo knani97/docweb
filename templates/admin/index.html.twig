@@ -1,0 +1,94 @@
+{% extends 'DashboardAdmin.html.twig' %}
+{% block title %}
+    News/Article
+{% endblock %}
+
+{% block titredetailsblock %}
+{% endblock %}
+
+    {% block titrepage %}
+        Liste des articles
+    {% endblock %}
+
+    {% block detailtitrepage %}
+        L'auteur de la publication sera sanctionné si sa publication enfreint la loi
+        (racisme, injure, atteinte à la vie privée...). L'hébergeur sera sanctionné s'il est prouvé qu'il a
+        délibérément mis en ligne ou laissé en ligne ce contenu illicite.
+
+    {% endblock %}
+{% block details %}
+
+      {% for art in article %}
+
+
+
+<div class="col-lg-6" style=" box-shadow: 0px 2px 20px rgba(1, 41, 112, 0.1);border-radius: 10px">
+
+    <div class="col-lg-2" style="background-color: white;height:50px;border: 1px solid dodgerblue ;">
+        <span class="col-lg-12 d-flex justify-content-center" style="padding-top: 10px;">
+                           <i class="bi bi-bookmark-dash" style="color: dodgerblue;"></i>
+                            </span>
+
+
+
+        </div>
+        <div class="col-lg-12" style="padding: 10px;">
+
+            <div class="col-xs-12 col-lg-12  d-flex justify-content-between" >
+
+                <div class="col-xs-1 col-md-1 col-lg-2 userpdp">
+                    <img style="width:40px;height:40px;border-radius:100%" src="{{ asset('/assets/img/team/team-1.jpg') }}">
+
+                </div>
+
+                <div class=" col-lg-8 flex-column">
+                    <h6 style="font-family: 'Roboto Medium';color: #606060;font-size: 16px;">Hammmami Mongi</h6>
+                    <h6 style="font-family: 'Roboto Medium';color: #B1B1B1;font-size: 14px;">Dentiste</h6>
+                </div>
+
+                <div class="col-xs-1 col-sm-1 col-lg-2 btndetails d-lg-flex justify-content-center" style="background-color: #F5F5F5;height: 40px; border-radius: 8%;padding-top:7px">
+                    <a href="{{ path('add',{'id':art.id}) }}" class="details_article_a"style="display: flex;justify-content: center;">
+                        <i class="bi bi-check-circle-fill"></i>
+                    </a>
+                    <a href="{{ path('supp',{'id':art.id}) }}" class="details_article_a"style="display: flex;justify-content: center;">
+                        <i class="bi bi-dash-circle-fill" style="color: darkred"></i>
+
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-lg-12 " style="padding-top: 20px;">
+
+                <div class="col-xs-12 col-xl-12 col-lg-12">
+
+                    <img class="col-xs-12 col-lg-12 img-fluid" style="width:max-content;height: 200px;object-fit: cover;border-radius: 15px;"
+                         src="/assets/img/article/{{ art.image }}">
+                </div>
+                <!-- Details a propos l'article -->
+
+                <div class="col-xs-12 col-xl-12  col-lg-12">
+
+
+                    <div class="entry-content">
+                        <h3 class="entry-title">
+                            <a href="blog-single.html"style="font-family: 'Roboto Medium';color: #606060;font-size: 18px">{{ art.titre }}</a>
+                        </h3>
+
+                        <p style="color: #606060;text-align: justify;font-size: 12px;">
+                            {{ art.text }} </p>
+                    </div>
+                    <div class="entry-meta">
+                        <ul class="d-flex  justify-content-between">
+                            <span class="align-items-center"><i class="bi bi-hand-thumbs-up"></i> <a href="blog-single.html">6K</a></span>
+                            <span class="align-items-center"><i class="bi bi-hand-thumbs-down" style="color:#FF6666;"></i> <a href="blog-single.html">102</a></span>
+                            <span class="align-items-center"><i class="bi bi-chat-dots"></i> <a href="blog-single.html">12 Comments</a></span>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% endblock %}
+{% block footer %}
+{% endblock %}
