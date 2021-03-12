@@ -124,7 +124,7 @@
 
 
                 <div class="col-lg-4" style=" box-shadow: 0px 2px 20px rgba(1, 41, 112, 0.1);border-radius: 10px">
-                    {% if art.etatAjout==0 %}
+                    {% if art.etat_ajout==0 %}
                     <div class="col-lg-2" style="background-color: white;height:50px;border: 1px solid dodgerblue ;">
 
 
@@ -147,12 +147,14 @@
                         <div class="col-xs-12 col-lg-12  d-flex justify-content-between" >
 
                             <div class="col-xs-1 col-md-1 col-lg-2 userpdp">
-                                <img style="width:40px;height:40px;border-radius:100%" src="{{ asset('/assets/img/team/team-1.jpg') }}">
+                                <img style="width:40px;height:40px;border-radius:100%"
+                                 src="/assets/img/clients/{{ art.imageuser }}">
+
 
                             </div>
 
                             <div class=" col-lg-8 flex-column">
-                                <h6 style="font-family: 'Roboto Medium';color: #606060;font-size: 16px;">Hammmami Mongi</h6>
+                                <h6 style="font-family: 'Roboto Medium';color: #606060;font-size: 16px;">{{ art.prenom|capitalize }} {{ art.nom|capitalize }}</h6>
                                 <h6 style="font-family: 'Roboto Medium';color: #B1B1B1;font-size: 14px;">Dentiste</h6>
                             </div>
 
@@ -160,12 +162,27 @@
                                 <a href="{{ path('detailsArt',{'id':art.id}) }}" class="details_article_a"style="display: flex;justify-content: center;">
                                     <i class="bi bi-box-arrow-in-right"></i>
                                 </a>
-                                <a href="{{ path('supp',{'id':art.id}) }}" class="details_article_a"style="display: flex;justify-content: center;">
-                                    <i class="bi bi-trash" style="color: darkred"></i>
+                                <span  class="details_article_a"style="display: flex;justify-content: center;">
+                                    <i class="bi bi-trash" style="color: darkred"
+                                    onclick="document.getElementById('id01').style.display='block'" ></i>
 
-                                </a>
+                                </span>
                             </div>
                         </div>
+                        <div id="id01" class="modal">
+                          <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">×</span>
+                          <form class="modal-content" action="/action_page.php">
+                          <div class="container">
+                          <h1>Delete Account</h1>
+      <p>Are you sure you want to delete your account?</p>
+
+      <div class="clearfix">
+        <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+        <a href="{{ path('supp',{'id':art.id}) }}" type="button" onclick="document.getElementById('id01').style.display='none'" class="deletebtn">Delete</a>
+      </div>
+    </div>
+  </form>
+</div>
 
                         <div class="col-xs-12 col-lg-12 " style="padding-top: 20px;">
 
@@ -181,7 +198,7 @@
 
                                 <div class="entry-content">
                                     <h3 class="entry-title">
-                                        <a href="blog-single.html"style="font-family: 'Roboto Medium';color: #606060;font-size: 18px">{{ art.titre }}</a>
+                                        <a href="{{ path('detailsArt',{'id':art.id}) }}" style="font-family: 'Roboto Medium';color: #606060;font-size: 18px">{{ art.titre }}</a>
                                     </h3>
 
                                     <p style="color: #606060;text-align: justify;font-size: 12px;">
@@ -219,6 +236,15 @@
     <!-- Template Main JS File -->
     <script src="{{ asset('assets/js/main.js') }}"></script>
     <script>
+    // Get the modal
+var modal = document.getElementById('id01');
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
         const gap = 16;
 
         const carousel = document.getElementById("carousel"),

@@ -1,0 +1,86 @@
+{% extends 'DashboardAdmin.html.twig' %}
+{% block title %}
+    Categories
+{% endblock %}
+
+{% block categories %}
+    active
+{% endblock %}
+
+{% block titredetailsblock %}
+{% endblock %}
+
+    {% block titrepage %}
+        Liste des Categories
+    {% endblock %}
+
+    {% block detailtitrepage %}
+        Choisir une Categorie à modifier ou supprimer
+    {% endblock %}
+
+
+{% block details %}
+{% endblock %}
+
+{% block addCategorie %}
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header card-header-primary">
+                        <h4 class="card-title">Ajout Categories</h4>
+                        <p class="card-category">Ajouter une nouvelle categorie</p>
+                    </div>
+                    <div class="card-body">
+                        {{ form_start(form) }}
+
+                        <form>
+                            <div class="row">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        {{ form_label(form.categorie, "Nom categorie", {'label_attr': {'class': 'bmd-label-floating'}}) }}
+
+                                        {{ form_widget(form.categorie, {'attr': {'class': 'form-control'}}) }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form" style="">
+                                        {{ form_label(form.image, "Image catagorie", {'label_attr': {'class': 'bmd-label-floating'}}) }}
+                                        {{ form_rest(form, {'attr': {'class': 'bmd-label-floating'}}) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary pull-right">Ajouter categorie</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% for nbr in maxCat %}
+            <div class="col-md-4">
+                <div class="card card-profile">
+                    <div class="card-avatar">
+                        <a href="javascript:;">
+                            <img class="img" style="width:200px;height:200px;object-fit: cover;" src="/assets/img/article/{{ nbr.image }}">
+
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-title">{{ nbr.categorie|capitalize }}</h4>
+                        <h6 class="card-category text-gray"><i class="fa fa-line-chart"></i> {{ nbr.nbr|capitalize }} articles / mois</h6>
+                        <a href="javascript:;" class="btn btn-primary btn-round">Modifier</a>
+
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

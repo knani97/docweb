@@ -42,23 +42,53 @@
                     </a>
                 </li>
                 <li class="nav-item ">
-                    <a class="nav-link" href="./user.html">
+                    <a class="nav-link" href="">
                         <i class="material-icons">person</i>
                         <p>User Profile</p>
                     </a>
                 </li>
-                <li class="nav-item active ">
-                    <a class="nav-link" href="./tables.html">
-                        <i class="material-icons">content_paste</i>
-                        <p>Verif News/Article </p>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a class="nav-link" href="./typography.html">
-                        <i class="material-icons">library_books</i>
-                        <p>Ajout article</p>
-                    </a>
-                </li>
+
+
+                <div class="dropdown show">
+                    <li class="nav-item {% block articleactif %} {% endblock %} " id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                        <a class="nav-link" href="{{ path('categories') }}">
+                            <i class="material-icons">library_books</i>
+                            <p>Ajout Categories</p>
+                        </a>
+
+                    </li>
+
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <li class="nav-item {% block verifArticle %} {% endblock %} ">
+                            <a class="nav-link" href="{{ path('verifArticle') }}">
+                                <i class="material-icons">content_paste</i>
+                                <p>Verif News/Article </p>
+                            </a>
+                        </li>
+                        <li class="nav-item {% block ajoutArticle %} {% endblock %} ">
+                            <a class="nav-link" href="{{ path('ajoutArticleAdmin') }}">
+                                <i class="material-icons">library_books</i>
+                                <p>Ajout article</p>
+                            </a>
+                        </li>                    </div>
+                </div>
+
+                <div class="dropdown show">
+                    <li class="nav-item {% block categories %} {% endblock %} " id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                            <a class="nav-link" href="{{ path('categories') }}">
+                                <i class="material-icons">library_books</i>
+                                <p>Ajout Categories</p>
+                            </a>
+
+                    </li>
+
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" href="#"><i class="material-icons">library_books</i> Ajout catagories</a>
+                        <a class="dropdown-item" href=""><i class="material-icons">library_books</i> Liste des categories</a>
+                    </div>
+                </div>
                <!-- <li class="nav-item ">
                     <a class="nav-link" href="./icons.html">
                         <i class="material-icons">bubble_chart</i>
@@ -133,9 +163,35 @@
                                     Some Actions
                                 </p>
                             </a>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                                {% for n in article %}
-                                    <a class="dropdown-item" href="#">l'internaute {{ n.id }} Demande l'autorisation à propos son article</a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink" style="width: 500px">
+                                {% for n in notif %}
+                                    <div class="col-lg-12 d-flex justify-content-start">
+                                        <div class="col-xs-1 col-md-1 col-lg-2 userpdp">
+                                            <img style="width:40px;height:40px;border-radius:100%"
+                                                 src="/assets/img/clients/{{ n.imageuser }}">
+
+
+                                        </div>
+                                        <div class="col-lg-6">
+                                            {{ n.prenom|capitalize }} {{ n.prenom|capitalize }} demande d'ajouter une publication
+
+                                        </div>
+
+                                        <div class="col-lg-2">
+                                            12-03
+                                        </div>
+
+                                        <div class="col-xs-1 col-sm-1 col-lg-2 btndetails d-lg-flex justify-content-center" style="background-color: #F5F5F5;height: 40px; border-radius: 8%;padding-top:7px">
+                                            <a href="{{ path('add',{'id':n.id}) }}" class="details_article_a"style="display: flex;justify-content: center;">
+                                                <i class="bi bi-check-circle-fill"></i>
+                                            </a>
+                                            <a href="{{ path('supp',{'id':n.id}) }}" class="details_article_a"style="display: flex;justify-content: center;">
+                                                <i class="bi bi-dash-circle-fill" style="color: darkred"></i>
+
+                                            </a>
+                                        </div>
+
+                                    </div>
                                 {% endfor %}
                             </div>
                         </li>
@@ -160,6 +216,7 @@
         <!-- End Navbar -->
         <div class="content">
             <div class="container-fluid">
+
                 <div class="card">
                     <div class="card-header card-header-primary">
                         <h4 class="card-title">
@@ -268,8 +325,12 @@
                         </div>
                     </div>
                 </div>
+                {% block addCategorie %}
+
+                {% endblock %}
             </div>
         </div>
+
         {% block footer %}
         <footer class="footer">
             <div class="container-fluid">
@@ -328,51 +389,6 @@
                     </div>
                     <div class="clearfix"></div>
                 </a>
-            </li>
-            <li class="header-title">Images</li>
-            <li class="active">
-                <a class="img-holder switch-trigger" href="javascript:void(0)">
-                    <img src="../assets/img/sidebar-1.jpg" alt="">
-                </a>
-            </li>
-            <li>
-                <a class="img-holder switch-trigger" href="javascript:void(0)">
-                    <img src="../assets/img/sidebar-2.jpg" alt="">
-                </a>
-            </li>
-            <li>
-                <a class="img-holder switch-trigger" href="javascript:void(0)">
-                    <img src="../assets/img/sidebar-3.jpg" alt="">
-                </a>
-            </li>
-            <li>
-                <a class="img-holder switch-trigger" href="javascript:void(0)">
-                    <img src="../assets/img/sidebar-4.jpg" alt="">
-                </a>
-            </li>
-            <li class="button-container">
-                <a href="https://www.creative-tim.com/product/material-dashboard" target="_blank" class="btn btn-primary btn-block">Free Download</a>
-            </li>
-            <!-- <li class="header-title">Want more components?</li>
-                <li class="button-container">
-                    <a href="https://www.creative-tim.com/product/material-dashboard-pro" target="_blank" class="btn btn-warning btn-block">
-                      Get the pro version
-                    </a>
-                </li> -->
-            <li class="button-container">
-                <a href="https://demos.creative-tim.com/material-dashboard/docs/2.1/getting-started/introduction.html" target="_blank" class="btn btn-default btn-block">
-                    View Documentation
-                </a>
-            </li>
-            <li class="button-container github-star">
-                <a class="github-button" href="https://github.com/creativetimofficial/material-dashboard" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star ntkme/github-buttons on GitHub">Star</a>
-            </li>
-            <li class="header-title">Thank you for 95 shares!</li>
-            <li class="button-container text-center">
-                <button id="twitter" class="btn btn-round btn-twitter"><i class="fa fa-twitter"></i> &middot; 45</button>
-                <button id="facebook" class="btn btn-round btn-facebook"><i class="fa fa-facebook-f"></i> &middot; 50</button>
-                <br>
-                <br>
             </li>
         </ul>
     </div>

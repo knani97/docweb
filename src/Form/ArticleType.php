@@ -23,7 +23,11 @@ class ArticleType extends AbstractType
             ->add('id',EntityType::class,[
                 'class'=>ArticleCat::class,
                 'choice_label'=>'categorie',
-                'mapped' => false
+                'mapped' => false,
+                'empty_data' => 'Veuillez sélectionner une catagorie',
+                'attr' => [
+                    'class' => 'input--style-5'
+                ]
             ])
 
             ->add('text',TextareaType::class, [

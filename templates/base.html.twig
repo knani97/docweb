@@ -58,6 +58,7 @@
 
                 </a>
 
+
                 <nav id="navbar" class="navbar">
                     <ul>
                         <li><a class="nav-link scrollto active" href="">Accueil</a></li>
@@ -65,7 +66,7 @@
                         <li><a class="nav-link scrollto" href="">Medecin</a></li>
                         <li><a class="nav-link scrollto" href="">>Pharmacie</a></li>
                         <li><a class="nav-link scrollto" href="">Regime/Sport</a></li>
-                        <li class="dropdown"><a href="#"><span>News/Articles</span> <i class="bi bi-chevron-down"></i></a>
+                        <li class="dropdown"><a href="{{ path('news') }}"><span>News/Articles</span> <i class="bi bi-chevron-down"></i></a>
                             <ul>
                                 <li><a href="{{ path('listeArticles') }}">Liste des News/Article </a></li>
                                 <li><a href="{{ path('mes-articles') }}">Mes articles</a></li>
@@ -73,7 +74,32 @@
                             </ul>
                         </li>
 
-                        <li><a href="blog.html">Notification</a></li>
+                        <li class="dropdown"><a href=""><span>Notification</span> <i class="bi bi-chevron-down"></i></a>
+                            <ul style="width: 400px">
+
+
+                                <div class="col-lg-12 d-flex justify-content-start">
+
+                                    <div class="col-xs-1 col-md-1 col-lg-2 userpdp">
+                                        <img style="width:40px;height:40px;border-radius:100%"
+                                             src="/assets/img/clients/user.jpg">
+
+
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        Votre demande d'ajout à été accepter
+
+                                    </div>
+
+                                    <div class="col-lg-2">
+                                        12-03
+                                    </div>
+
+                                </div>
+
+                            </ul>
+                        </li>
                         <li><a class="nav-link scrollto" href="#contact">Forum</a></li>
                         <li><a class="nav-link scrollto" href="">Panier</a></li>
                         {% block sessionProfil%}
@@ -83,7 +109,7 @@
 
                                     </div>
                                     <div class="col-10 d-flex justify-content-end" style="padding-left: 5px;">
-                                        {{ app.sesesion.get('prenom') }}
+                                        {{ app.session.get('prenom') }}
 
                                     </div>
                                 </a></li>
@@ -121,9 +147,12 @@
 
         </section><!-- End Hero -->
     {% endblock %}
+
     {% block main %}
         <main id="main">
-            <!-- ======= About Section ======= -->
+            {% block about %}
+
+                <!-- ======= About Section ======= -->
             <section id="about" class="about">
 
                 <div class="container" data-aos="fade-up">
@@ -153,8 +182,15 @@
                 </div>
 
             </section><!-- End About Section -->
+            {% endblock %}
+            Check our latest work
 
-            <!-- ======= Values Section ======= -->
+
+
+
+            {% block values %}
+
+                <!-- ======= Values Section ======= -->
             <section id="values" class="values">
 
                 <div class="container" data-aos="fade-up">
@@ -195,8 +231,12 @@
                 </div>
 
             </section><!-- End Values Section -->
+            {% endblock %}
 
-            <!-- ======= Counts Section ======= -->
+
+            {% block counts %}
+
+                <!-- ======= Counts Section ======= -->
             <section id="counts" class="counts">
                 <div class="container" data-aos="fade-up">
 
@@ -246,8 +286,13 @@
 
                 </div>
             </section><!-- End Counts Section -->
+            {% endblock %}
 
-            <!-- ======= Features Section ======= -->
+
+
+        {% block features %}
+
+                <!-- ======= Features Section ======= -->
             <section id="features" class="features">
 
                 <div class="container" data-aos="fade-up">
@@ -457,7 +502,10 @@
                 </div>
 
             </section><!-- End Features Section -->
+            {% endblock %}
 
+
+            {% block services %}
             <!-- ======= Services Section ======= -->
             <section id="services" class="services">
 
@@ -529,6 +577,10 @@
                 </div>
 
             </section><!-- End Services Section -->
+            {% endblock %}
+
+
+        {% block pricing %}
 
             <!-- ======= Pricing Section ======= -->
             <section id="pricing" class="pricing">
@@ -612,6 +664,10 @@
                 </div>
 
             </section><!-- End Pricing Section -->
+            {% endblock %}
+
+
+        {% block faq %}
 
             <!-- ======= F.A.Q Section ======= -->
             <section id="faq" class="faq">
@@ -721,9 +777,12 @@
                 </div>
 
             </section><!-- End F.A.Q Section -->
+            {% endblock %}
 
             <!-- ======= Portfolio Section ======= -->
-            <section id="portfolio" class="portfolio">
+            {% block portfolio %}
+
+                <section id="portfolio" class="portfolio">
 
                 <div class="container" data-aos="fade-up">
 
@@ -876,9 +935,13 @@
                 </div>
 
             </section><!-- End Portfolio Section -->
+            {% endblock %}
 
             <!-- ======= Testimonials Section ======= -->
-            <section id="testimonials" class="testimonials">
+
+            {% block testimonials %}
+
+                <section id="testimonials" class="testimonials">
 
                 <div class="container" data-aos="fade-up">
 
@@ -977,8 +1040,12 @@
                 </div>
 
             </section><!-- End Testimonials Section -->
+            {% endblock %}
 
-            <!-- ======= Team Section ======= -->
+
+        {% block team %}
+
+                <!-- ======= Team Section ======= -->
             <section id="team" class="team">
 
                 <div class="container" data-aos="fade-up">
@@ -1071,8 +1138,12 @@
                 </div>
 
             </section><!-- End Team Section -->
+            {% endblock %}
 
-            <!-- ======= Clients Section ======= -->
+
+        {% block clients %}
+
+        <!-- ======= Clients Section ======= -->
             <section id="clients" class="clients">
 
                 <div class="container" data-aos="fade-up">
@@ -1099,7 +1170,11 @@
 
             </section><!-- End Clients Section -->
 
+            {% endblock %}
+
             <!-- ======= Recent Blog Posts Section ======= -->
+
+            {% block recentblog %}
             <section id="recent-blog-posts" class="recent-blog-posts">
 
                 <div class="container" data-aos="fade-up">
@@ -1143,8 +1218,10 @@
                 </div>
 
             </section><!-- End Recent Blog Posts Section -->
+            {% endblock %}
 
             <!-- ======= Contact Section ======= -->
+    {% block contact %}
             <section id="contact" class="contact">
 
                 <div class="container" data-aos="fade-up">
@@ -1229,6 +1306,7 @@
                 </div>
 
             </section><!-- End Contact Section -->
+            {% endblock %}
 
         </main><!-- End #main -->
     {% endblock %}

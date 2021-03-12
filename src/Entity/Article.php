@@ -45,19 +45,48 @@ class Article
     private $etatAjout;
 
     /**
-     * @ORM\ManyToMany(targetEntity=ArticleCat::class, inversedBy="articles")
-     */
-    private $articlecat;
-
-    /**
      * @ORM\Column(type="integer")
      */
     private $idUser;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=ArticleCat::class, inversedBy="articles", cascade={"persist"})
+     */
+    private $idCat;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Reagit::class, mappedBy="idArt")
+     */
+    private $reagits;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Commentaires::class, mappedBy="idArt")
+     */
+    private $commentaires;
+
     public function __construct()
     {
-        $this->Articlecat = new ArrayCollection();
+        $this->reagits = new ArrayCollection();
+        $this->commentaires = new ArrayCollection();
     }
+
+    /**
+     * @return mixed
+     */
+    public function getIdUser()
+    {
+        return $this->idUser;
+    }
+
+    /**
+     * @param mixed $idUser
+     */
+    public function setIdUser($idUser): void
+    {
+        $this->idUser = $idUser;
+    }
+
+
 
     public function getId(): ?int
     {
@@ -88,12 +117,12 @@ class Article
         return $this;
     }
 
-    public function getImage(): ?string
+    public function getImage()
     {
         return $this->image;
     }
 
-    public function setImage(string $image): self
+    public function setImage($image)
     {
         $this->image = $image;
 
@@ -124,39 +153,82 @@ class Article
         return $this;
     }
 
-    /**
-     * @return Collection|ArticleCat[]
-     */
-    public function getArticlecat(): Collection
+    public function getIdCat(): ?ArticleCat
     {
-        return $this->Articlecat;
+        return $this->idCat;
     }
 
-    public function addArticlecat(ArticleCat $articlecat): self
+    public function setIdCat(?ArticleCat $idCat): self
     {
-        if (!$this->Articlecat->contains($articlecat)) {
-            $this->Articlecat[] = $articlecat;
+        $this->idCat = $idCat;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Reagit[]
+     */
+    public function getReagits(): Collection
+    {
+        return $this->reagits;
+    }
+
+    public function addReagit(Reagit $reagit): self
+    {
+        if (!$this->reagits->contains($reagit)) {
+            $this->reagits[] = $reagit;
+            $reagit->setIdArt($this);
         }
 
         return $this;
     }
 
-    public function removeArticlecat(ArticleCat $articlecat): self
+    public function removeReagit(Reagit $reagit): self
     {
-        $this->Articlecat->removeElement($articlecat);
+        if ($this->reagits->removeElement($reagit)) {
+            // set the owning side to null (unless already changed)
+            if ($reagit->getIdArt() === $this) {
+                $reagit->setIdArt(null);
+            }
+        }
 
         return $this;
     }
 
-    public function getIdUser(): ?int
+    /**
+     * @return Collection|Commentaires[]
+     */
+    public function getCommentaires(): Collection
     {
-        return $this->idUser;
+        return $this->commentaires;
     }
 
-    public function setIdUser(int $idUser): self
+    public function addCommentaire(Commentaires $commentaire): self
     {
-        $this->idUser = $idUser;
+        if (!$this->commentaires->contains($commentaire)) {
+            $this->commentaires[] = $commentaire;
+            $commentaire->setIdArt($this);
+        }
 
         return $this;
     }
+
+    public function removeCommentaire(Commentaires $commentaire): self
+    {
+        if ($this->commentaires->removeElement($commentaire)) {
+            // set the owning side to null (unless already changed)
+            if ($commentaire->getIdArt() === $this) {
+                $commentaire->setIdArt(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+
+
+
+
+
 }

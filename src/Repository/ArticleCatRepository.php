@@ -19,6 +19,24 @@ class ArticleCatRepository extends ServiceEntityRepository
         parent::__construct($registry, ArticleCat::class);
     }
 
+    public function maxCat($date,$mois):array{
+        $conn=$this->getEntityManager()->getConnection();
+
+        $sql='SELECT  COUNT(a.id_cat_id) AS nbr,cat.categorie,cat.image 
+FROM article_cat cat 
+INNER JOIN article a ON a.id_cat_id = cat.id
+WHERE(Month(a.date_ajout)='.$mois.' AND Year(a.date_ajout)='.$date.' )
+GROUP BY a.id_cat_id 
+ORDER BY nbr DESC
+LIMIT 1
+        ';
+
+        $stm=$conn->prepare($sql);
+        $stm->execute();
+        return $stm->fetchAll();
+    }
+
+
     // /**
     //  * @return ArticleCat[] Returns an array of ArticleCat objects
     //  */

@@ -25,14 +25,14 @@ class ArticleCat
     private $categorie;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Article::class, mappedBy="articlecat")
-     */
-    private $articles;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $image;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Article::class, mappedBy="idCat",cascade={"all"})
+     */
+    private $articles;
 
     public function __construct()
     {
@@ -56,6 +56,18 @@ class ArticleCat
         return $this;
     }
 
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(string $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
     /**
      * @return Collection|Article[]
      */
@@ -68,7 +80,7 @@ class ArticleCat
     {
         if (!$this->articles->contains($article)) {
             $this->articles[] = $article;
-            $article->addArticlecat($this);
+            $article->setIdCat($this);
         }
 
         return $this;
@@ -77,20 +89,11 @@ class ArticleCat
     public function removeArticle(Article $article): self
     {
         if ($this->articles->removeElement($article)) {
-            $article->removeArticlecat($this);
+            // set the owning side to null (unless already changed)
+            if ($article->getIdCat() === $this) {
+                $article->setIdCat(null);
+            }
         }
-
-        return $this;
-    }
-
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
-
-    public function setImage(string $image): self
-    {
-        $this->image = $image;
 
         return $this;
     }

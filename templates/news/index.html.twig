@@ -169,24 +169,26 @@
 
                     </article><!-- End blog entry -->
 
+
                     <!-- Article -->
                     <h2 style="font-family: 'Roboto Medium'">Autres articles</h2>
 
+                    {% for a in article %}
                     <article class="entry">
 
                         <!-- l'article ajouter par -->
                         <div class="col-xs-12 col-lg-12  d-flex justify-content-between" >
                             <div class="col-xs-1 col-md-1 col-lg-1 userpdp">
-                                <img style="width:60px;height:60px;border-radius:100%" src="{{ asset('/assets/img/team/team-1.jpg') }}">
+                                <img style="width:60px;height:60px;border-radius:100%" src="/assets/img/clients/{{ a.imageuser }}">
 
                             </div>
                             <div class="col-xs-5 col-sm-9 col-md-9 col-lg-10 flex-column">
-                                <h5 style="font-family: 'Roboto Medium';color: #606060;">Hammmami Mongi</h5>
+                                <h5 style="font-family: 'Roboto Medium';color: #606060;text-align: justify-all;">{{ a.nom |capitalize }} {{ a.prenom |capitalize }}</h5>
                                 <h6 style="font-family: 'Roboto Medium';color: #B1B1B1;">Dentiste</h6>
                             </div>
 
                             <div class="col-xs-1 col-sm-1 col-lg-1 btndetails" style="background-color: #F5F5F5;width: 45px;height: 45px; border-radius: 100%;padding: 10px">
-                                <a href="" class="details_article_a"style="display: flex;justify-content: center;">
+                                <a href="{{ path('detailsArt',{'id':a.id}) }}" class="details_article_a"style="display: flex;justify-content: center;">
                                     <i class="bi bi-box-arrow-in-right"></i>
                                 </a>
                             </div>
@@ -198,34 +200,39 @@
                         <div class="col-xs-12 col-lg-12 d-lg-flex" style="padding-top: 20px;">
 
                             <div class="col-xs-12 col-xl-6 col-lg-6">
-                                <img class="col-xs-12 col-lg-11 img-fluid" style="width:max-content;height: 200px;object-fit: cover;border-radius: 15px;" src="{{ asset('/assets/img/team/team-1.jpg') }}">
+                                <img class="col-xs-12 col-lg-11 img-fluid" style="width:max-content;height: 200px;object-fit: cover;border-radius: 15px;" src="/assets/img/article/{{ a.image }}">
                             </div>
                             <!-- Details a propos l'article -->
 
                             <div class="col-xs-12 col-xl-6  col-lg-6" style="padding-left: 20px;">
                                 <h2 class="entry-title">
-                                    <a href="blog-single.html"><h5 style="font-family: 'Roboto Medium';color: #4A90E2;">Hammmami Mongi</h5></a>
+                                    <a  href="{{ path('detailsArt',{'id':a.id}) }}"><h5 style="font-family: 'Roboto Medium';color: #4A90E2;">{{ a.titre |upper }}</h5></a>
                                 </h2>
                                 <h5 class="">
-                                    <a href="blog-single.html"style="font-family: 'Roboto Medium';color: #B1B1B1;font-size: 13px">Sous titre</a>
+                                    <a href="blog-single.html"style="font-family: 'Roboto Medium';color: #B1B1B1;font-size: 13px">{{ a.categorie }}</a>
                                 </h5>
                                 <div class="entry-content">
                                     <p style="color: #606060;text-align: justify">
-                                        Incidunt voluptate sit temporibus aperiam. Quia vitae aut sint ullam quis illum voluptatum et. Quo libero rerum voluptatem pariatur nam.
-                                        Ad impedit qui officiis est in non aliquid veniam laborum. </p>
+                                        {% if a.text|length>=195 %}
+                                        {{ a.text |capitalize |slice(0, 195) }} ...
+                                        {% else %}
+                                        {{ a.text |capitalize }} </p>
+                                            {% endif %}
                                 </div>
                                 <div class="entry-meta">
                                     <ul>
                                         <li class="d-flex align-items-center"><i class="bi bi-hand-thumbs-up"></i> <a href="blog-single.html">6K</a></li>
                                         <li class="d-flex align-items-center"><i class="bi bi-hand-thumbs-down" style="color:#FF6666;"></i> <a href="blog-single.html">102</a></li>
                                         <li class="d-flex align-items-center"><i class="bi bi-chat-dots"></i> <a href="blog-single.html">12 Comments</a></li>
-                                        <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="blog-single.html"><time datetime="2020-01-01">Jan 1, 2020</time></a></li>
+                                        <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="blog-single.html">
+                                                <time datetime="{{ a.date_ajout }}">{{ 'now'|date('d - m -y') }}</time></a></li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
                     </article><!-- End blog entry -->
 
+                    {% endfor %}
 
 
                     <div class="blog-pagination">
@@ -249,15 +256,17 @@
                         <hr>
                         <h3 class="sidebar-title">Articles recommandé</h3>
                         <div class="sidebar-item recent-posts">
+                            {% for rec in recom %}
                             <div class="col-lg-12">
                                 <div class="col-xs-12 col-lg-12  d-flex justify-content-between" >
                                     <div class="col-xs-1 col-md-1 col-lg-2 userpdp">
-                                        <img style="width:40px;height:40px;border-radius:100%" src="{{ asset('/assets/img/team/team-1.jpg') }}">
+                                        <img style="width:40px;height:40px;border-radius:100%" src="/assets/img/clients/{{ rec.imageuser }}">
+
 
                                     </div>
 
                                     <div class=" col-lg-9 flex-column">
-                                        <h6 style="font-family: 'Roboto Medium';color: #606060;font-size: 16px;">Hammmami Mongi</h6>
+                                        <h6 style="font-family: 'Roboto Medium';color: #606060;font-size: 16px;"> {{ rec.prenom|capitalize }} {{ rec.nom|capitalize }}</h6>
                                         <h6 style="font-family: 'Roboto Medium';color: #B1B1B1;font-size: 14px;">Dentiste</h6>
                                     </div>
 
@@ -271,7 +280,8 @@
                                 <div class="col-xs-12 col-lg-12 " style="padding-top: 20px;">
 
                                     <div class="col-xs-12 col-xl-12 col-lg-12">
-                                        <img class="col-xs-12 col-lg-12 img-fluid" style="width:max-content;height: 200px;object-fit: cover;border-radius: 15px;" src="{{ asset('/assets/img/team/team-1.jpg') }}">
+                                        <img class="col-xs-12 col-lg-12 img-fluid" style="width:max-content;height: 200px;object-fit: cover;border-radius: 15px;" src="/assets/img/article/{{ rec.image }}">
+
                                     </div>
                                     <!-- Details a propos l'article -->
 
@@ -280,14 +290,13 @@
 
                                         <div class="entry-content">
                                             <h3 class="entry-title">
-                                                <a href="blog-single.html"style="font-family: 'Roboto Medium';color: #606060;font-size: 18px">Titre</a>
+                                                <a  href="{{ path('detailsArt',{'id':rec.id}) }}style="font-family: 'Roboto Medium';color: #606060;font-size: 18px">{{ rec.titre|capitalize }}</a>
                                             </h3>
                                             <h5 class="entry-title">
-                                                <a href="blog-single.html"style="font-family: 'Roboto Medium';color: #B1B1B1;font-size: 13px">Sous titre</a>
+                                                <a href="blog-single.html"style="font-family: 'Roboto Medium';color: #B1B1B1;font-size: 13px">{{ rec.categorie|capitalize }}</a>
                                             </h5>
                                             <p style="color: #606060;text-align: justify;font-size: 12px;">
-                                                Incidunt voluptate sit temporibus aperiam. Quia vitae aut sint ullam quis illum voluptatum et. Quo libero rerum voluptatem pariatur nam.
-                                                Ad impedit qui officiis est in non aliquid veniam laborum. </p>
+                                                {{ rec.text|capitalize }} </p>
                                         </div>
                                         <div class="entry-meta">
                                             <ul class="d-flex  justify-content-between">
@@ -300,6 +309,7 @@
                                 </div>
                             </div>
                             <hr>
+                            {% endfor %}
                         </div>
 
 
