@@ -131,7 +131,8 @@ class VideoController extends AbstractController
      */
     public function delete(Request $request, Video $video): Response
     {
-        
+        $panier = $this->getDoctrine()->getRepository(Panier::class)  ->findOneBy(['id' => 1]);
+        $panier->setSomme($panier->getSomme()-$video->getPrix());
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($video);
             $entityManager->flush();

@@ -27,7 +27,7 @@ class PanierController extends AbstractController
             'videos' => $videos,
             'somme' => $panier->getSomme(),
             'w' => 0,
-            'k' => 0
+
         ]);
     }
 

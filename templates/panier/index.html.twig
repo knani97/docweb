@@ -63,14 +63,16 @@
 						<tr>
 
 							<td>{{ video.titre }}</td>
-							<td>{{ video.source }}</td>
+							<td><center>
+									<iframe width="180" height="180" src="{{ video.source }}?auto6play=1&mute=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+								</center></td>
 							<td>{{ video.paye ? 'Oui' : 'Non' }}</td>
 							<td>{{ video.prix }}</td>
 							<td>
 								{% if video.note != 0 %}												
 								{% for i in range(0, video.note - 1) %}
 									<i class="fas fa-star"></i>
-									{% set k = i %}
 								{% endfor %}
 								{% endif %}	
 								
@@ -103,7 +105,7 @@
 
 							</td>
 							<td>
-								<a href="{{ path('video_deletep', {'id': video.id}) }}" class="btn btn-primary btn-round">Supprimer</a>
+								<a href="{{ path('video_deletep', {'id': video.id}) }}" onclick="f()" class="btn btn-primary btn-round">Supprimer</a>
 
 
 							</td>
@@ -126,4 +128,9 @@
 	</section>
 
 	<script src="https://use.fontawesome.com/5793d5bd23.js"></script>
+	<script>
+		function f(){
+			window.confirm("Voulez-vous supprimer cette video ?");
+		}
+	</script>
 {% endblock %}
