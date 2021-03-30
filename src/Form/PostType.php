@@ -6,19 +6,15 @@ use App\Entity\Post;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class PostType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('title')
-            ->add('body')
-            ->add('created_at')
-            ->add('deleted_at')
-            ->add('edited_at')
-            ->add('user')
-        ;
+        $builder->add('title');
+        $builder->add('body', TextareaType::class, ['attr' => ['rows' => '10'],]);
+        $builder->add('user');
     }
 
     public function configureOptions(OptionsResolver $resolver)

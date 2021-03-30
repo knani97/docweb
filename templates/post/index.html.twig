@@ -171,6 +171,18 @@
     width: 100px;
 }
 
+.new-post {
+    margin-top: 15px;
+    color: white;
+    background-color: #4154f1;
+    border: none;
+    padding: 5px 10px;
+    float: right;
+}
+
+.new-post a {
+    color: white;
+}
 </style>
 
 <div class="container">
@@ -189,26 +201,21 @@
                         <div class="media forum-item">
                             <a href="#" data-toggle="collapse" data-target=".forum-content"><img src={{ post.user.image }} class="mr-3 rounded-circle" width="50" alt="User" /></a>
                             <div class="media-body">
-                                <h6><a href="#" data-toggle="collapse" data-target=".forum-content" class="text-body">{{ post.title }}</a></h6>
+                                <h6><a href="{{ path('post_show', {'id': post.id}) }}" data-toggle="collapse" data-target=".forum-content" class="text-body">{{ post.title }}</a></h6>
                                 <p class="text-secondary">
                                     {{ post.body }}
                                 </p>
                             </div>
                             <div class="views text-muted small text-center align-self-center">
-                                <span class="d-none d-sm-inline-block"><i class="far fa-eye"></i> 19</span>
-                                <span><i class="far fa-comment ml-2"></i> 3</span>
+                                <span>{{ post.createdAt ? post.createdAt|date('Y-m-d H:i') : '' }}</span>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            {% else %}
-                <tr>
-                    <td colspan="7">no records found</td>
-                </tr>
             {% endfor %}  
+            </div>
             <!-- /Forum List -->
-
+            <button class="new-post"><a href="{{ path('post_new') }}">Create new</a></button>
             <!-- /Inner main body -->
         </div>
         <!-- /Inner main -->

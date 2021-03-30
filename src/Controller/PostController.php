@@ -9,6 +9,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\DateTime;
+use App\Entity\Comment;
+use App\Form\CommentType;
 
 /**
  * @Route("/post")
@@ -31,8 +34,10 @@ class PostController extends AbstractController
     public function new(Request $request): Response
     {
         $post = new Post();
+        $post->setCreatedAt(new \DateTime());
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
+        
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
@@ -53,8 +58,13 @@ class PostController extends AbstractController
      */
     public function show(Post $post): Response
     {
+        $comment = new Comment();
+        $comment->setCreatedAt(new \DateTime());
+        $form = $this->createForm(CommentType::class, $comment);
+        
         return $this->render('post/show.html.twig', [
             'post' => $post,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -90,5 +100,26 @@ class PostController extends AbstractController
         }
 
         return $this->redirectToRoute('post_index');
+    }
+
+    /**
+     * @Route("/{id}", name="post_comment", methods={"POST"})
+     */
+    public function addComment(Request $request, Post $post): Response
+    {
+        $comment = new Comment();
+        $comment->setCreatedAt(new \DateTime());
+        $comment->setPost($post);
+        $form = $this->createForm(commentType::class, $comment);
+        $form->handleRequest($request);
+        
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($comment);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('post_show', ['id' => $post->getId()]);
     }
 }
