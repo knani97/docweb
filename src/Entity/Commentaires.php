@@ -47,7 +47,7 @@ class Commentaires
         return $this->idUser;
     }
 
-    public function setIdUser(?Users $idUser): self
+    public function setIdUser($idUser)
     {
         $this->idUser = $idUser;
 
@@ -59,7 +59,7 @@ class Commentaires
         return $this->idArt;
     }
 
-    public function setIdArt(?Article $idArt): self
+    public function setIdArt($idArt)
     {
         $this->idArt = $idArt;
 

@@ -20,10 +20,9 @@ class ArticleType extends AbstractType
             ->add('titre',TextType::class,[
                 'attr'=>['placeholder' => 'ajouter un titre']
             ])
-            ->add('id',EntityType::class,[
+            ->add('idCat',EntityType::class,[
                 'class'=>ArticleCat::class,
                 'choice_label'=>'categorie',
-                'mapped' => false,
                 'empty_data' => 'Veuillez sélectionner une catagorie',
                 'attr' => [
                     'class' => 'input--style-5'

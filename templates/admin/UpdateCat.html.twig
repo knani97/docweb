@@ -55,7 +55,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button class="btn btn-primary pull-right">Ajouter categorie</button>
+                                <button class="btn btn-primary pull-right">Modifier categorie</button>
                             </form>
                         </div>
                     </div>
@@ -102,12 +102,12 @@
                             </tbody>
                         </table>
 
-                    </div>
-                    <div class="col-lg-12 d-flex justify-content-center">
-                        {{ knp_pagination_render(AllCat) }}
-                    </div>
 
-
+                    </div>
+                </div>
+                <div class="col-lg-12 d-flex justify-content-center">
+                    {{ knp_pagination_render(AllCat) }}
+                </div>
                 </div>
                 <div class="col-md-4">
                     {% for nbr in maxCat %}

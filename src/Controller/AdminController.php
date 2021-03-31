@@ -8,6 +8,7 @@ use App\Form\ArticleType;
 use App\Form\CategorieType;
 use App\Repository\ArticleCatRepository;
 use App\Repository\ArticleRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,42 +30,28 @@ class AdminController extends AbstractController
 
 
     /**
+     * @param ArticleRepository $repository
      * @param Request $request
+     * @param PaginatorInterface $paginator
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
-     * @Route("/admin/ajoutArticleAdmin", name="ajoutArticleAdmin")
+     * @Route("/admin/ListArticleAdmin", name="ListArticleAdmin")
      */
 
-    function addArticle (ArticleRepository $repository,Request $request){
+    function listArticle (ArticleRepository $repository,Request $request,PaginatorInterface $paginator){
         $notif=$repository->ValiderArtile();
         $article= new Article();
-        $form=$this->createForm(ArticleType::class,$article);
-        $form->handleRequest($request);
-        if($form->isSubmitted() )
-        {
-            $em=$this->getDoctrine()->getManager();
-
-            $file = $article->getImage();
-            $fileName = md5(uniqid()) . "." . $file->guessExtension();
-
-            try {
-                $file->move(
-                    $this->getParameter('images_directory'),
-                    $fileName
-                );
-            } catch (FileException $e) {
-                $e->getMessage();
-            }
-            $article->setImage($fileName);
-            $article->setIdUser(1);
-            $article->setEtatAjout(0);
-            $article->setDateAjout(new \DateTime());
-            $em->persist($article);
-            $em->flush();
-            return $this->RedirectToRoute('verifArticle');
-        }
-        return $this->render('admin/ajoutArticleAdmin.html.twig',[
-            'form'=>$form->createView(),
-            'notif'=>$notif
+        $article=$repository->articlesearch();
+        $ragitLike=$repository->reagitLike();
+        $reagitDislike=$repository->reagitDislike();
+        $article = $paginator->paginate(
+            $article, /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            6/*limit per page*/);
+        return $this->render('admin/ListArticleAdmin.html.twig',[
+            'article'=>$article,
+            'notif'=>$notif,
+            'reagitLike'=>$ragitLike,
+            'reagitDislike'=>$reagitDislike
         ]);
 
 
@@ -127,42 +114,138 @@ class AdminController extends AbstractController
 
     /**
      * @param Request $request
+     * @param ArticleRepository $repository
+     * @param ArticleCatRepository $repositoryCat
+     * @param PaginatorInterface $paginator
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      * @Route ("/admin/categories",name="categories")
      */
-    function addCat(Request $request,ArticleRepository $repository,ArticleCatRepository $repositoryCat){
+    function addCat(Request $request,ArticleRepository $repository,ArticleCatRepository $repositoryCat,PaginatorInterface $paginator){
         $notif=$repository->ValiderArtile();
         $date= date("Y");
         $mois= date("m");
+        $cat=$repositoryCat->CountCat($date,$mois);
+        $AllCat=$repositoryCat->findAll();
         $Maxcat=$repositoryCat->maxCat($date,$mois);
+
+        $AllCat = $paginator->paginate(
+            $AllCat, /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            5/*limit per page*/);
         $articleCat=new ArticleCat();
         $form=$this->createForm(CategorieType::class,$articleCat);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
+
             $em=$this->getDoctrine()->getManager();
             $file = $articleCat->getImage();
             $fileName = md5(uniqid()) . "." . $file->guessExtension();
 
             try {
                 $file->move(
-                    $this->getParameter('images_directory'),
+                    $this->getParameter('images_directory_categorie'),
                     $fileName
                 );
             } catch (FileException $e) {
                 $e->getMessage();
             }
+            $articleCat->setImage($fileName);
             $em->persist($articleCat);
             $em->flush();
             return $this->RedirectToRoute('categories');
         }
+
+
+
         return $this->render('admin/AjoutCategories.html.twig', [
             'form' =>$form->createView(),
             'notif'=>$notif,
-            'maxCat'=>$Maxcat
-        ]);
+            'maxCat'=>$Maxcat,
+            'cat'=>$cat,
+            'AllCat'=>$AllCat
+            ]
+        );
         }
 
 
+
+    /**
+     * @param $id
+     * @param ArticleCatRepository $catRepository
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @Route("/admin/deleteCat/{cat}", name="deleteCat")
+     */
+        function SuppCat($cat,ArticleCatRepository $catRepository){
+            $categorie=$catRepository->findOneBy(['id'=>$cat]);
+            $em=$this->getDoctrine()->getManager();
+            $em->remove($categorie);
+            $em->flush();
+            return $this->redirectToRoute('categories');
+        }
+
+    /**
+     * @param $idCat
+     * @param ArticleRepository $repository
+     * @param ArticleCatRepository $repositoryCat
+     * @param Request $request
+     * @param PaginatorInterface $paginator
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @Route("/admin/modCat/{idCat}", name="modCat")
+     */
+    function UpdateCat($idCat,ArticleRepository $repository,ArticleCatRepository $repositoryCat,Request $request,PaginatorInterface $paginator){
+        $notif=$repository->ValiderArtile();
+        $date= date("Y");
+        $mois= date("m");
+        $cat=$repositoryCat->CountCat($date,$mois);
+        $AllCat=$repositoryCat->findAll();
+        $Maxcat=$repositoryCat->maxCat($date,$mois);
+        $articleCat=new ArticleCat();
+        $articleCat=$repositoryCat->find($idCat);
+        $AllCat = $paginator->paginate(
+            $AllCat, /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            5/*limit per page*/);
+        $form=$this->createForm(CategorieType::class,$articleCat);
+        $form->handleRequest($request);
+        $img=$articleCat->getImage();
+        if($form->isSubmitted() && $form->isValid()) {
+
+
+            $em = $this->getDoctrine()->getManager();
+            $file = $articleCat->getImage();
+            if ($file != "")
+            {
+                $fileName = md5(uniqid()) . "." . $file->guessExtension();
+
+            try {
+                $file->move(
+                    $this->getParameter('images_directory_categorie'),
+                    $fileName
+                );
+            } catch (FileException $e) {
+                $e->getMessage();
+            }
+        }
+        else
+        {
+            $fileName=$img;
+        }
+            $articleCat->setImage($fileName);
+            $em->flush();
+            return $this->RedirectToRoute('categories');
+        }
+
+
+
+        return $this->render('admin/UpdateCat.html.twig', [
+                'form' =>$form->createView(),
+                'notif'=>$notif,
+                'maxCat'=>$Maxcat,
+                'cat'=>$cat,
+                'AllCat'=>$AllCat,
+            ]
+        );
+    }
 
 
 }

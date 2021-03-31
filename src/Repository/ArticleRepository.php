@@ -89,7 +89,6 @@ class ArticleRepository extends ServiceEntityRepository
         INNER JOIN article_cat c ON a.id_cat_id = c.id
         where a.id_user='.$idUser.'
         order by date_ajout desc
-        LIMIT 9
         ';
 
         $stm=$conn->prepare($sql);
@@ -107,14 +106,13 @@ class ArticleRepository extends ServiceEntityRepository
         INNER JOIN article_cat c ON a.id_cat_id = c.id
         where a.etat_ajout=0
         order by date_ajout desc
-        LIMIT 10
         ';
 
         $stm=$conn->prepare($sql);
         $stm->execute();
         return $stm->fetchAll();
     }
-    public function notif():array{
+    public function notif($idUser):array{
         $conn=$this->getEntityManager()->getConnection();
 
         $sql='
@@ -122,7 +120,7 @@ class ArticleRepository extends ServiceEntityRepository
         FROM article a
         INNER JOIN users u ON u.id = a.id_user
         INNER JOIN article_cat c ON a.id_cat_id = c.id
-        where a.etat_ajout=1
+        where a.etat_ajout=1 AND a.id_user='.$idUser.'
         order by date_ajout desc
         LIMIT 10
         ';
@@ -150,19 +148,6 @@ HAVING id_user='.$id.') AND a.id_user!='.$id.'
         return $stm->fetchAll();
     }
 
-    public function reagit($id):array{
-        $conn=$this->getEntityManager()->getConnection();
-
-        $sql='select DISTINCT (SELECT COUNT(id) AS dislikereact FROM reagit WHERE type_react=0),
-(SELECT COUNT(id) AS likereact FROM reagit WHERE type_react=1)
-from reagit
-WHERE id_art_id='.$id.'
-        ';
-
-        $stm=$conn->prepare($sql);
-        $stm->execute();
-        return $stm->fetchAll();
-    }
     public function trends():array{
         $conn=$this->getEntityManager()->getConnection();
 
@@ -170,6 +155,81 @@ WHERE id_art_id='.$id.'
 
         ';
 
+        $stm=$conn->prepare($sql);
+        $stm->execute();
+        return $stm->fetchAll();
+    }
+
+    public  function reagitLike():array{
+        $conn=$this->getEntityManager()->getConnection();
+
+        $sql='SELECT *,COUNT(id) as liked 
+from reagit 
+WHERE type_react=1
+GROUP BY id_art_id';
+
+        $stm=$conn->prepare($sql);
+        $stm->execute();
+        return $stm->fetchAll();
+    }
+
+    public  function reagitDislike():array{
+        $conn=$this->getEntityManager()->getConnection();
+
+        $sql='SELECT *,COUNT(id) as dislike 
+from reagit 
+WHERE type_react=0
+GROUP BY id_art_id';
+
+        $stm=$conn->prepare($sql);
+        $stm->execute();
+        return $stm->fetchAll();
+    }
+
+
+    public function articlePrefere($idUser):array{
+        $conn=$this->getEntityManager()->getConnection();
+        $sql='
+SELECT DISTINCT u.nom,u.image as imageuser,u.prenom,a.*,c.categorie
+        FROM article a
+        INNER JOIN users u ON u.id = a.id_user 
+        INNER JOIN article_cat c ON a.id_cat_id = c.id
+        INNER JOIN reagit r on r.id_user_id = '.$idUser.' AND r.id_art_id=a.id
+        ';
+        $stm=$conn->prepare($sql);
+        $stm->execute();
+        return $stm->fetchAll();
+    }
+
+    public function topLike():array{
+        $conn=$this->getEntityManager()->getConnection();
+        $sql='SELECT id_art_id,COUNT(id) AS compteur from reagit GROUP BY(id_art_id)
+        ORDER BY compteur DESC LIMIT 2';
+        $stm=$conn->prepare($sql);
+        $stm->execute();
+        return $stm->fetchAll();
+    }
+
+    public function notifValidArt($idUser):array{
+        $conn=$this->getEntityManager()->getConnection();
+        $sql='SELECT u.nom,u.image as imageuser,u.prenom,a.*,c.categorie
+        FROM article a
+        INNER JOIN users u ON u.id = a.id_user
+        INNER JOIN article_cat c ON a.id_cat_id = c.id
+        where a.etat_ajout=0 AND  a.id_user='.$idUser.' 
+        order by date_ajout desc';
+        $stm=$conn->prepare($sql);
+        $stm->execute();
+        return $stm->fetchAll();
+    }
+
+    public function notifLike($idUser):array{
+        $conn=$this->getEntityManager()->getConnection();
+        $sql='SELECT DISTINCT u.id as luserlasl,u.nom,u.image as imageuser,u.prenom,a.*,r.id_user_id as idliaamljaime
+        FROM users u,article a
+        INNER JOIN reagit r ON r.id_art_id = a.id
+        where u.id='.$idUser.' AND a.id_User='.$idUser.'
+        order by date_ajout desc';
         $stm=$conn->prepare($sql);
         $stm->execute();
         return $stm->fetchAll();

@@ -1,0 +1,161 @@
+{% extends 'DashboardAdmin.html.twig' %}
+{% block title %}
+    News/Article
+{% endblock %}
+
+{% block titredetailsblock %}
+{% endblock %}
+
+{% block articleactif %}
+    active
+{% endblock %}
+
+    {% block titrepage %}
+        Liste des articles
+    {% endblock %}
+
+    {% block detailtitrepage %}
+        L'auteur de la publication sera sanctionné si sa publication enfreint la loi
+        (racisme, injure, atteinte à la vie privée...). L'hébergeur sera sanctionné s'il est prouvé qu'il a
+        délibérément mis en ligne ou laissé en ligne ce contenu illicite.
+
+    {% endblock %}
+
+{% block details %}
+
+    {% for art in article %}
+
+
+
+<div class="col-lg-4" style=" box-shadow: 0px 2px 20px rgba(1, 41, 112, 0.1);border-radius: 10px">
+    {% if art.etat_ajout==0 %}
+    <div class="col-lg-2" style="background-color: white;height:50px;border: 1px solid dodgerblue ;">
+
+
+                            <span class="col-lg-12 d-flex justify-content-center" style="padding-top: 10px;">
+                           <i class="bi bi-bookmark-dash" style="color: dodgerblue;"></i>
+                            </span>
+
+
+        {% else %}
+        <div class="col-lg-2" style="background-color: dodgerblue;height:50px;">
+                            <span class="col-lg-12 d-flex justify-content-center" style="padding-top: 10px;">
+                           <i class="bi bi-bookmark-check-fill fa-xs" style="color: white;">Verifié</i>
+                            </span>
+            {% endif %}
+
+
+        </div>
+        <div class="col-lg-12" style="padding: 10px;">
+
+            <div class="col-xs-12 col-lg-12  d-flex justify-content-between" >
+
+                <div class="col-xs-1 col-md-1 col-lg-2 userpdp">
+                    <img style="width:40px;height:40px;border-radius:100%"
+                         src="/assets/img/clients/{{ art.imageuser }}">
+
+
+                </div>
+
+                <div class=" col-lg-8 flex-column">
+                    <h6 style="font-family: 'Roboto Medium';color: #606060;font-size: 16px;">{{ art.prenom|capitalize }} {{ art.nom|capitalize }}</h6>
+                    <h6 style="font-family: 'Roboto Medium';color: #B1B1B1;font-size: 14px;">Dentiste</h6>
+                </div>
+
+                <div class="col-xs-1 col-sm-1 col-lg-2 btndetails d-lg-flex justify-content-around" style="background-color: #F5F5F5;height: 40px; border-radius: 8%;padding-top:7px">
+
+                    <span  class="details_article_a"style="display: flex;justify-content: center;">
+                                    <i class="bi bi-trash" style="color: darkred"
+                                       onclick="document.getElementById('id01').style.display='block'" ></i>
+
+                                </span>
+                </div>
+            </div>
+            <div id="id01" class="modal">
+                <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">×</span>
+                <form class="modal-content" action="/action_page.php">
+                    <div class="container">
+                        <h1>Delete Account</h1>
+                        <p>Are you sure you want to delete your account?</p>
+
+                        <div class="clearfix">
+                            <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+                            <a href="{{ path('supp',{'id':art.id}) }}" type="button" onclick="document.getElementById('id01').style.display='none'" class="deletebtn">Delete</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-xs-12 col-lg-12 " style="padding-top: 20px;">
+
+                <div class="col-xs-12 col-xl-12 col-lg-12">
+
+                    <img class="col-xs-12 col-lg-12 img-fluid" style="width:max-content;height: 200px;object-fit: cover;border-radius: 15px;"
+                         src="/assets/img/article/{{ art.image }}">
+                </div>
+                <!-- Details a propos l'article -->
+
+                <div class="col-xs-12 col-xl-12  col-lg-12">
+
+
+                    <div class="entry-content">
+                        <h3 class="entry-title">
+                            <a href="{{ path('detailsArt',{'id':art.id}) }}" style="font-family: 'Roboto Medium';color: #606060;font-size: 18px">{{ art.titre }}</a>
+                        </h3>
+
+                        <p style="color: #606060;text-align: justify;font-size: 12px;">
+                            {% if art.text|length>=195 %}
+                            {{ art.text |capitalize |slice(0, 195) }} ...
+                            {% else %}
+                            {{ art.text |capitalize }} </p>
+                        {% endif %}
+                    </div>
+                    <div class="entry-meta">
+                        <ul class="d-flex  justify-content-between">
+                                        <span class="align-items-center">
+                                            <i class="bi bi-hand-thumbs-up"></i>
+                                        <a href="blog-single.html">
+
+                                        {% set like=0 %}
+                                            {% for rl in reagitLike %}
+                                                {% if rl.id_art_id== art.id %}
+                                                    {% set like=rl.liked %}
+                                                    {{ like }}
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if like==0 %}
+                                                0
+                                            {% endif %}
+</a></span>
+                            <span class="align-items-center">
+
+                                            <i class="bi bi-hand-thumbs-down"></i>
+
+
+                                        <a href="blog-single.html">
+                                        {% set Dislike=0 %}
+                                            {% for rl in reagitDislike %}
+                                                {% if rl.id_art_id== art.id%}
+                                                    {% set Dislike=rl.dislike %}
+                                                    {{ Dislike }}
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if Dislike==0 %}
+                                                0
+                                            {% endif %}
+</a></span>
+                            <span class="align-items-center"><i class="bi bi-chat-dots"></i> <a href="blog-single.html">12 Comments</a></span>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    <div class="col-lg-12 d-flex justify-content-center">
+        {{ knp_pagination_render(article) }}
+    </div>
+    </div>
+{% endblock %}
+{% block footer %}
+{% endblock %}

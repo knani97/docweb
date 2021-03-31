@@ -70,6 +70,7 @@
                             <ul>
                                 <li><a href="{{ path('listeArticles') }}">Liste des News/Article </a></li>
                                 <li><a href="{{ path('mes-articles') }}">Mes articles</a></li>
+                                <li><a href="{{ path('ArticlePrefere') }}">Article Préféré</a></li>
                                 <li><a href="{{ path('ajoutArticle') }}">Ajoutes un article</a></li>
                             </ul>
                         </li>
@@ -77,26 +78,26 @@
                         <li class="dropdown"><a href=""><span>Notification</span> <i class="bi bi-chevron-down"></i></a>
                             <ul style="width: 400px">
 
-
+                                {% block notif %}
                                 <div class="col-lg-12 d-flex justify-content-start">
 
-                                    <div class="col-xs-1 col-md-1 col-lg-2 userpdp">
+                                    <div class="col-xs-1 col-md-2 col-lg-2 userpdp">
+
                                         <img style="width:40px;height:40px;border-radius:100%"
                                              src="/assets/img/clients/user.jpg">
-
 
                                     </div>
 
                                     <div class="col-lg-6">
+
                                         Votre demande d'ajout à été accepter
 
                                     </div>
 
-                                    <div class="col-lg-2">
-                                        12-03
-                                    </div>
 
                                 </div>
+                                <hr>
+                                {% endblock %}
 
                             </ul>
                         </li>

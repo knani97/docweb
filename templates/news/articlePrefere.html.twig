@@ -90,7 +90,11 @@
                 100% { transform: translate(1px, -2px) rotate(-1deg); }
 
             }
-
+            #tooltip {
+                position: relative;
+                display: inline-block;
+                border-bottom: 1px dotted black;
+            }
             #tooltip .tooltiptext {
                 visibility: hidden;
                 width: 120px;
@@ -106,10 +110,10 @@
             #tooltip:hover .tooltiptext {
                 visibility: visible;
             }
+
         </style>
 
     {% endblock %}
-
     {% block notif %}
 
 
@@ -140,6 +144,7 @@
     {% endblock %}
 
 {% block hero %}
+
     <section class="col-lg-12" style="padding-top: 100px;">
 
         <div class="container">
@@ -162,7 +167,7 @@
 
     <div class="container">
         <div class="row">
-            <h3 class="col-lg-12 sidebar-title">Liste des articles</h3>
+            <h3 class="col-lg-12 sidebar-title">Articles Préféré</h3>
             {% for art in article %}
 
 
@@ -184,10 +189,10 @@
                                     <i class="bi bi-box-arrow-in-right"></i>
                                 </a>
                                 {%  if app.session.get('id')== art.id_user %}
-                                <a href="{{ path('supp',{'id':art.id}) }}" class="details_article_a"style="display: flex;justify-content: center;">
-                                    <i class="bi bi-trash" style="color: darkred"></i>
+                                    <a href="{{ path('supp',{'id':art.id}) }}" class="details_article_a"style="display: flex;justify-content: center;">
+                                        <i class="bi bi-trash" style="color: darkred"></i>
 
-                                </a>
+                                    </a>
                                 {% endif %}
                             </div>
                         </div>

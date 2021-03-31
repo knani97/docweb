@@ -131,6 +131,26 @@
                 background: green;
             }
 
+            #tooltip {
+                position: relative;
+                display: inline-block;
+                border-bottom: 1px dotted black;
+            }
+            #tooltip .tooltiptext {
+                visibility: hidden;
+                width: 120px;
+                font-size: 15px;
+                background-color: dodgerblue;
+                color: #fff;
+                text-align: center;
+                border-radius: 6px;
+                padding: 5px 0;
+                position: absolute;
+                z-index: 1;
+            }
+            #tooltip:hover .tooltiptext {
+                visibility: visible;
+            }
         </style>
 
     {% endblock %}
@@ -146,6 +166,36 @@
             </div>
         </a></li>
 {% endblock %}
+
+    {% block notif %}
+
+
+        {% for notifAjout in notifAjout %}
+            <a href="{{ path('detailsArt',{'id':notifAjout.id}) }}">
+
+                <div class="col-lg-12 d-flex justify-content-start">
+
+                    <div class="col-xs-1 col-md-2 col-lg-2 userpdp">
+
+                        <img style="width:40px;height:40px;border-radius:100%"
+                             src="/assets/img/clients/{{ notifAjout.imageuser }}">
+
+                    </div>
+
+                    <div class="col-lg-6">
+
+                        Votre demande d'ajout à été accepter
+
+                    </div>
+                </div>
+            </a>
+            <hr>
+
+
+        {% endfor %}
+
+    {% endblock %}
+
 
 {% block hero %}
 
@@ -222,14 +272,89 @@
                         <div class="entry-content">
                             <p>{{ details.text }}  </p>
                             <div class="entry-meta">
-                                <ul>
-                                    <li class="d-flex align-items-center"><i class="bi bi-hand-thumbs-up"></i> <a href="blog-single.html">6K</a></li>
-                                    <li class="d-flex align-items-center"><i class="bi bi-hand-thumbs-down" style="color:#FF6666;"></i> <a href="blog-single.html">102</a></li>
-                                    <li class="d-flex align-items-center"><i class="bi bi-chat-dots"></i> <a href="blog-single.html">12 Comments</a></li>
-                                    <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="blog-single.html"><time datetime="2020-01-01">
-                                                {{ details.date_ajout|date("l,m-d-Y") }}
-                                            </time></a></li>
+                                <ul class="d-flex  justify-content-between">
+                                        <span class="align-items-center">
+
+                                        {% set etat=0 %}
+                                            {% for rl in reagitLike %}
+                                                {%  if app.session.get('id')== rl.id_user_id and rl.id_art_id == details.id %}
+                                                    {% set etat=details.id %}
+                                                {% endif %}
+                                            {% endfor %}
+
+                                            {%  if etat==details.id %}
+                                                <a href="{{ path('DelR',{'id':details.id}) }}">
+                                        <i id="tooltip" class="bi bi-hand-thumbs-up-fill ">
+                                        <span class="tooltiptext"> Annumler votre reaction </span>
+                                        </i>
+                                        </a>
+
+                                        {% else %}
+                                                <a href="{{ path('TestLike',{'id':details.id,'etat':1}) }}">
+                                        <i id="tooltip" class="bi bi-hand-thumbs-up ">
+                                        <span class="tooltiptext"> Ajouter une reaction </span>
+                                        </i>
+                                        </a>
+                                            {% endif %}
+
+
+
+                                        <a href="">
+
+                                        {% set like=0 %}
+                                            {% for rl in reagitLike %}
+                                                {% if rl.id_art_id== details.id %}
+                                                    {% set like=rl.liked %}
+                                                    {{ like }}
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if like==0 %}
+                                                0
+                                            {% endif %}
+</a></span>
+                                    <span class="align-items-center">
+
+                                        {% set etat=0 %}
+                                        {% for rl in reagitDislike %}
+                                            {%  if app.session.get('id')== rl.id_user_id and rl.id_art_id == details.id %}
+                                                {% set etat=details.id %}
+                                            {% endif %}
+                                        {% endfor %}
+
+                                        {%  if etat==details.id %}
+                                            <a href="{{ path('DelR',{'id':details.id}) }}">
+                                        <i id="tooltip" class="bi bi-hand-thumbs-down-fill" style="color:#FF6666;">
+                                        <span class="tooltiptext" style="background-color:#FF6666;"> Annumler votre reaction </span>
+                                        </i>
+                                        </a>
+
+                                        {% else %}
+                                            <a href="{{ path('TestLike',{'id':details.id,'etat':0}) }}">
+                                        <i id="tooltip" class="bi bi-hand-thumbs-down" style="color:#FF6666;">
+                                        <span class="tooltiptext" style="background-color:#FF6666;"> Ajout une reaction</span>
+                                        </i>
+                                                </i>
+                                        </a>
+                                        {% endif %}
+
+                                        <a href="blog-single.html">
+                                        {% set Dislike=0 %}
+                                            {% for rl in reagitDislike %}
+                                                {% if rl.id_art_id== details.id%}
+                                                    {% set Dislike=rl.dislike %}
+                                                    {{ Dislike }}
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if Dislike==0 %}
+                                                0
+                                            {% endif %}
+</a></span>
+                                    <span class="align-items-center">
+                                        <a href="{{ path('detailsArt',{'id':details.id}) }}" class="details_article_a"style="display: flex;justify-content: center;">
+                                        Vois plus <i class="bi bi-box-arrow-in-right"></i>
+                                </a></span>
                                 </ul>
+
                             </div>
 
                         </div>
@@ -327,10 +452,88 @@
                                             </div>
                                             <div class="entry-meta">
                                                 <ul class="d-flex  justify-content-between">
-                                                    <span class="align-items-center"><i class="bi bi-hand-thumbs-up"></i> <a href="blog-single.html">6K</a></span>
-                                                    <span class="align-items-center"><i class="bi bi-hand-thumbs-down" style="color:#FF6666;"></i> <a href="blog-single.html">102</a></span>
-                                                    <span class="align-items-center"><i class="bi bi-chat-dots"></i> <a href="blog-single.html">12 Comments</a></span>
+                                        <span class="align-items-center">
+
+                                        {% set etat=0 %}
+                                            {% for rl in reagitLike %}
+                                                {%  if app.session.get('id')== rl.id_user_id and rl.id_art_id == autre.id %}
+                                                    {% set etat=autre.id %}
+                                                {% endif %}
+                                            {% endfor %}
+
+                                            {%  if etat==autre.id %}
+                                                <a href="{{ path('DelR',{'id':autre.id}) }}">
+                                        <i id="tooltip" class="bi bi-hand-thumbs-up-fill ">
+                                        <span class="tooltiptext"> Annumler votre reaction </span>
+                                        </i>
+                                        </a>
+
+                                        {% else %}
+                                                <a href="{{ path('TestLike',{'id':autre.id,'etat':1}) }}">
+                                        <i id="tooltip" class="bi bi-hand-thumbs-up ">
+                                        <span class="tooltiptext"> Ajouter une reaction </span>
+                                        </i>
+                                        </a>
+                                            {% endif %}
+
+
+
+                                        <a href="">
+
+                                        {% set like=0 %}
+                                            {% for rl in reagitLike %}
+                                                {% if rl.id_art_id== autre.id %}
+                                                    {% set like=rl.liked %}
+                                                    {{ like }}
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if like==0 %}
+                                                0
+                                            {% endif %}
+</a></span>
+                                                    <span class="align-items-center">
+
+                                        {% set etat=0 %}
+                                                        {% for rl in reagitDislike %}
+                                                            {%  if app.session.get('id')== rl.id_user_id and rl.id_art_id == autre.id %}
+                                                                {% set etat=autre.id %}
+                                                            {% endif %}
+                                                        {% endfor %}
+
+                                                        {%  if etat==autre.id %}
+                                                            <a href="{{ path('DelR',{'id':autre.id}) }}">
+                                        <i id="tooltip" class="bi bi-hand-thumbs-down-fill" style="color:#FF6666;">
+                                        <span class="tooltiptext" style="background-color:#FF6666;"> Annumler votre reaction </span>
+                                        </i>
+                                        </a>
+
+                                        {% else %}
+                                                            <a href="{{ path('TestLike',{'id':autre.id,'etat':0}) }}">
+                                        <i id="tooltip" class="bi bi-hand-thumbs-down" style="color:#FF6666;">
+                                        <span class="tooltiptext" style="background-color:#FF6666;"> Ajout une reaction</span>
+                                        </i>
+                                                                </i>
+                                        </a>
+                                                        {% endif %}
+
+                                        <a href="blog-single.html">
+                                        {% set Dislike=0 %}
+                                            {% for rl in reagitDislike %}
+                                                {% if rl.id_art_id== autre.id%}
+                                                    {% set Dislike=rl.dislike %}
+                                                    {{ Dislike }}
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if Dislike==0 %}
+                                                0
+                                            {% endif %}
+</a></span>
+                                                    <span class="align-items-center">
+                                        <a href="{{ path('detailsArt',{'id':autre.id}) }}" class="details_article_a"style="display: flex;justify-content: center;">
+                                        Vois plus <i class="bi bi-box-arrow-in-right"></i>
+                                </a></span>
                                                 </ul>
+
                                             </div>
                                         </div>
                                     </div>
@@ -389,14 +592,90 @@
                                     Accusantium quam
                                 </p>
                                 <div class="entry-meta">
-                                    <ul class="d-flex justify-content-between">
-                                        <li class="d-flex align-items-center"><i class="bi bi-hand-thumbs-up"></i> <a href="blog-single.html">6K</a></li>
-                                        <li class="d-flex align-items-center"><i class="bi bi-chat-dots"></i> <a href="blog-single.html">12 Comments</a></li>
-                                        <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="blog-single.html"><time datetime="2020-01-01">
-                                                    {{ rec.date_ajout|date("m-d") }}
-                                                </time></a>
-                                        </li>
+
+                                    <ul class="d-flex  justify-content-between">
+                                        <span class="align-items-center">
+
+                                        {% set etat=0 %}
+                                            {% for rl in reagitLike %}
+                                                {%  if app.session.get('id')== rl.id_user_id and rl.id_art_id == rec.id %}
+                                                    {% set etat=rec.id %}
+                                                {% endif %}
+                                            {% endfor %}
+
+                                            {%  if etat==rec.id %}
+                                                <a href="{{ path('DelR',{'id':rec.id}) }}">
+                                        <i id="tooltip" class="bi bi-hand-thumbs-up-fill ">
+                                        <span class="tooltiptext"> Annumler votre reaction </span>
+                                        </i>
+                                        </a>
+
+                                        {% else %}
+                                                <a href="{{ path('TestLike',{'id':rec.id,'etat':1}) }}">
+                                        <i id="tooltip" class="bi bi-hand-thumbs-up ">
+                                        <span class="tooltiptext"> Ajouter une reaction </span>
+                                        </i>
+                                        </a>
+                                            {% endif %}
+
+
+
+                                        <a href="">
+
+                                        {% set like=0 %}
+                                            {% for rl in reagitLike %}
+                                                {% if rl.id_art_id== rec.id %}
+                                                    {% set like=rl.liked %}
+                                                    {{ like }}
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if like==0 %}
+                                                0
+                                            {% endif %}
+</a></span>
+                                        <span class="align-items-center">
+
+                                        {% set etat=0 %}
+                                            {% for rl in reagitDislike %}
+                                                {%  if app.session.get('id')== rl.id_user_id and rl.id_art_id == rec.id %}
+                                                    {% set etat=rec.id %}
+                                                {% endif %}
+                                            {% endfor %}
+
+                                            {%  if etat==rec.id %}
+                                                <a href="{{ path('DelR',{'id':rec.id}) }}">
+                                        <i id="tooltip" class="bi bi-hand-thumbs-down-fill" style="color:#FF6666;">
+                                        <span class="tooltiptext" style="background-color:#FF6666;"> Annumler votre reaction </span>
+                                        </i>
+                                        </a>
+
+                                        {% else %}
+                                                <a href="{{ path('TestLike',{'id':rec.id,'etat':0}) }}">
+                                        <i id="tooltip" class="bi bi-hand-thumbs-down" style="color:#FF6666;">
+                                        <span class="tooltiptext" style="background-color:#FF6666;"> Ajout une reaction</span>
+                                        </i>
+                                                    </i>
+                                        </a>
+                                            {% endif %}
+
+                                        <a href="blog-single.html">
+                                        {% set Dislike=0 %}
+                                            {% for rl in reagitDislike %}
+                                                {% if rl.id_art_id== rec.id%}
+                                                    {% set Dislike=rl.dislike %}
+                                                    {{ Dislike }}
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if Dislike==0 %}
+                                                0
+                                            {% endif %}
+</a></span>
+                                        <span class="align-items-center">
+                                        <a href="{{ path('detailsArt',{'id':rec.id}) }}" class="details_article_a"style="display: flex;justify-content: center;">
+                                        Vois plus <i class="bi bi-box-arrow-in-right"></i>
+                                </a></span>
                                     </ul>
+
                                 </div>
 
                             </div>

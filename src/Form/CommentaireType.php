@@ -13,7 +13,6 @@ class CommentaireType extends AbstractType
     {
         $builder
             ->add('text')
-            ->add('idArt')
         ;
     }
 

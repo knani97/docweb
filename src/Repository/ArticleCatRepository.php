@@ -25,10 +25,25 @@ class ArticleCatRepository extends ServiceEntityRepository
         $sql='SELECT  COUNT(a.id_cat_id) AS nbr,cat.categorie,cat.image 
 FROM article_cat cat 
 INNER JOIN article a ON a.id_cat_id = cat.id
-WHERE(Month(a.date_ajout)='.$mois.' AND Year(a.date_ajout)='.$date.' )
+WHERE(Month(a.date_ajout)='.$mois.' AND Year(a.date_ajout)='.$date.' ) AND a.etat_Ajout=1
 GROUP BY a.id_cat_id 
 ORDER BY nbr DESC
 LIMIT 1
+        ';
+
+        $stm=$conn->prepare($sql);
+        $stm->execute();
+        return $stm->fetchAll();
+    }
+    public function CountCat($date,$mois):array{
+        $conn=$this->getEntityManager()->getConnection();
+
+        $sql='SELECT  COUNT(a.id_cat_id) AS nbr,cat.categorie,cat.image 
+FROM article_cat cat 
+INNER JOIN article a ON a.id_cat_id = cat.id
+WHERE(Month(a.date_ajout)='.$mois.' AND Year(a.date_ajout)='.$date.' ) AND a.etat_Ajout=1
+GROUP BY a.id_cat_id 
+ORDER BY nbr DESC
         ';
 
         $stm=$conn->prepare($sql);

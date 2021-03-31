@@ -20,6 +20,31 @@
     <link href="{{ asset('/assets/admin/css/material-dashboard.css?v=2.1.2') }}" rel="stylesheet" />
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link href="{{asset('/assets/admin/demo/demo.css') }}" rel="stylesheet" />
+    <style>
+        a .bi-trash:hover {
+            /* Start the shake animation and make the animation last for 0.5 seconds */
+            animation: shake 0.5s;
+
+            /* When the animation is finished, start again */
+            animation-iteration-count: infinite;
+        }
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+
+
+    </style>
+
 </head>
 
 <body class="">
@@ -54,7 +79,7 @@
 
                         <a class="nav-link" href="{{ path('categories') }}">
                             <i class="material-icons">library_books</i>
-                            <p>Ajout Categories</p>
+                            <p>Article</p>
                         </a>
 
                     </li>
@@ -67,7 +92,7 @@
                             </a>
                         </li>
                         <li class="nav-item {% block ajoutArticle %} {% endblock %} ">
-                            <a class="nav-link" href="{{ path('ajoutArticleAdmin') }}">
+                            <a class="nav-link" href="{{ path('ListArticleAdmin') }}">
                                 <i class="material-icons">library_books</i>
                                 <p>Ajout article</p>
                             </a>
@@ -79,13 +104,13 @@
 
                             <a class="nav-link" href="{{ path('categories') }}">
                                 <i class="material-icons">library_books</i>
-                                <p>Ajout Categories</p>
+                                <p>Categories</p>
                             </a>
 
                     </li>
 
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item" href="#"><i class="material-icons">library_books</i> Ajout catagories</a>
+                        <a class="dropdown-item" href="{{ path('categories') }}"><i class="material-icons">library_books</i> Ajout catagories</a>
                         <a class="dropdown-item" href=""><i class="material-icons">library_books</i> Liste des categories</a>
                     </div>
                 </div>
@@ -128,7 +153,7 @@
         <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
             <div class="container-fluid">
                 <div class="navbar-wrapper">
-                    <a class="navbar-brand" href="javascript:;">Verif News/Article</a>
+                    <a class="navbar-brand" href="javascript:;">{% block titre_menu %} Verif News/Article {% endblock %}</a>
                 </div>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="sr-only">Toggle navigation</span>
@@ -147,14 +172,7 @@
                         </div>
                     </form>
                     <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="javascript:;">
-                                <i class="material-icons">dashboard</i>
-                                <p class="d-lg-none d-md-block">
-                                    Stats
-                                </p>
-                            </a>
-                        </li>
+
                         <li class="nav-item dropdown">
                             <a class="nav-link" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="material-icons">notifications</i>
