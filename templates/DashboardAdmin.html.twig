@@ -148,14 +148,14 @@
 
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                         <li class="nav-item {% block verifArticle %} {% endblock %} ">
-                            <a class="nav-link" href="{{ path('verifArticle') }}">
-                                <i class="material-icons">content_paste</i>
+                            <a class="nav-link" href="{{ path('verifArticle') }}" {% block BackgroundVerifArticle %} {% endblock %}>
+                                <i class="bi bi-check" {% block iconVerifArticle %} {% endblock %}></i>
                                 <p>Verif News/Article </p>
                             </a>
                         </li>
                         <li class="nav-item {% block ajoutArticle %} {% endblock %} ">
-                            <a class="nav-link" href="{{ path('ListArticleAdmin') }}">
-                                <i class="material-icons">library_books</i>
+                            <a class="nav-link" href="{{ path('ListArticleAdmin') }}" {% block backroundListeArticle %}{% endblock %}>
+                                <i class="bi bi-view-list" {% block iconListeArticle %} {% endblock %}></i>
                                 <p>Listes des articles</p>
                             </a>
                         </li>                    </div>
@@ -164,16 +164,17 @@
                 <div class="dropdown show">
                     <li class="nav-item {% block categories %} {% endblock %} " id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
-                            <a class="nav-link" href="{{ path('categories') }}">
-                                <i class="material-icons">library_books</i>
+                            <a class="nav-link" href="{{ path('categories') }}" >
+                                <i class="bi bi-grid" ></i>
                                 <p>Categories</p>
                             </a>
 
                     </li>
 
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item" href="{{ path('categories') }}"><i class="material-icons">library_books</i> Ajout catagories</a>
-                        <a class="dropdown-item" href=""><i class="material-icons">library_books</i> Liste des categories</a>
+                        <a class="dropdown-item" href="{{ path('categories') }}" {% block backroundCat %}{% endblock %}>
+                            <i class="bi bi-node-plus" {% block iconCat %} {% endblock %}></i> Ajout catagories</a>
+                        <a class="dropdown-item" href=""><i class="bi bi-view-list"></i> Liste des categories</a>
                     </div>
                 </div>
                <!-- <li class="nav-item ">

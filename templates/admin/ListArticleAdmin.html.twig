@@ -111,8 +111,15 @@
         délibérément mis en ligne ou laissé en ligne ce contenu illicite.
 
     {% endblock %}
-
+{% block backroundListeArticle %}
+    style="background-color:#949494;color:white;"
+{% endblock %}
+    {% block iconListeArticle %}
+        style="color:white;"
+    {% endblock %}
 {% block details %}
+
+
 
     {% for art in article %}
 

@@ -305,14 +305,14 @@
                                             {% endfor %}
 
                                             {%  if etat==art.id %}
-                                                <a href="{{ path('DelR',{'id':art.id}) }}">
+                                                <a href="{{ path('DelR',{'id':art.id}) }}" class="js-like">
                                         <i id="tooltip" class="bi bi-hand-thumbs-up-fill ">
                                         <span class="tooltiptext"> Annumler votre reaction </span>
                                         </i>
                                         </a>
 
                                         {% else %}
-                                                <a href="{{ path('TestLike',{'id':art.id,'etat':1}) }}">
+                                                <a href="{{ path('TestLike',{'id':art.id,'etat':1}) }}" class="js-like">
                                         <i id="tooltip" class="bi bi-hand-thumbs-up ">
                                         <span class="tooltiptext"> Ajouter une reaction </span>
                                         </i>
@@ -344,14 +344,14 @@
                                             {% endfor %}
 
                                             {%  if etat==art.id %}
-                                                <a href="{{ path('DelR',{'id':art.id}) }}">
+                                                <a href="{{ path('DelR',{'id':art.id}) }}" class="js-like">
                                         <i id="tooltip" class="bi bi-hand-thumbs-down-fill" style="color:#FF6666;">
                                         <span class="tooltiptext" style="background-color:#FF6666;"> Annumler votre reaction </span>
                                         </i>
                                         </a>
 
                                         {% else %}
-                                                <a href="{{ path('TestLike',{'id':art.id,'etat':0}) }}">
+                                                <a href="{{ path('TestLike',{'id':art.id,'etat':0}) }}" class="js-like">
                                         <i id="tooltip" class="bi bi-hand-thumbs-down" style="color:#FF6666;">
                                         <span class="tooltiptext" style="background-color:#FF6666;"> Ajout une reaction</span>
                                         </i>
@@ -395,6 +395,8 @@
 
 {% endblock %}
 {% block javascripts %}
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
     <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.js') }}"></script>
     <script src="{{ asset('assets/vendor/aos/aos.js') }}"></script>
     <script src="{{ asset('assets/vendor/php-email-form/validate.js') }}"></script>
@@ -406,6 +408,9 @@
     <!-- Template Main JS File -->
     <script src="{{ asset('assets/js/main.js') }}"></script>
     <script>
+
+
+
         const gap = 16;
 
         const carousel = document.getElementById("carousel"),
