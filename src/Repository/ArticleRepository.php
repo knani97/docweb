@@ -100,12 +100,14 @@ class ArticleRepository extends ServiceEntityRepository
         $conn=$this->getEntityManager()->getConnection();
 
         $sql='
-        SELECT u.nom,u.image as imageuser,u.prenom,a.*,c.categorie
-        FROM article a
-        INNER JOIN users u ON u.id = a.id_user
-        INNER JOIN article_cat c ON a.id_cat_id = c.id
-        where a.etat_ajout=0
+        SELECT u.nom,u.image as imageuser,u.prenom,a.*,c.categorie,COUNT(a.id) AS countnotif
+        FROM article a 
+        INNER JOIN users u ON u.id = a.id_user 
+        INNER JOIN article_cat c ON a.id_cat_id = c.id 
+        where a.etat_ajout=0 
+        GROUP by a.id 
         order by date_ajout desc
+
         ';
 
         $stm=$conn->prepare($sql);

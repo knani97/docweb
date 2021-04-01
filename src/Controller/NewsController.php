@@ -98,9 +98,8 @@ class NewsController extends AbstractController
      * @return Response
      * @Route ("news/ajoutArticle", name="ajoutArticle")
      */
-    function add(Request $request,ArticleRepository $repository){
-        $session = new Session();
-        $session->start();
+    function add(Request $request,ArticleRepository $repository,SessionInterface $session){
+
         $idUser=$session->get('id');
         $notifAjout=$repository->notif($idUser);
         $article=new Article();

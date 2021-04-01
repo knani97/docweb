@@ -151,6 +151,63 @@
             #tooltip:hover .tooltiptext {
                 visibility: visible;
             }
+            .overlay {
+                position: fixed;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: rgba(0, 0, 0, 0.7);
+                transition: opacity 500ms;
+                visibility: hidden;
+                opacity: 0;
+            }
+            .overlay:target {
+                visibility: visible;
+                opacity: 1;
+            }
+
+            .popup {
+                margin: 70px auto;
+                padding: 20px;
+                background: #fff;
+                border-radius: 5px;
+                width: 30%;
+                position: relative;
+                transition: all 5s ease-in-out;
+            }
+
+            .popup h2 {
+                margin-top: 0;
+                color: #333;
+                font-family: Tahoma, Arial, sans-serif;
+            }
+            .popup .close {
+                position: absolute;
+                top: 20px;
+                right: 30px;
+                transition: all 200ms;
+                font-size: 30px;
+                font-weight: bold;
+                text-decoration: none;
+                color: #333;
+            }
+            .popup .close:hover {
+                color: #06D85F;
+            }
+            .popup .content {
+                max-height: 30%;
+                overflow: auto;
+            }
+
+            @media screen and (max-width: 700px){
+                .box{
+                    width: 70%;
+                }
+                .popup{
+                    width: 70%;
+                }
+            }
         </style>
 
     {% endblock %}
@@ -239,10 +296,12 @@
                                         <i class="bi bi-pen"></i>
                                     </a>
 
-                                        <a href="{{ path('supp',{'id':details.id}) }}" class="details_article_a"style="display: flex;justify-content: center;">
+                                    <div class="box">
+                                        <a href="#popup2" class="details_article_a"style="display: flex;justify-content: center;">
                                             <i class="bi bi-trash" style="color: darkred"></i>
 
                                         </a>
+                                    </div>
 
                                 </div>
 
@@ -360,31 +419,43 @@
                         </div>
 
                     </article>
-<!--
-                        <div class="col-lg-12 overflow-auto" style="height:400px;">
-                            <div class="row d-flex justify-content-center">
-                                <div class="col-lg-12">
-                                    <div class="headings d-flex justify-content-between align-items-center mb-3">
-                                        <h5>Unread comments(6)</h5>
-                                        <div class="buttons"> <span class="badge bg-white d-flex flex-row align-items-center"> <span class="text-primary">Comments "ON"</span>
-                        <div class="form-check form-switch"> <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked> </div>
-                    </span> </div>
-                                    </div>
-
-                                    <div class="card p-3">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div class="user d-flex flex-row align-items-center"> <img src="https://i.imgur.com/hczKIze.jpg" width="30" class="user-img rounded-circle mr-2"> <span><small class="font-weight-bold text-primary">james_olesenn</small> <small class="font-weight-bold">Hmm, This poster looks cool</small></span> </div> <small>2 days ago</small>
-                                        </div>
-                                        <div class="action d-flex justify-content-between mt-2 align-items-center">
-                                            <div class="reply px-4"> <small>Remove</small> <span class="dots"></span> <small>Reply</small> <span class="dots"></span> <small>Translate</small> </div>
-                                            <div class="icons align-items-center"> <i class="fa fa-star text-warning"></i> <i class="fa fa-check-circle-o check-icon"></i> </div>
-                                        </div>
-                                    </div>
-
+                        <div id="popup2" class="overlay">
+                            <div class="popup">
+                                <h2>voulez-vous vraiment supprimer !</h2>
+                                <a class="close" href="#">&times;</a>
+                                <div class="content">
+                                    <a class="btn btn-primary" href="{{ path('supp',{'id':details.id }) }}"style="background-color: red;border:none">Supprimer {{ details.id  }}</a>
+                                    <a class="btn btn-primary" href="#" style="background-color: dodgerblue;border:none">Annuler &times;</a>
                                 </div>
                             </div>
                         </div>
-                        !-->
+
+
+                        <!--
+                                                <div class="col-lg-12 overflow-auto" style="height:400px;">
+                                                    <div class="row d-flex justify-content-center">
+                                                        <div class="col-lg-12">
+                                                            <div class="headings d-flex justify-content-between align-items-center mb-3">
+                                                                <h5>Unread comments(6)</h5>
+                                                                <div class="buttons"> <span class="badge bg-white d-flex flex-row align-items-center"> <span class="text-primary">Comments "ON"</span>
+                                                <div class="form-check form-switch"> <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked> </div>
+                                            </span> </div>
+                                                            </div>
+
+                                                            <div class="card p-3">
+                                                                <div class="d-flex justify-content-between align-items-center">
+                                                                    <div class="user d-flex flex-row align-items-center"> <img src="https://i.imgur.com/hczKIze.jpg" width="30" class="user-img rounded-circle mr-2"> <span><small class="font-weight-bold text-primary">james_olesenn</small> <small class="font-weight-bold">Hmm, This poster looks cool</small></span> </div> <small>2 days ago</small>
+                                                                </div>
+                                                                <div class="action d-flex justify-content-between mt-2 align-items-center">
+                                                                    <div class="reply px-4"> <small>Remove</small> <span class="dots"></span> <small>Reply</small> <span class="dots"></span> <small>Translate</small> </div>
+                                                                    <div class="icons align-items-center"> <i class="fa fa-star text-warning"></i> <i class="fa fa-check-circle-o check-icon"></i> </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                !-->
                     {% endfor %}
 
 
@@ -421,11 +492,23 @@
                                             <a href="{{ path('modArt',{'id':5}) }}" class="details_article_a"style="display: flex;justify-content: center;">
                                                 <i class="bi bi-pen"></i>
                                             </a>
-                                            <a href="{{ path('supp',{'id':5}) }}" class="details_article_a"style="display: flex;justify-content: center;">
-                                                <i class="bi bi-trash" style="color: darkred"></i>
+                                            <div class="box">
+                                                <a href="#popup{{ autre.id }}" class="details_article_a"style="display: flex;justify-content: center;">
+                                                    <i class="bi bi-trash" style="color: darkred"></i>
 
-                                            </a>
+                                                </a>
+                                            </div>
                                         </div>
+                                            <div id="popup{{ autre.id }}" class="overlay">
+                                                <div class="popup">
+                                                    <h2>voulez-vous vraiment supprimer !</h2>
+                                                    <a class="close" href="#">&times;</a>
+                                                    <div class="content">
+                                                        <a class="btn btn-primary" href="{{ path('supp',{'id':autre.id }) }}"style="background-color: red;border:none">Supprimer {{ autre.id  }}</a>
+                                                        <a class="btn btn-primary" href="#" style="background-color: dodgerblue;border:none">Annuler &times;</a>
+                                                    </div>
+                                                </div>
+                                            </div>
                                     {% endif %}
                                     </div>
 

@@ -83,7 +83,7 @@ class AdminController extends AbstractController
      * @param $id
      * @param ArticleRepository $repository
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     * @Route("/news/supp/{id}",name="supp")
+     * @Route("/news/supp/{id}",name="suppArt")
      */
 
     function Delete($id,ArticleRepository $repository){
@@ -92,6 +92,22 @@ class AdminController extends AbstractController
         $em->remove($article);
         $em->flush();
         return $this->redirectToRoute('verifArticle');
+    }
+
+
+    /**
+     * @param $id
+     * @param ArticleRepository $repository
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @Route("/news/suppListeArticle/{id}",name="suppListeArticle")
+     */
+
+    function DeleteListeArticle($id,ArticleRepository $repository){
+        $article=$repository->find($id);
+        $em=$this->getDoctrine()->getManager();
+        $em->remove($article);
+        $em->flush();
+        return $this->redirectToRoute('ListArticleAdmin');
     }
 
 

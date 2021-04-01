@@ -20,6 +20,7 @@
     <link href="{{ asset('/assets/admin/css/material-dashboard.css?v=2.1.2') }}" rel="stylesheet" />
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link href="{{asset('/assets/admin/demo/demo.css') }}" rel="stylesheet" />
+    {% block stylecss %}
     <style>
         a .bi-trash:hover {
             /* Start the shake animation and make the animation last for 0.5 seconds */
@@ -42,8 +43,69 @@
             100% { transform: translate(1px, -2px) rotate(-1deg); }
         }
 
+         .overlay {
+             position: fixed;
+             top: 0;
+             bottom: 0;
+             left: 0;
+             right: 0;
+             background: rgba(0, 0, 0, 0.7);
+             transition: opacity 500ms;
+             visibility: hidden;
+             opacity: 0;
+         }
+        .overlay:target {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .popup {
+            margin: 70px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 5px;
+            width: 30%;
+            position: relative;
+            transition: all 5s ease-in-out;
+        }
+
+        .popup h2 {
+            margin-top: 0;
+            color: #333;
+            font-family: Tahoma, Arial, sans-serif;
+        }
+        .popup .close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            transition: all 200ms;
+            font-size: 30px;
+            font-weight: bold;
+            text-decoration: none;
+            color: #333;
+        }
+        .popup .close:hover {
+            color: #06D85F;
+        }
+        .popup .content {
+            max-height: 30%;
+            overflow: auto;
+        }
+
+        @media screen and (max-width: 700px){
+            .box{
+                width: 70%;
+            }
+            .popup{
+                width: 70%;
+            }
+        }
+
+
+
 
     </style>
+    {% endblock %}
 
 </head>
 
@@ -94,7 +156,7 @@
                         <li class="nav-item {% block ajoutArticle %} {% endblock %} ">
                             <a class="nav-link" href="{{ path('ListArticleAdmin') }}">
                                 <i class="material-icons">library_books</i>
-                                <p>Ajout article</p>
+                                <p>Listes des articles</p>
                             </a>
                         </li>                    </div>
                 </div>
@@ -176,13 +238,20 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="material-icons">notifications</i>
-                                <span class="notification">+</span>
+                                {% set notifN=0 %}
+                                {% for n in notif %}
+                                    {% set notifN=notifN+1 %}
+                                {% endfor %}
+                                <span class="notification">+{{ notifN }}</span>
                                 <p class="d-lg-none d-md-block">
                                     Some Actions
                                 </p>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink" style="width: 500px">
+                                {% set idArt=0 %}
+
                                 {% for n in notif %}
+                                    {% set idArt=n.id %}
                                     <div class="col-lg-12 d-flex justify-content-start">
                                         <div class="col-xs-1 col-md-1 col-lg-2 userpdp">
                                             <img style="width:40px;height:40px;border-radius:100%"
@@ -190,26 +259,27 @@
 
 
                                         </div>
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-8">
                                             {{ n.prenom|capitalize }} {{ n.prenom|capitalize }} demande d'ajouter une publication
 
                                         </div>
 
-                                        <div class="col-lg-2">
-                                            12-03
-                                        </div>
 
                                         <div class="col-xs-1 col-sm-1 col-lg-2 btndetails d-lg-flex justify-content-center" style="background-color: #F5F5F5;height: 40px; border-radius: 8%;padding-top:7px">
                                             <a href="{{ path('add',{'id':n.id}) }}" class="details_article_a"style="display: flex;justify-content: center;">
                                                 <i class="bi bi-check-circle-fill"></i>
                                             </a>
-                                            <a href="{{ path('supp',{'id':n.id}) }}" class="details_article_a"style="display: flex;justify-content: center;">
-                                                <i class="bi bi-dash-circle-fill" style="color: darkred"></i>
+                                            <div class="box">
+                                                <a href="#popup{{ idArt }}" class="details_article_a"style="display: flex;justify-content: center;">
+                                                    <i class="bi bi-trash" style="color: darkred"></i>
 
-                                            </a>
+                                                </a>
+                                            </div>
                                         </div>
 
                                     </div>
+                                    <hr>
+
                                 {% endfor %}
                             </div>
                         </li>
@@ -234,7 +304,16 @@
         <!-- End Navbar -->
         <div class="content">
             <div class="container-fluid">
-
+                <div id="popup{{ idArt }}" class="overlay" style="z-index: 10;">
+                    <div class="popup">
+                        <h2>voulez-vous vraiment supprimer !</h2>
+                        <a class="close" href="#">&times;</a>
+                        <div class="content">
+                            <a class="btn btn-primary" href="{{ path('suppArt',{'id':idArt }) }}"style="background-color: red;border:none">Supprimer {{ idArt  }}</a>
+                            <a class="btn btn-primary" href="#" style="background-color: dodgerblue;border:none">Annuler &times;</a>
+                        </div>
+                    </div>
+                </div>
                 <div class="card">
                     <div class="card-header card-header-primary">
                         <h4 class="card-title">
