@@ -6,8 +6,11 @@ use App\Entity\Article;
 use App\Entity\ArticleCat;
 use App\Form\ArticleType;
 use App\Form\CategorieType;
+use App\Form\MedicamentType;
 use App\Repository\ArticleCatRepository;
 use App\Repository\ArticleRepository;
+use App\Repository\MedicamentRepository;
+use App\Repository\UserRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -263,5 +266,77 @@ class AdminController extends AbstractController
         );
     }
 
+
+    /**
+     * @Route("/admin/users", name="users")
+     */
+    public function users(ArticleRepository $repository)
+    {
+        $users=1;
+        $notif=$repository->ValiderArtile();
+        return $this->render('admin/users.html.twig', [
+            'users' => $users,
+            'notif'=>$notif
+        ]);
+    }
+
+    /**
+     * @Route("/admin/workers", name="workers")
+     * @param ArticleRepository $repository
+     * @return Response
+     */
+    public function workers(ArticleRepository $repository)
+    {
+        $notif=$repository->ValiderArtile();
+        $users=1;
+        return $this->render('admin/workers.html.twig', [
+            'users' => $users,
+            'notif'=>$notif
+        ]);
+    }
+
+    /**
+     * @Route("admin/search_admin6", name="search_admin")
+     */
+    public function search1(Request $request,ArticleRepository $repository){
+
+        $pharmacies=NULL;
+        $medicaments =NULL;
+        $notif=$repository->ValiderArtile();
+        return $this->render("admin/show1.html.twig",[
+            'notif' => $notif,
+            'pharmacies'=>$pharmacies,
+            'medicaments'=>$medicaments
+        ]);
+    }
+
+
+
+    /**
+     * @Route("/admin/medicamentSearch", name="medicament_index1", methods={"GET"})
+     */
+    public function index1(ArticleRepository $repository): Response
+    {        $notif=$repository->ValiderArtile();
+        $pharmacies=NULL;
+        $medicaments =NULL;
+
+        return $this->render('admin/index1.html.twig', [
+            'notif' => $notif,'notif' => $notif,
+            'pharmacies'=>$pharmacies
+        ]);
+    }
+
+    /**
+     * @Route("/admin/new", name="medicament_new", methods={"GET","POST"})
+     */
+    public function new(Request $request,ArticleRepository $repository): Response
+    {
+        $notif=$repository->ValiderArtile();
+
+
+        return $this->render('admin/new.html.twig', [
+            'notif' => $notif
+        ]);
+    }
 
 }

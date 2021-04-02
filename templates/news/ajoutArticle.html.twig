@@ -2,9 +2,8 @@
 
 {% block title %}
     <style>
-        .erreur{
+        li.erreur{
             color:red;
-            background-color: red;
         }
     </style>
     <title>Ajout article</title>
@@ -35,7 +34,7 @@
                                     <div class="input-group">
 
                                         {{ form_widget(form.titre, {'attr': {'class': 'input--style-5'}}) }}
-                                        {{ form_errors(form.titre, {'attr': {'class': 'erreur'}}) }}
+                                        {{ form_errors(form.titre, {'attr': {'class': 'erreur' }}) }}
 
                                     </div>
                                 </div>

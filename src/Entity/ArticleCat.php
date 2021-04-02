@@ -6,6 +6,8 @@ use App\Repository\ArticleCatRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass=ArticleCatRepository::class)
@@ -21,6 +23,12 @@ class ArticleCat
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *      min = 3,
+     *      max = 30,
+     *      minMessage = "Chaque catégorie doit contenir au moins {{ limit }} caractères !",
+     *      maxMessage = "Chaque catégorie  doit contenir au maximum {{ limit }} caractères !"
+     * )
      */
     private $categorie;
 

@@ -98,6 +98,10 @@
     active
 {% endblock %}
 
+{% block titre_menu %}
+    Ajout Catégories
+{% endblock %}
+
 {% block titredetailsblock %}
 
 
@@ -148,6 +152,7 @@
                                             {{ form_label(form.categorie, "Nom categorie", {'label_attr': {'class': 'bmd-label-floating'}}) }}
 
                                             {{ form_widget(form.categorie, {'attr': {'class': 'form-control'}}) }}
+                                            {{ form_errors(form.categorie, {'attr': {'class': 'erreur' }},) }}
                                         </div>
                                     </div>
                                     <div class="col-md-6">

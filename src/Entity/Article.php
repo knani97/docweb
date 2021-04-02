@@ -6,6 +6,8 @@ use App\Repository\ArticleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass=ArticleRepository::class)
@@ -21,11 +23,23 @@ class Article
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *      min = 5,
+     *      max = 50,
+     *      minMessage = "L'article doit contenir au moins {{ limit }} caractères !",
+     *      maxMessage = "L'article doit contenir au maximum {{ limit }} caractères !"
+     * )
      */
     private $titre;
 
     /**
      * @ORM\Column(type="string", length=900)
+     * @Assert\Length(
+     *      min = 50,
+     *      max = 900,
+     *      minMessage = "L'article doit contenir au moins {{ limit }} caractères !",
+     *      maxMessage = "L'article doit contenir au maximum {{ limit }} caractères !"
+     * )
      */
     private $text;
 
