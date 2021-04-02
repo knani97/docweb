@@ -1,0 +1,17 @@
+{% extends 'header.html.twig' %}
+
+{% block title %}Erreur Log-in{% endblock %}
+
+{% block main %}
+
+<section id="hero" class="hero d-flex align-items-center">
+    <div class="container">
+        <div class="col-lg-6 d-flex flex-column justify-content-center" style="margin-left: 25%;">
+            <h1>Veuillez d'abords vous authentifier/enregistrer ! ⚠️</h1>
+            <br><br>
+            <a data-aos="fade-up" class="btn-get-started scrollto scrollto" style="width: 50%; text-align: center; margin-left: 15%;" href="{{ path('chose') }}">Créer un compte</a>
+            <a data-aos="fade-up" class="btn-get-started scrollto scrollto" style="width: 50%; text-align: center; margin-left: 15%;" href="{{ path('app_login') }}">S'authentifier</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,241 @@
+.md-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 50%;
+    max-width: 630px;
+    min-width: 320px;
+    height: auto;
+    z-index: 2000;
+    visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -ms-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.md-show {
+    visibility: visible;
+}
+
+.md-overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    visibility: hidden;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    opacity: 0;
+    background: rgba(40,43,49,.8);
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+}
+
+.md-show ~ .md-overlay {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Content styles */
+.md-content {
+    color: #333;
+    background: #fff;
+}
+
+/* Effect 1: Fade in and scale up */
+.md-effect-1 .md-content {
+    -webkit-transform: scale(0.7);
+    -ms-transform: scale(0.7);
+    transform: scale(0.7);
+    opacity: 0;
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+}
+
+.md-show.md-effect-1 .md-content {
+    -webkit-transform: scale(1);
+    -ms-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
+}
+
+.button-three{
+    text-align: center;
+    cursor: pointer;
+    font-size:12px;
+    border-color: #0a53be;
+    margin: 0 0 0 0px;
+    font-weight: bold;
+}
+
+/*Button Three*/
+.button-three {
+    position: relative;
+    background-color: #f39c12;
+    border: none;
+    padding: 10px;
+    width: 100px;
+    text-align: center;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    text-decoration: none;
+    overflow: hidden;
+}
+
+.button-three:hover{
+    background:#fff;
+    box-shadow:0px 2px 10px 5px #97B1BF;
+    color:#000;
+}
+
+.button-three:after {
+    content: "";
+    background: #f1c40f;
+    display: block;
+    position: absolute;
+    padding-top: 300%;
+    padding-left: 350%;
+    margin-left: -20px !important;
+    margin-top: -120%;
+    opacity: 0;
+    transition: all 0.8s
+}
+
+.button-three:active:after {
+    padding: 0;
+    margin: 0;
+    opacity: 1;
+    transition: 0s
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-size: cover;
+    height: 100vh;
+}
+
+h1 {
+    text-align: center;
+    font-family: Tahoma, Arial, sans-serif;
+    color: #06D85F;
+    margin: 80px 0;
+}
+
+.box {
+    width: 40%;
+    margin: 0 auto;
+    background: rgba(255,255,255,0.2);
+    padding: 35px;
+    border: 2px solid #fff;
+    border-radius: 20px/50px;
+    background-clip: padding-box;
+    text-align: center;
+}
+
+.button {
+    font-size: 1em;
+    padding: 10px;
+    color: #fff;
+    border: 2px solid #06D85F;
+    border-radius: 20px/50px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease-out;
+}
+.button:hover {
+    background: #06D85F;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    transition: opacity 500ms;
+    visibility: hidden;
+    opacity: 0;
+}
+.overlay:target {
+    visibility: visible;
+    opacity: 1;
+}
+
+.popup {
+    margin: 70px auto;
+    padding: 0px;
+    background-image: url("https://cdn.pixabay.com/photo/2017/04/05/04/44/background-2203989_960_720.jpg");
+    border-radius: 5px;
+    width: 30%;
+    position: relative;
+    transition: all 5s ease-in-out;
+}
+
+.popup h2 {
+    margin-top: 0;
+    color: #333;
+    font-family: Tahoma, Arial, sans-serif;
+}
+.popup .close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    transition: all 200ms;
+    font-size: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #333;
+}
+.popup .close:hover {
+    color: #06D85F;
+}
+.popup .content {
+    max-height: 150%;
+    overflow: auto;
+}
+
+@media screen and (max-width: 700px){
+    .box{
+        width: 70%;
+    }
+    .popup{
+        width: 70%;
+    }
+}
+
+.fade-in {
+    animation: fadeIn ease 8s;
+    -webkit-animation: fadeIn ease 8s;
+    -moz-animation: fadeIn ease 8s;
+    -o-animation: fadeIn ease 8s;
+    -ms-animation: fadeIn ease 8s;
+}
+@keyframes fadeIn {
+    0% {opacity:0;}
+    100% {opacity:1;}
+}
+
+@-moz-keyframes fadeIn {
+    0% {opacity:0;}
+    100% {opacity:1;}
+}
+
+@-webkit-keyframes fadeIn {
+    0% {opacity:0;}
+    100% {opacity:1;}
+}
+
+@-o-keyframes fadeIn {
+    0% {opacity:0;}
+    100% {opacity:1;}
+}
+
+@-ms-keyframes fadeIn {
+    0% {opacity:0;}
+    100% {opacity:1;}
+}

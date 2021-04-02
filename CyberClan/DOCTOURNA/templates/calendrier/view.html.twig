@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link href="{{ asset('assets/css/calendrier-tache.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/calendrier.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/js/calendrier-tache.js') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/calendrier.js') }}" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="{{ asset('assets/css/calendrier-options.css') }}" rel="stylesheet">
+
+    <!-- =======================================================
+    * Template Name: FlexStart - v1.1.1
+    * Template URL: https://bootstrapmade.com/flexstart-bootstrap-startup-template/
+    * Author: BootstrapMade.com
+    * License: https://bootstrapmade.com/license/
+    ======================================================== -->
+</head>
+
+<body>
+        <div id="calendar-wrap" style="background-color: #6f42c1;">
+            <header>
+                <a href="{{ path('view', { 'year' : date(year|trans~"-"~month|trans~"-01")|date_modify("-1 month")|date('Y'), 'month' : date(year|trans~"-"~month|trans~"-01")|date_modify("-1 month")|date('M')}) }}"><img src={{ asset('assets/img/calendrier/previous.png') }}></a>
+                <a href="{{ path('view', { 'year' : date(year|trans~"-"~month|trans~"-01")|date_modify("+1 month")|date('Y'), 'month' : date(year|trans~"-"~month|trans~"-01")|date_modify("+1 month")|date('M')}) }}"><img src={{ asset('assets/img/calendrier/next.png') }}></a>
+                <h2>Evenements de {{ month|date("F") }} {{ year }} <a class="button" href="#popup1" style="border-radius: 50%; display: inline-block; font-size: small; float: right">Ajouter Tache</a></h2>
+                <div id="popup1" class="overlay">
+                    <div class="popup">
+                        <h2>Ajout d'une nouvelle Tache:</h2>
+                        <a class="close" href="#">&times;</a>
+                        <div class="content">
+                            <div class="container" >
+                                <div class="row justify-content-center">
+                                    <div class="col-lg-12 bi-text-left bi-textarea-resize">
+                                        <h4>Entrez les données:</h4>
+                                        {{ form_start(form1) }}
+                                        {{ form_row(form1.libelle) }}
+                                        {{ form_row(form1.date) }}
+                                        {{ form_row(form1.duree) }}
+                                        {{ form_row(form1.description) }}
+                                        {{ form_row(form1.type) }}
+                                        {{ form_row(form1.couleur) }}
+                                        {{ form_row(form1.submit, { 'label': 'Ajouter' }) }}
+                                        {{ form_end(form1) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <div id="calendar">
+                <ul class="weekdays" style="background-color: {{ cal.couleur }}">
+                    <li>{{ date(year|trans~"-"~month|trans~"-01")|date('D') }}</li>
+                    <li>{{ date(year|trans~"-"~month|trans~"-02")|date('D') }}</li>
+                    <li>{{ date(year|trans~"-"~month|trans~"-03")|date('D') }}</li>
+                    <li>{{ date(year|trans~"-"~month|trans~"-04")|date('D') }}</li>
+                    <li>{{ date(year|trans~"-"~month|trans~"-05")|date('D') }}</li>
+                    <li>{{ date(year|trans~"-"~month|trans~"-06")|date('D') }}</li>
+                    <li>{{ date(year|trans~"-"~month|trans~"-07")|date('D') }}</li>
+                </ul>
+
+                <!-- Days from previous month -->
+
+                <ul class="days">
+
+                    <!-- Days in current month -->
+
+                    <li class="day" id="day1">
+                        <div class="date">1</div>
+                    </li>
+                    <li class="day" id="day2">
+                        <div class="date">2</div>
+                    </li>
+
+                    <li class="day" id="day3">
+                        <div class="date">3</div>
+                    </li>
+                    <li class="day" id="day4">
+                        <div class="date">4</div>
+                    </li>
+                    <li class="day" id="day5">
+                        <div class="date">5</div>
+                    </li>
+                    <li class="day" id="day6">
+                        <div class="date">6</div>
+                    </li>
+                    <li class="day" id="day7">
+                        <div class="date">7</div>
+                    </li>
+                    <li class="day" id="day8">
+                        <div class="date">8</div>
+                    </li>
+                    <li class="day" id="day9">
+                        <div class="date">9</div>
+                    </li>
+                    <li class="day" id="day10">
+                        <div class="date">10</div>
+                    </li>
+                    <li class="day" id="day11">
+                        <div class="date">11</div>
+                    </li>
+                    <li class="day" id="day12">
+                        <div class="date">12</div>
+                    </li>
+                    <li class="day" id="day13">
+                        <div class="date">13</div>
+                    </li>
+                    <li class="day" id="day14">
+                        <div class="date">14</div>
+                    </li>
+                    <li class="day" id="day15">
+                        <div class="date">15</div>
+                    </li>
+                    <li class="day" id="day16">
+                        <div class="date">16</div>
+                    </li>
+                    <li class="day" id="day17">
+                        <div class="date">17</div>
+                    </li>
+                    <li class="day" id="day18">
+                        <div class="date">18</div>
+                    </li>
+                    <li class="day" id="day19">
+                        <div class="date">19</div>
+                    </li>
+                    <li class="day" id="day20">
+                        <div class="date">20</div>
+                    </li>
+                    <li class="day" id="day21">
+                        <div class="date">21</div>
+                    </li>
+                    <li class="day" id="day22">
+                        <div class="date">22</div>
+                    </li>
+                    <li class="day" id="day23">
+                        <div class="date">23</div>
+                    </li>
+                    <li class="day" id="day24">
+                        <div class="date">24</div>
+                    </li>
+                    <li class="day" id="day25">
+                        <div class="date">25</div>
+                    </li>
+                    <li class="day" id="day26">
+                        <div class="date">26</div>
+                    </li>
+                    <li class="day" id="day27">
+                        <div class="date">27</div>
+                    </li>
+                    <li class="day" id="day28">
+                        <div class="date">28</div>
+                    </li>
+                    <li class="day" id="day29">
+                        <div class="date">29</div>
+                    </li>
+                    <li class="day" id="day30">
+                        <div class="date">30</div>
+                    </li>
+                    <li class="day" id="day31">
+                        <div class="date">31</div>
+                    </li>
+                </ul>
+
+                {% for task in tab %}
+                    <script>
+                        var div = document.getElementById('day' + {{ task.date|date('d') }});
+                        div.innerHTML += `
+                        {% if task.date|date('Y-m-d') == date(year|trans~"-"~month|trans~"-"~task.date|date('d'))|date('Y-m-d') %}
+                            <div class="event" style="background-color: {{ task.couleur }}">
+                            <div class="event-desc">
+                                {{ task.description }} #
+                                {{ task.type }}
+                            </div>
+                            <div class="event-time">
+                            {{ task.date|date('H:i') }} <p style="color: #5465f2; font-size: 8px;">(Durée: {{ task.duree|date('H:m') }} minutes)</p>
+                            </div>
+                            {% if task.type != 1 %}
+                            <a class="button" href="#popup2" style="display: inline-block; color: #ff0099">Modifier</a>
+                            <a class="button" href="{{ path('deleteT', {'id' : task.id, 'year' : year, 'month' : month}) }}" style="display: inline-block; color: #ff0000">Effacer</a>
+                            {% endif %}
+                            </div>
+                            <div id="popup2" class="overlay">
+                            <div class="popup">
+                            <h2>Modification de la Tache: {{ task.libelle }}</h2>
+                            <a class="close" href="#">&times;</a>
+                            <div class="content"><div class="container" ><div class="row justify-content-center"><div class="col-lg-12 bi-text-left bi-textarea-resize">
+                            <iframe width="600" height="500" src="{{ path('editT', {'id' : task.id}) }}"></iframe>
+                            </div></div></div></div></div></div>
+                        {% endif %}
+                        `;
+                    </script>
+                {% endfor %}
+                <script>
+                    var getDaysInMonth = function(month, year) {
+                        return new Date(year, month, 0).getDate();
+                    };
+                    var i;
+                    for (i = 1; i <= getDaysInMonth({{ month|date("m") }}, {{ year|date("Y") }}); i++) {
+                        var div = document.getElementById('day' + i);
+                        div.innerHTML += `
+                        <a class="button" href="#popup1" style="border-radius: 50%; display: inline-block; font-size: medium; width: 12px; height: 12px; background-image: url('https://findicons.com/files/icons/2428/woocons/32/button_white_add.png')"></a>
+                        `
+                    }
+                </script>
+
+            </div><!-- /. calendar -->
+        </div><!-- /. wrap -->
+
+<script src="{{ asset('assets/js/calendrier-options.js') }}"></script>
+
+</body>
+</html>
+

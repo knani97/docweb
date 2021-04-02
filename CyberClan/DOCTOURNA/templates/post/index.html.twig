@@ -1,0 +1,247 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+
+
+
+<!--<div class="post-list">
+    <h1>Postes:</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Body</th>
+                <th>Created_at</th>
+                <th>Deleted_at</th>
+                <th>Edited_at</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for post in posts %}
+            <tr>
+                <td>{{ post.id }}</td>
+                <td>{{ post.title }}</td>
+                <td>{{ post.body }}</td>
+                <td>{{ post.createdAt ? post.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ post.deletedAt ? post.deletedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ post.editedAt ? post.editedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('post_show', {'id': post.id}) }}">show</a>
+                    <a href="{{ path('post_edit', {'id': post.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('post_new') }}">Create new</a>
+</div>-->
+
+<style>
+.inner-wrapper {
+    position: relative;
+    height: calc(100vh - 3.5rem);
+    transition: transform 0.3s;
+}
+@media (min-width: 992px) {
+    .sticky-navbar .inner-wrapper {
+        height: calc(100vh - 3.5rem - 48px);
+    }
+}
+
+.inner-main,
+.inner-main {
+    right: 0;
+    left: 0;
+}
+.inner-main-footer,
+.inner-main-header,
+.inner-sidebar-footer,
+.inner-sidebar-header {
+    height: 3.5rem;
+    border-bottom: 1px solid #cbd5e0;
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+    flex-shrink: 0;
+}
+.inner-main-body,
+.inner-sidebar-body {
+    padding: 1rem;
+    overflow-y: auto;
+    position: relative;
+    flex: 1 1 auto;
+}
+.inner-main-body .sticky-top,
+.inner-sidebar-body .sticky-top {
+    z-index: 999;
+}
+.inner-main-footer,
+.inner-main-header {
+    background-color: #fff;
+}
+.inner-main-footer,
+.inner-sidebar-footer {
+    border-top: 1px solid #cbd5e0;
+    border-bottom: 0;
+    height: auto;
+    min-height: 3.5rem;
+}
+@media (max-width: 767.98px) {
+    .inner-sidebar {
+        left: -235px;
+    }
+    .inner-main {
+        left: 0;
+    }
+    .inner-expand .main-body {
+        overflow: hidden;
+    }
+    .inner-expand .inner-wrapper {
+        transform: translate3d(235px, 0, 0);
+    }
+}
+
+.nav .show>.nav-link.nav-link-faded, .nav-link.nav-link-faded.active, .nav-link.nav-link-faded:active, .nav-pills .nav-link.nav-link-faded.active, .navbar-nav .show>.nav-link.nav-link-faded {
+    color: #3367b5;
+    background-color: #c9d8f0;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    color: #fff;
+    background-color: #467bcb;
+}
+.nav-link.has-icon {
+    display: flex;
+    align-items: center;
+}
+.nav-link.active {
+    color: #467bcb;
+}
+.nav-pills .nav-link {
+    border-radius: .25rem;
+}
+.nav-link {
+    color: #4a5568;
+}
+.card {
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.06);
+}
+
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 0 solid rgba(0,0,0,.125);
+    border-radius: .25rem;
+}
+
+.card-body {
+    flex: 1 1 auto;
+    min-height: 1px;
+    padding: 1rem;
+}
+</style>
+
+
+<style>
+.container {
+    margin-top: 100px;
+}
+
+.media {
+    display: flex;
+    flex-direction: row;
+}
+
+.media-body {
+    flex-grow: 1;
+    margin-left: 50px;
+}
+
+.views {
+    width: 100px;
+}
+
+.new-post {
+    margin-top: 15px;
+    color: white;
+    background-color: #4154f1;
+    border: none;
+    padding: 5px 10px;
+    float: right;
+}
+
+.new-post a {
+    color: white;
+}
+</style>
+
+
+
+
+<div class="container">
+<div class="main-body p-0">
+    <div class="inner-wrapper">
+
+        <!-- Inner main -->
+        <div class="inner-main">        
+            <!-- Inner main body -->
+
+            <!-- Forum List -->
+            <div class="inner-main-body p-2 p-sm-3 collapse forum-content show">
+                <img src="https://www.logolynx.com/images/logolynx/b3/b3b19ff44a6a010c7ff602accb73591d.jpeg" style="position: relative; right: -500px; top: -75px; width: 300px; height: 300px;">
+            {% for post in posts %}
+                <div class="card mb-2">
+                    <div class="card-body p-2 p-sm-3">
+                        <div class="media forum-item">
+                            <a href="#" data-toggle="collapse" data-target=".forum-content"><img src='https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png' class="mr-3 rounded-circle" width="50" alt="User" /></a>
+                            <div class="media-body">
+                                <h6><a href="{{ path('post_show', {'id': post.id}) }}" data-toggle="collapse" data-target=".forum-content" class="text-body">{{ post.title }}</a></h6>
+                                <p class="text-secondary">
+                                    {{ post.body }}
+                                </p>
+                            </div>
+                            <div class="views text-muted small text-center align-self-center">
+                                <span>{{ post.createdAt ? post.createdAt|date('Y-m-d H:i') : '' }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}  
+            </div>
+
+   
+            <!-- /Forum List -->
+            <button class="new-post"><a href="{{ path('post_new') }}">Create new</a></button>
+            <!-- /Inner main body -->
+        
+        </div>
+             <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
+                            <ul class="pagination">
+                                {{ knp_pagination_render(posts) }}
+                               </div>
+        <!-- /Inner main -->
+    </div>
+</div>
+</div>
+
+
+
+</div>
+
+
+
+{% endblock %}

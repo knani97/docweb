@@ -1,0 +1,74 @@
+{% extends 'header.html.twig' %}
+
+{% block main %}
+    <section id="hero" class="hero d-flex align-items-center">
+        <div class="container">
+            <div class="col-lg-6 d-flex flex-column justify-content-center">
+                {% if cal is not null %}
+                <h1 data-aos="fade-up">Tâches Disponibilités</h1>
+                <h2 data-aos="fade-up" data-aos-delay="200">Veuillez configurer vos disponibilités en tant que medecin !</h2>
+                <div data-aos="fade-up" data-aos-delay="400" class="wrapper wrapper--w790">
+                    <div class="card card-5">
+                        <div class="card-heading col-lg-12 d-flex justify-content-center" style="background-color: #0b5ed7;">
+                            <h2 class="title" style="font-family: verdana;">Disponibilitées</h2>
+                        </div>
+                        <div class="card-body col-lg-12 d-flex justify-content-center" style="box-shadow: 4px 4px 5px #888888; border-style: none;">
+                            {{ form_start(form) }}
+                            <div class="col-lg-12 form-row m-b-55">
+                                <div class="value">
+                                    <div class="row row-refine">
+                                        <div class="col-lg-12">
+                                            <div class="input-group-desc">
+                                                <label class="label--desc">Infos:</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                    <h1 data-aos="fade-up">Tâches Disponibilités</h1>
+                    <h2 data-aos="fade-up" data-aos-delay="200">Veuillez d'abord ajouter une calendrier !</h2>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+    <section id="counts" class="counts">
+        <div class="container" data-aos="fade-up">
+            <div class="row gy-4">
+                <div class="col-lg-3 col-md-6">
+                    <div class="count-box">
+                        <i class="bi bi-emoji-smile"></i>
+                        <div>
+                            <span data-purecounter-start="0" data-purecounter-end="232" data-purecounter-duration="1" class="purecounter"></span>
+                            <p>Tâches ajoutées</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        var $rdv_medecin = $('#rdv_medecin')
+        var $token = $('#rdv_token')
+
+        $rdv_medecin.change(function() {
+            var $form = $(this).closest('form')
+
+            var data = {}
+
+            data[$token.attr('name')] = $token.val()
+            data[$rdv_medecin.attr('name')] = $rdv_medecin.val()
+
+            $.get($form.attr('action'), data).then(function (response) {
+                $('#rdv_tacheDispo').replaceWith(
+                    $(response).find('#rdv_tacheDispo')
+                )
+            })
+        })
+    </script>
+{% endblock %}

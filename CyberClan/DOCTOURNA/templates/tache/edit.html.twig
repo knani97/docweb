@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+<style>
+    label {
+        font-size: 15px;
+        font-weight: bold;
+        font-family: 'Lucida Console', monospace
+    }
+</style>
+<style>
+    button {
+        display: block;
+        margin: 20px auto 0;
+        width: 150px;
+        height: 40px;
+        border-radius: 25px;
+        border: none;
+        color: #eee;
+        font-weight: 700;
+        box-shadow: 1px 4px 10px 1px #aaa;
+
+        background: #207cca; /* Old browsers */
+        background: -moz-linear-gradient(left, #207cca 0%, #9f58a3 100%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(left, #207cca 0%, #9f58a3 100%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to right, #207cca 0%, #9f58a3 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#207cca', endColorstr='#9f58a3', GradientType=1); /* IE6-9 */
+    }
+</style>
+<style>
+    .success-animation { margin:0px auto;}
+
+    .checkmark {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        display: block;
+        stroke-width: 2;
+        stroke: #4bb71b;
+        stroke-miterlimit: 10;
+        box-shadow: inset 0px 0px 0px #4bb71b;
+        animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+        position:relative;
+        right: 5px;
+    }
+    .checkmark__circle {
+        stroke-dasharray: 166;
+        stroke-dashoffset: 166;
+        stroke-width: 2;
+        stroke-miterlimit: 10;
+        stroke: #4bb71b;
+        fill: #fff;
+        animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+
+    }
+
+    .checkmark__check {
+        transform-origin: 50% 50%;
+        stroke-dasharray: 48;
+        stroke-dashoffset: 48;
+        animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+    }
+
+    @keyframes stroke {
+        100% {
+            stroke-dashoffset: 0;
+        }
+    }
+
+    @keyframes scale {
+        0%, 100% {
+            transform: none;
+        }
+
+        50% {
+            transform: scale3d(1.1, 1.1, 1);
+        }
+    }
+
+    @keyframes fill {
+        100% {
+            box-shadow: inset 0px 0px 0px 30px #4bb71b;
+        }
+    }
+</style>
+<style>
+    .fade-in {
+        animation: fadeIn ease 2s;
+        -webkit-animation: fadeIn ease 2s;
+        -moz-animation: fadeIn ease 2s;
+        -o-animation: fadeIn ease 2s;
+        -ms-animation: fadeIn ease 2s;
+    }
+    @keyframes fadeIn {
+        0% {
+            opacity:0;
+        }
+        100% {
+            opacity:1;
+        }
+    }
+
+    @-moz-keyframes fadeIn {
+        0% {
+            opacity:0;
+        }
+        100% {
+            opacity:1;
+        }
+    }
+
+    @-webkit-keyframes fadeIn {
+        0% {
+            opacity:0;
+        }
+        100% {
+            opacity:1;
+        }
+    }
+
+    @-o-keyframes fadeIn {
+        0% {
+            opacity:0;
+        }
+        100% {
+            opacity:1;
+        }
+    }
+
+    @-ms-keyframes fadeIn {
+        0% {
+            opacity:0;
+        }
+        100% {
+            opacity:1;
+        }
+
+    .fade-in2 {
+        animation: fadeIn2 ease 3.2s;
+        -webkit-animation: fadeIn2 ease 3.2s;
+        -moz-animation: fadeIn2 ease 3.2s;
+        -o-animation: fadeIn2 ease 3.2s;
+        -ms-animation: fadeIn2 ease 3.2s;
+    }
+    @keyframes fadeIn2 {
+        0% {
+            opacity:0.5;
+        }
+        100% {
+            opacity:1;
+        }
+    }
+
+    @-moz-keyframes fadeIn2 {
+        0% {
+            opacity:0.5;
+        }
+        100% {
+            opacity:1;
+        }
+    }
+
+    @-webkit-keyframes fadeIn2 {
+        0% {
+            opacity:0.5;
+        }
+        100% {
+            opacity:1;
+        }
+    }
+
+    @-o-keyframes fadeIn2 {
+        0% {
+            opacity:0.5;
+        }
+        100% {
+            opacity:1;
+        }
+    }
+
+    @-ms-keyframes fadeIn2 {
+        0% {
+            opacity:0.5;
+        }
+        100% {
+            opacity:1;
+        }
+</style>
+
+<div class="main">
+    {{ form_start(f, {'attr': {'id': 'form_tache_edit', 'onSubmit': "submitted();"}}) }}
+    {{ form_end(f) }}
+</div>
+<div id="success" style="display: none;">
+<div class='success-animation fade-in2' style='margin-left: 50%;'>
+    <svg class='checkmark' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 52 52'>
+        <circle class='checkmark__circle' cx='26' cy='26' r='25' fill='none' />
+        <path class='checkmark__check' fill='none' d='M14.1 27.2l7.1 7.2 16.7-16.8' />
+    </svg>
+</div>
+<h3>Tâche modifiée avec succes.</h3>
+</div>
+
+<script>
+    function submitted() {
+        function sleep (time) {
+            return new Promise((resolve) => setTimeout(resolve, time));
+        }
+
+        document.getElementById('form_tache_edit').style.display = 'none';
+        //document.body.innerHTML = document.body.innerHTML + "<div class='success-animation' style='margin-left: 50%;'> <svg class='checkmark' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 52 52'><circle class='checkmark__circle' cx='26' cy='26' r='25' fill='none' /><path class='checkmark__check' fill='none' d='M14.1 27.2l7.1 7.2 16.7-16.8' /></svg> </div><h3>Tâche modifiée avec succes.</h3>";
+        document.getElementById('success').style.display = 'inline';
+        sleep(700).then(() => {
+            window.parent.calendar.refetchEvents();
+            window.parent.location = window.parent.location.href.slice(0,-6);
+        });
+    }
+</script>
+</body>
+</html>

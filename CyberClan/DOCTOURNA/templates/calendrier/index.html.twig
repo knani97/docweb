@@ -1,0 +1,83 @@
+{% extends 'header.html.twig' %}
+
+{% block hero %}
+    <link href="{{ asset('assets/css/calendrier-options.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/calendrier.css') }}" rel="stylesheet">
+
+    <section id="hero" class="hero d-flex align-items-center">
+        <div class="container">
+            <div class="col-lg-6 d-flex flex-column justify-content-center">
+                <div class="footer-calendrier" style="background-color: #011148" >
+                    {% if tab is empty %}
+                        <h1 data-aos="fade-up" class="fade-in" style="color: white">Aucune Calendrier trouvée!</h1>
+                        <div class="box">
+                            <a data-aos="fade-up" data-aos-delay="200" class="button" href="#popup1">Ajouter Calendrier</a>
+                        </div>
+
+                        <div id="popup1" class="overlay">
+                            <div class="popup">
+                                <h2>Ajout d'une nouvelle Calendrier:</h2>
+                                <a class="close" href="#">&times;</a>
+                                <div class="content">
+                                    <div class="container" >
+                                        <div class="row justify-content-center">
+                                            <div class="col-lg-12 bi-text-left bi-textarea-resize">
+                                                <h4>Entrez les données:</h4>
+                                                {{ form_start(form) }}
+                                                {{ form_row(form.submit, { 'label': 'Ajouter' }) }}
+                                                {{ form_end(form) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div align="center">
+                            <h3 class="fade-in" data-aos="fade-up" style="color: white">Votre Calendrier:</h3>
+                            <!-- message -->
+                            <div class="msg animate slide-in-down"></div>
+                            <!-- end message -->
+
+                            <img class="fade-in" src="{{ asset('assets/img/calendrier/calendrier.png') }}" data-aos="fade-up"><br>
+                            {% if tab.format == 1 %}
+                                <a data-aos="fade-up" href="{{ path('view', {'year' : 'now' | date('Y'), 'month' : 'now' | date('M')}) }}" target="_blank"><button class="button-three">Consulter</button></a>
+                            {% elseif tab.format == 2 %}
+                                <a data-aos="fade-up" href="{{ path('view2') }}"><button class="button-three">Consulter</button></a>
+                            {% endif %}
+                            <button data-aos="fade-up" class="button-three" onclick="onClickC()">Effacer</button>
+                            <script>
+                                function onClickC() {
+                                    var result = confirm("Voulez vous vraiment effacer la calendrier et tous ses tâches ?");
+                                    if (result == true) {
+                                        window.location.replace('{{ path('deleteC', {'id' : '1'}) }}')
+                                    }
+                                }
+                            </script>
+
+                            <a data-aos="fade-up" class="button-three" href="#popup2" style="color: black">Modifier</a>
+
+                            <div id="popup2" class="overlay">
+                                <div class="popup">
+                                    <a class="close" href="#">&times;</a>
+                                    <div class="content">
+                                        <div class="container" >
+                                            <div class="row justify-content-center">
+                                                <div class="col-lg-12 bi-text-left bi-textarea-resize">
+                                                    <h4>Entrez les données:</h4>
+                                                    <iframe width="600" height="500" src="{{ path('editC') }}"></iframe>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section><!-- End Hero -->
+
+    <script src="assets/js/calendrier-options.js"></script>
+{% endblock %}

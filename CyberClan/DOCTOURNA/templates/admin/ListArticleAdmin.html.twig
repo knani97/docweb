@@ -1,0 +1,261 @@
+{% extends 'DashboardAdmin.html.twig' %}
+{% block title %}
+    News/Article
+{% endblock %}
+{% block stylecss %}
+    <style>
+        a .bi-trash:hover {
+            /* Start the shake animation and make the animation last for 0.5 seconds */
+            animation: shake 0.5s;
+
+            /* When the animation is finished, start again */
+            animation-iteration-count: infinite;
+        }
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            transition: opacity 500ms;
+            visibility: hidden;
+            opacity: 0;
+            z-index: 2;
+        }
+        .overlay:target {
+            visibility: visible;
+            opacity: 1;
+            z-index: 1;
+        }
+
+        .popup {
+            margin: 70px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 5px;
+            width: 30%;
+            position: relative;
+            transition: all 5s ease-in-out;
+            z-index: 1;
+        }
+
+        .popup h2 {
+            margin-top: 0;
+            color: #333;
+            font-family: Tahoma, Arial, sans-serif;
+        }
+        .popup .close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            transition: all 200ms;
+            font-size: 30px;
+            font-weight: bold;
+            text-decoration: none;
+            color: #333;
+        }
+        .popup .close:hover {
+            color: #06D85F;
+        }
+        .popup .content {
+            max-height: 30%;
+            overflow: auto;
+
+        }
+
+        @media screen and (max-width: 700px){
+            .box{
+                width: 70%;
+            }
+            .popup{
+                width: 70%;
+            }
+        }
+
+
+
+
+    </style>
+{% endblock %}
+
+
+{% block titredetailsblock %}
+{% endblock %}
+
+{% block titre_menu %}
+    Liste des articles
+{% endblock %}
+
+{% block articleactif %}
+    active
+{% endblock %}
+
+    {% block titrepage %}
+        Liste des articles
+    {% endblock %}
+
+    {% block detailtitrepage %}
+        L'auteur de la publication sera sanctionné si sa publication enfreint la loi
+        (racisme, injure, atteinte à la vie privée...). L'hébergeur sera sanctionné s'il est prouvé qu'il a
+        délibérément mis en ligne ou laissé en ligne ce contenu illicite.
+
+    {% endblock %}
+{% block backroundListeArticle %}
+    style="background-color:#949494;color:white;"
+{% endblock %}
+    {% block iconListeArticle %}
+        style="color:white;"
+    {% endblock %}
+{% block details %}
+
+
+
+    {% for art in article %}
+
+
+
+<div class="col-lg-4" style=" box-shadow: 0px 2px 20px rgba(1, 41, 112, 0.1);border-radius: 10px">
+    {% if art.etat_ajout==0 %}
+    <div class="col-lg-2" style="background-color: white;height:50px;border: 1px solid dodgerblue ;">
+
+
+                            <span class="col-lg-12 d-flex justify-content-center" style="padding-top: 10px;">
+                           <i class="bi bi-bookmark-dash" style="color: dodgerblue;"></i>
+                            </span>
+
+
+        {% else %}
+        <div class="col-lg-2" style="background-color: dodgerblue;height:50px;">
+                            <span class="col-lg-12 d-flex justify-content-center" style="padding-top: 10px;">
+                           <i class="bi bi-bookmark-check-fill fa-xs" style="color: white;">Verifié</i>
+                            </span>
+            {% endif %}
+
+
+        </div>
+        <div class="col-lg-12" style="padding: 10px;">
+
+            <div class="col-xs-12 col-lg-12  d-flex justify-content-between" >
+
+                <div class="col-xs-1 col-md-1 col-lg-2 userpdp">
+                    <img style="width:40px;height:40px;border-radius:100%"
+                         src="/assets/img/clients/{{ art.imageuser }}">
+
+
+                </div>
+
+                <div class=" col-lg-8 flex-column">
+                    <h6 style="font-family: 'Roboto Medium';color: #606060;font-size: 16px;">{{ art.prenom|capitalize }} {{ art.nom|capitalize }}</h6>
+                    <h6 style="font-family: 'Roboto Medium';color: #B1B1B1;font-size: 14px;">Dentiste</h6>
+                </div>
+
+                <div class="col-xs-1 col-sm-1 col-lg-2 btndetails d-lg-flex justify-content-around" style="background-color: #F5F5F5;height: 40px; border-radius: 8%;padding-top:7px">
+
+                    <div class="box">
+                        <a href="#popup{{ art.id }}" class="details_article_a"style="display: flex;justify-content: center;">
+                            <i class="bi bi-trash" style="color: darkred"></i>
+
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-lg-12 " style="padding-top: 20px;">
+
+                <div class="col-xs-12 col-xl-12 col-lg-12">
+
+                    <img class="col-xs-12 col-lg-12 img-fluid" style="width:max-content;height: 200px;object-fit: cover;border-radius: 15px;"
+                         src="/assets/img/article/{{ art.image }}">
+                </div>
+                <!-- Details a propos l'article -->
+
+                <div class="col-xs-12 col-xl-12  col-lg-12">
+
+
+                    <div class="entry-content">
+                        <h3 class="entry-title">
+                            <a href="{{ path('detailsArt',{'id':art.id}) }}" style="font-family: 'Roboto Medium';color: #606060;font-size: 18px">{{ art.titre }}</a>
+                        </h3>
+
+                        <p style="color: #606060;text-align: justify;font-size: 12px;">
+                            {% if art.text|length>=195 %}
+                            {{ art.text |capitalize |slice(0, 195) }} ...
+                            {% else %}
+                            {{ art.text |capitalize }} </p>
+                        {% endif %}
+                    </div>
+                    <div class="entry-meta">
+                        <ul class="d-flex  justify-content-between">
+                                        <span class="align-items-center">
+                                            <i class="bi bi-hand-thumbs-up"></i>
+                                        <a href="blog-single.html">
+
+                                        {% set like=0 %}
+                                            {% for rl in reagitLike %}
+                                                {% if rl.id_art_id== art.id %}
+                                                    {% set like=rl.liked %}
+                                                    {{ like }}
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if like==0 %}
+                                                0
+                                            {% endif %}
+</a></span>
+                            <span class="align-items-center">
+
+                                            <i class="bi bi-hand-thumbs-down"></i>
+
+
+                                        <a href="blog-single.html">
+                                        {% set Dislike=0 %}
+                                            {% for rl in reagitDislike %}
+                                                {% if rl.id_art_id== art.id%}
+                                                    {% set Dislike=rl.dislike %}
+                                                    {{ Dislike }}
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if Dislike==0 %}
+                                                0
+                                            {% endif %}
+</a></span>
+                            <span class="align-items-center"><i class="bi bi-chat-dots"></i> <a href="blog-single.html">12 Comments</a></span>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        <div id="popup{{ art.id }}" class="overlay" style="z-index: 10;">
+            <div class="popup">
+                <h2>voulez-vous vraiment supprimer !</h2>
+                <a class="close" href="#">&times;</a>
+                <div class="content">
+                    <a class="btn btn-primary" href="{{ path('suppListeArticle',{'id':art.id }) }}"style="background-color: red;border:none">Supprimer {{ art.id  }}</a>
+                    <a class="btn btn-primary" href="#" style="background-color: dodgerblue;border:none">Annuler &times;</a>
+                </div>
+            </div>
+        </div>
+
+    {% endfor %}
+    <div class="col-lg-12 d-flex justify-content-center">
+        {{ knp_pagination_render(article) }}
+    </div>
+    </div>
+{% endblock %}
+{% block footer %}
+{% endblock %}

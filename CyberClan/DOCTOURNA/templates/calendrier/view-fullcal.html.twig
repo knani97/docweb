@@ -1,0 +1,576 @@
+{% extends 'header.html.twig' %}
+
+{% block main %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/core@4.1.0/main.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@4.1.0/main.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@4.1.0/main.min.css">
+    <link href="{{ asset('assets/css/calendrier.css') }}" rel="stylesheet">
+
+    <style>@import 'lesshat';
+
+        input[type=text], input[type=password], input[type=color], input[type=date], input[type=datetime], input[type=datetime-local], input[type=email], input[type=month], input[type=number], input[type=tel], input[type=time], input[type=url], input[type=week], input[type=search], select, textarea {
+            padding: 10px 15px;
+            border-width: 0 0 2px;
+            border-style: solid;
+            border-color: #E8E8E8;
+            width: 100%;
+            box-shadow: none !important;
+            -webkit-transition: all 0.5s;
+            -o-transition: all 0.5s;
+            transition: all 0.5s;
+        }
+        select {
+            max-height: 40px;
+        }
+        input[type=text]:focus, input[type=password]:focus, input[type=checkbox]:focus, input[type=color]:focus, input[type=date]:focus, input[type=datetime]:focus, input[type=datetime-local]:focus, input[type=email]:focus, input[type=month]:focus, input[type=number]:focus, input[type=radio]:focus, input[type=tel]:focus, input[type=time]:focus, input[type=url]:focus, input[type=week]:focus, input[type=search]:focus, select:focus, textarea:focus {
+            border-color: #06B3E6;
+            box-shadow: 0 0 25px #E6E4E4;
+        }
+        .hidden {
+            display: none;
+        }
+        .ct-ip-search-input {
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+        .ct-iconpicker {
+            display: inline-block;
+        }
+        .ct-iconpicker .ct-ip-holder .ct-ip-icon {
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            border: 1px solid #eee;
+            position: relative;
+            cursor: pointer;
+        }
+        .ct-iconpicker .ct-ip-holder .ct-ip-icon::after {
+            content: '\f107';
+            font-family: 'FontAwesome';
+            position: absolute;
+            top: -1px;
+            right: -20px;
+            width: 20px;
+            height: 40px;
+            border: 1px solid #eee;
+        }
+        .ct-iconpicker .ct-ip-popup {
+            max-width: 327px;
+            max-height: 312px;
+            overflow: hidden;
+            padding: 4px;
+            border: 1px solid #eee;
+            display: none;
+        }
+        .ct-iconpicker .ct-ip-popup ul {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        .ct-iconpicker .ct-ip-popup ul li {
+            display: inline-block;
+            float: left;
+            width: 50px;
+            height: 50px;
+            padding: 4px;
+        }
+        .ct-iconpicker .ct-ip-popup ul li a {
+            display: block;
+            color: #000;
+            line-height: 42px;
+            text-align: center;
+            border: 1px solid #eee;
+            transition: all 0.5s;
+        }
+        .ct-iconpicker .ct-ip-popup ul li a:hover {
+            color: #fff;
+            background-color: #06B3E6;
+            border-color: #06B3E6;
+        }
+    </style>
+    <style>
+        input[type=checkbox] + label {
+            display: block;
+            cursor: pointer;
+            padding: 0.2em;
+        }
+
+        input[type=checkbox] {
+            display: none;
+        }
+
+        input[type=checkbox] + label:before {
+            content: " ";
+            font-size: 30px;
+            border: 0.1em solid #000;
+            border-radius: 0.2em;
+            display: inline-block;
+            width: 1em;
+            height: 1em;
+            padding-left: 0.2em;
+            padding-bottom: 0.3em;
+            margin-right: 0.2em;
+            vertical-align: bottom;
+            color: transparent;
+            transition: .2s;
+        }
+
+        input[type=checkbox] + label:active:before {
+            transform: scale(0);
+        }
+
+        input[type=checkbox]:checked + label:before {
+            color: #fff;
+        }
+
+        input[type=checkbox]:checked + label:before {
+            background-color: mediumseagreen;
+            border-color: mediumseagreen;
+            color: #fff;
+        }
+
+        #checkRDVPerso {
+            background-color: pink;
+            border-color: pink;
+        }
+
+        .prisemed {
+            background-color: blue;
+            border-color: blue;
+        }
+
+        .perso {
+            background-color: yellow;
+            border-color: yellow;
+        }
+
+        .dispo {
+            background-color: green;
+            border-color: green;
+        }
+
+        input[type=checkbox]:disabled + label:before {
+            transform: scale(1);
+            border-color: #aaa;
+        }
+
+        input[type=checkbox]:checked:disabled + label:before {
+            transform: scale(1);
+            background-color: #bfb;
+            border-color: #bfb;
+        }
+    </style>
+
+    <!-- ======= Hero Section ======= -->
+    <section class="d-flex align-items-center imp-bg">
+        <div class="container">
+            <h1 data-aos="fade-up" style="color: #0b5ed7; font-family: sans-serif; font-size: 48px; font-weight: bold;">Votre Calendrier !</h1>
+            <h4>Modéle:</h4>
+            <div class="ct-iconpicker" style="position: absolute;">
+                <div class="ct-ip-holder">
+                    <div class="ct-ip-icon"><i class="fa fa-cogs" data-icon="fa fa-500px"><img id="backIcon" width="100%" height="100%"></i></div>
+                    <input type="hidden" value="fa fa-cogs" class="ct-icon-value">
+                </div>
+                <div class="ct-ip-popup clearfix">
+                    <ul>
+                        <li><a onclick="setBack('1')" href="#" data-icon="fa fa-500px"><i class="fa fa-500px"><img width="100%" height="100%" src="{{ asset('assets/img/calendrier/background1.jpg') }}"></i></a></li>
+                        <li><a onclick="setBack('2')" href="#" data-icon="fa fa-adjust"><i class="fa fa-adjust"><img width="100%" height="100%" src="{{ asset('assets/img/calendrier/background2.jpg') }}"></i></a></li>
+                        <li><a onclick="setBack('3')" href="#" data-icon="fa fa-adn"><i class="fa fa-adn"><img width="100%" height="100%" src="{{ asset('assets/img/calendrier/background3.jpg') }}"></i></a></li>
+                        <li><a onclick="setBack('4')" href="#" data-icon="fa fa-align-center"><i class="fa fa-align-center"><img width="100%" height="100%" src="{{ asset('assets/img/calendrier/background4.jpg') }}"></i></a></li>
+                        <li><a onclick="setBack('5')" href="#" data-icon="fa fa-align-justify"><i class="fa fa-align-justify"></i>C</a></li>
+                    </ul>
+                </div>
+            </div>
+            <br>
+            <br>
+            <br>
+            <br>
+            <div>
+                <input type="checkbox" name="RDV Perso" id="checkRDVPerso" onclick="calendar.refetchEvents();" checked/>
+                <label for="checkRDVPerso">RDVs Perso</label>
+            </div>
+            <div>
+                <input type="checkbox" name="Dispo" id="checkDispo" onclick="calendar.refetchEvents();" checked/>
+                <label for="checkDispo">Disponibilités</label>
+            </div>
+            <div>
+                <input type="checkbox" name="RDV" id="checkRDV" onclick="calendar.refetchEvents();" checked/>
+                <label for="checkRDV">RDVs</label>
+            </div>
+            <div>
+                <input style="position: relative;" type="checkbox" name="Prise Meds" id="checkPriseMed" onclick="calendar.refetchEvents();" checked/>
+                <label for="checkPriseMed">Prises Medicaments</label>
+            </div>
+            <div>
+                <input type="checkbox" name="Perso" id="checkPerso" onclick="calendar.refetchEvents();" checked/>
+                <label for="checkPerso">Personnelles</label>
+            </div>
+            <div class="col-lg-6 d-flex flex-column justify-content-center">
+                <div data-aos="fade-up" data-aos-delay="200" id="calendar" style="margin: 0; overflow:hidden; position:relative; top:-350px; left: -15px; width: 150%; height: 150%; border: #0b5ed7; border-style: solid; border-width: 0.5px; box-shadow: 4px 4px 5px #888888; margin-left: 40%; background-color: {{ couleur }}; background-image: url('{{ asset('assets/img/calendrier/background2.jpg') }}');"></div>
+            </div>
+        </div>
+        <a data-aos="fade-up" class="button-three" href="#popup1" style="color: black; background-color: #1d91e8; position: relative; top: -450px;">Ajouter Tâche</a>
+        <div id="popup1" class="overlay">
+            <div class="popup">
+                <a class="close" href="#" onclick="calendar.refetchEvents();">&times;</a>
+                <div class="content">
+                    <div class="container" >
+                        <div class="row justify-content-center">
+                            <div class="col-lg-12 bi-text-left bi-textarea-resize">
+                                <h4>Entrez les données:</h4>
+                                <iframe frameborder="0" scrolling="no" onload="resizeIframe(this)" src="{{ path('addT') }}"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="popup2" class="overlay">
+            <div class="popup">
+                <a class="close" href="#" onclick="calendar.refetchEvents();">&times;</a>
+                <div class="content">
+                    <div class="container" >
+                        <div class="row justify-content-center">
+                            <div class="col-lg-12 bi-text-left bi-textarea-resize">
+                                <h2>Modification de la Tache: </h2>
+                                <iframe id="editF" frameborder="0" scrolling="no" onload="resizeIframe(this)" src=""></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="popup3" class="overlay">
+            <div class="popup">
+                <a class="close" href="#" onclick="calendar.refetchEvents();">&times;</a>
+                <div class="content">
+                    <div class="container" >
+                        <div class="row justify-content-center">
+                            <div class="col-lg-12 bi-text-left bi-textarea-resize">
+                                <h4>Entrez les données:</h4>
+                                <iframe id="addTDef" frameborder="0" scrolling="no" onload="resizeIframe(this)" src=""></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="popup4" class="overlay">
+            <div class="popup" style="width: 22%">
+                <a class="close" href="#">&times;</a>
+                <div class="content" style="height: 200%">
+                    <div class="container" >
+                        <div class="row justify-content-center">
+                            <div class="col-lg-12 bi-text-left bi-textarea-resize">
+                                <iframe id="showF" frameborder="0" scrolling="no" onload="resizeIframe(this)" src="" width="100%" height="120%"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section><!-- End Hero -->
+    <div style="position:relative; top: -800px; margin-bottom: -300px; right: -65px; outline:1px solid lightpink; width: 100px">
+            <h6 style="color: grey; display:inline-block;margin-right:10px;">Tâches:</h6>
+            <h6 style="display:inline-block;" id="tachesCounter">{{ nbTaches }}</h6><br>
+            <h6 style="color: red; display:inline-block;margin-right:10px;">RDVs:</h6>
+            <span style="display:inline-block;" class="number-counter" data-count-from="0" data-count-to="{{ nbRDVs }}" data-count-speed="1"></span><br>
+            <h6 style="color: green; display:inline-block;margin-right:10px;">Dispos:</h6>
+            <span style="display:inline-block;" class="number-counter" data-count-from="0" data-count-to="{{ nbDispos }}" data-count-speed="1"></span>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@4.1.0/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@4.1.0/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@4.1.0/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@4.1.0/main.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.ui.position.js"></script>
+
+    <script src="{{ asset('assets/js/calendrier-options.js') }}"></script>
+    <script src="{{ asset('assets/js/calendrier.js') }}"></script>
+
+    <script>
+        function resizeIframe(obj) {
+            obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
+        }
+    </script>
+
+    <script>
+        var calendar;
+
+        window.onload = () => {
+            var calendarEl = document.getElementById('calendar');
+
+            calendar = new FullCalendar.Calendar(calendarEl, {
+                defaultView: 'dayGridMonth',
+                editable: true,
+                eventSources: [
+                    {
+                        url: "/fc-load-events",
+                        method: "GET",
+                        extraParams: {
+                            filters: JSON.stringify({})
+                        },
+                        failure: () => {
+                            alert("error");
+                        },
+                    },
+                ],
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay',
+                },
+                dateClick: function(dateClickInfo) {
+                    if (confirm('Voulez vous ajouter un évenement à ' + dateClickInfo.dateStr + ' ?')) {
+                        if (dateClickInfo.dateStr.indexOf('T') > -1) {
+                            var url = '{{ path("addTDefHM", {'year': 'year_id', 'month' : 'month_id', 'day' : 'day_id', 'hour' : 'hour_id', 'minute' : 'minute_id'}) }}';
+                            url = url.replace("year_id", dateClickInfo.date.getFullYear());
+                            url = url.replace("month_id", dateClickInfo.date.getMonth() + 1);
+                            url = url.replace("day_id", dateClickInfo.date.getDate());
+                            url = url.replace("hour_id", dateClickInfo.date.getHours() - 1);
+                            if (dateClickInfo.date.getMinutes() == 0)
+                                url = url.replace("minute_id", '00');
+                            else
+                                url = url.replace("minute_id", dateClickInfo.date.getMinutes());
+                        }
+                        else {
+                            var url = '{{ path("addTDef", {'year': 'year_id', 'month' : 'month_id', 'day' : 'day_id'}) }}';
+                            url = url.replace("year_id", dateClickInfo.date.getFullYear());
+                            url = url.replace("month_id", dateClickInfo.date.getMonth() + 1);
+                            url = url.replace("day_id", dateClickInfo.date.getDate());
+                        }
+
+                        document.getElementById('tachesCounter').innerText = (parseInt(document.getElementById('tachesCounter').innerText + 1).toString());
+                        document.getElementById("addTDef").src = url;
+                        window.location.href = '#popup3';
+                    }
+                },
+                eventClick: function(eventClickInfo) {
+                    var url = '{{ path("showT", {'id': 'tache_id'}) }}';
+                    url = url.replace("tache_id", eventClickInfo.event.id);
+
+                    document.getElementById("showF").src = url;
+                    window.location.href = '#popup4';
+                    setTimeout(function () {
+                        init();
+                    }, 2000);
+                },
+                eventRender: function(info) {
+                    info.el.id = info.event.id;
+                    if (info.event.groupId != 'noEd')
+                        info.el.className = info.el.className + " context-menu-one"
+
+                    if (info.event.backgroundColor == 'red' && !document.getElementById('checkRDV').checked)
+                        return false;
+                    else if (info.event.backgroundColor == 'green' && !document.getElementById('checkDispo').checked)
+                        return false;
+                    else if (info.event.backgroundColor == 'blue' && !document.getElementById('checkPriseMed').checked)
+                        return false;
+                    else if (info.event.backgroundColor == 'yellow' && !document.getElementById('checkPerso').checked)
+                        return false;
+                    else if (info.event.backgroundColor == 'pink' && !document.getElementById('checkRDVPerso').checked)
+                        return false;
+                },
+                eventDragStart: function(info) {
+                    document.body.style.backgroundColor = 'rgba(0,0,100,0.2)';
+                },
+                eventDrop: function(eventDropInfo) {
+                    document.body.style.backgroundColor = 'rgba(0,0,0,0)';
+
+                    var url = '{{ path("saveT", {'id': 'tache_id', 'year': 'year_id', 'month' : 'month_id', 'day' : 'day_id', 'hour' : 'hour_id', 'minute' : 'minute_id'}) }}';
+                    url = url.replace("tache_id", eventDropInfo.oldEvent.id);
+                    url = url.replace("year_id", eventDropInfo.event.start.getFullYear());
+                    url = url.replace("month_id", eventDropInfo.event.start.getMonth() + 1);
+                    url = url.replace("day_id", eventDropInfo.event.start.getDate());
+                    if (eventDropInfo.event.start.getHours() == 0)
+                        url = url.replace("hour_id", '00');
+                    else
+                        url = url.replace("hour_id", eventDropInfo.event.start.getHours() - 1);
+                    if (eventDropInfo.event.start.getMinutes() == 0)
+                        url = url.replace("minute_id", '00');
+                    else
+                        url = url.replace("minute_id", eventDropInfo.event.start.getMinutes());
+
+                    $.ajax({
+                        url:        url,
+                        type:       'POST',
+                        dataType:   'json',
+                        async:      true,
+
+                        error : function(xhr, textStatus, errorThrown) {
+                            alert('Erreur modification.');
+                        }
+                    });
+                },
+                eventResize: function( eventResizeInfo ) {
+
+                },
+                plugins: [ 'interaction', 'dayGrid', 'timeGrid' ],
+                timeZone: 'UTC',
+                select: function (start, end, jsEvent, view) {
+                    var abc = prompt('Enter Title');
+                    var allDay = !start.hasTime && !end.hasTime;
+                    var newEvent = new Object();
+                    newEvent.title = abc;
+                    newEvent.start = moment(start).format();
+                    newEvent.allDay = false;
+                    $('#calendar').fullCalendar('renderEvent', newEvent);
+
+                }
+            });
+            calendar.render();
+        }
+
+        $(function() {
+            $.contextMenu({
+                selector: '.context-menu-one',
+                callback: function(key, options) {
+                    if (key.toString() == "edit") {
+                        var url = '{{ path("editT", {'id': 'tache_id'}) }}';
+                        url = url.replace("tache_id", options.$trigger.attr("id"));
+                        document.getElementById("editF").src = url;
+                        window.location.href = '#popup2';
+                    }
+                    else if (key.toString() == "delete") {
+                        var url = '{{ path("deleteT2", {'id': 'tache_id'}) }}';
+                        url = url.replace("tache_id", options.$trigger.attr("id"));
+                        $.ajax({
+                            url:        url,
+                            type:       'POST',
+                            dataType:   'json',
+                            async:      true,
+
+                            success: function(data, status) {
+                                alert('Tâche supprimée.');
+                                document.getElementById('tachesCounter').innerText = (parseInt(document.getElementById('tachesCounter').innerText - 1).toString());
+                            },
+                            error : function(xhr, textStatus, errorThrown) {
+                                alert('Erreur suppression.');
+                            }
+                        });
+
+                        calendar.refetchEvents();
+                    }
+                    else if (key.toString() == "show") {
+                        var url = '{{ path("showT", {'id': 'tache_id'}) }}';
+                        url = url.replace("tache_id", options.$trigger.attr("id"));
+                        document.getElementById("showF").src = url;
+                        window.location.href = '#popup4';
+                    }
+                },
+                items: {
+                    "edit": {name: "Modifier", icon: "edit"},
+                    "delete": {name: "Supprimer", icon: "delete"},
+                    "sep1": "---------",
+                    "show": {name: "Afficher", icon: "checkmark"}
+                },
+            });
+
+            $('.context-menu-one').on('click', function(e){
+                console.log('clicked', this);
+            })
+        });
+    </script>
+    <script>
+        ;(function($){
+            $('.ct-iconpicker .ct-ip-holder .ct-ip-icon').on('click', function(){
+                var iconPickerPopup = $('.ct-iconpicker .ct-ip-popup');
+
+                iconPickerPopup.slideToggle();
+            });
+            $('.ct-iconpicker .ct-ip-popup').on('click', 'a', function (e) {
+                e.preventDefault();
+                var iconClass = $(this).data('icon'),
+                    inputField = $('.ct-icon-value'),
+                    iconHolder = $('.ct-ip-icon i');
+                iconHolder.attr('class', '');
+                iconHolder.addClass(iconClass);
+                inputField.val(iconClass);
+            });
+
+            $('.ct-iconpicker .ct-ip-popup').on('change keyup paste', 'input.ct-ip-search-input', function (e) {
+                var iconPickerPopup = $('.ct-iconpicker .ct-ip-popup ul'),
+                    searchVal = $(this).val();
+
+                if( _.isEmpty(searchVal) ){
+                    iconPickerPopup.find('li').removeClass('hidden');
+                } else {
+                    iconPickerPopup.find('li').addClass('hidden');
+
+                    var found = iconPickerPopup.find('li a[data-icon*="'+searchVal+'"]');
+                    found.parent('li').removeClass('hidden');
+                }
+
+
+            });
+
+            $(document).mouseup(function (e){
+                var iconPicker = $('.ct-iconpicker'),
+                    iconPickerPopup = $('.ct-iconpicker .ct-ip-popup');
+
+                if ( ( ! iconPicker.is(e.target) && iconPicker.has(e.target).length === 0 ) ){
+                    iconPickerPopup.slideUp();
+                }
+            });
+
+
+        })(jQuery)
+    </script>
+    <script>
+        document.getElementById('backIcon').src = document.getElementById('calendar').style.backgroundImage.replace('url("','').replace('")','');
+
+        function setBack(num) {
+            if (num == '5') {
+                document.getElementById('calendar').style.backgroundImage = "";
+                document.getElementById('backIcon').style.display = 'none';
+            }
+            else {
+                var url = '{{ asset('assets/img/calendrier/background'~'num'~'.jpg') }}';
+                url = url.replace('num', num);
+                document.getElementById('calendar').style.backgroundImage = "url(" + url + ")";
+                document.getElementById('backIcon').style.display = 'inline';
+                document.getElementById('backIcon').src = document.getElementById('calendar').style.backgroundImage.replace('url("','').replace('")','');
+            }
+        }
+    </script>
+    <script>
+        //-- Plugin implementation
+        (function($) {
+            $.fn.countTo = function(options) {
+                return this.each(function() {
+                    //-- Arrange
+                    var FRAME_RATE = 60; // Predefine default frame rate to be 60fps
+                    var $el = $(this);
+                    var countFrom = parseInt($el.attr('data-count-from'));
+                    var countTo = parseInt($el.attr('data-count-to'));
+                    var countSpeed = $el.attr('data-count-speed'); // Number increment per second
+
+                    //-- Action
+                    var rafId;
+                    var increment;
+                    var currentCount = countFrom;
+                    var countAction = function() {              // Self looping local function via requestAnimationFrame
+                        if(currentCount < countTo) {              // Perform number incremeant
+                            $el.text(Math.floor(currentCount));     // Update HTML display
+                            increment = countSpeed / FRAME_RATE;    // Calculate increment step
+                            currentCount += increment;              // Increment counter
+                            rafId = requestAnimationFrame(countAction);
+                        } else {                                  // Terminate animation once it reaches the target count number
+                            $el.text(countTo);                      // Set to the final value before everything stops
+                            //cancelAnimationFrame(rafId);
+                        }
+                    };
+                    rafId = requestAnimationFrame(countAction); // Initiates the looping function
+                });
+            };
+        }(jQuery));
+
+        //-- Executing
+        $('.number-counter').countTo();
+    </script>
+{% endblock %}

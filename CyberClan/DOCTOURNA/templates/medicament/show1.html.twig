@@ -1,0 +1,44 @@
+{% extends 'header.html.twig' %}
+
+{% block title %}Medicament{% endblock %}
+
+{% block body %}
+<section id="hero" class="hero d-flex align-items-center">
+    <div class="container">
+        <div class="col-lg-6 d-flex flex-column justify-content-center">
+    <h1>Medicament</h1>
+
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>Id</th>
+            <td>{{ medicament.id }}</td>
+        </tr>
+        <tr>
+            <th>Nom</th>
+            <td>{{ medicament.nom }}</td>
+        </tr>
+        <tr>
+            <th>Fournisseur</th>
+            <td>{{ medicament.fournisseur }}</td>
+        </tr>
+        <tr>
+            <th>Prix_achat</th>
+            <td>{{ medicament.prixAchat }}</td>
+        </tr>
+        <tr>
+            <th>Poid</th>
+            <td>{{ medicament.poid }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('medicament_index1') }}" class="btn btn-round btn-info">Retourner à la liste</a><br>
+
+    <a href="{{ path('medicament_edit', {'id': medicament.id}) }}" class="btn btn-round ">Modifier</a>
+
+    {{ include('medicament/_delete_form.html.twig') }}
+        </div>
+    </div>
+</section>
+{% endblock %}

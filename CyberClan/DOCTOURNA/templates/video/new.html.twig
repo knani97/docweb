@@ -1,0 +1,59 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block title %}New video
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<div class="col-md-12">
+			<div class="card">
+				<div class="card-header card-header-primary">
+					<h2 class="card-title">Ajouter video</h4>
+					<p class="card-category">Saisir les coordonnées de la video</p>
+				</div>
+				<div class="card-body">
+					{{ form_start(form) }}
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group bmd-form-group">
+								<label class="bmd-label-floating">Titre</label>
+								{{ form_widget(form.titre, {'attr' : {'class' : 'form-control', 'required': true, 'pattern': '[a-zA-Z0-9 ]+' }}) }}
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group bmd-form-group">
+								<label class="bmd-label-floating">Source</label>
+								{{ form_widget(form.source, {'attr' : {'class' : 'form-control', 'required': true }}) }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+
+
+						<div class="col-md-6">
+							<div class="form-group bmd-form-group">
+								<label class="bmd-label-floating">Prix</label>
+
+								{{ form_widget(form.prix, {'attr' : {'class' : 'form-control', 'required': true, 'min' : 0}}) }}
+							</div>
+						</div>
+
+                    
+					</div>
+					<button type="submit" class="btn btn-primary pull-right btn-round" onclick="f()">Ajouter</button>
+					<div class="clearfix"></div>
+					{{ form_end(form) }}
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<a href="{{ path('video_index1') }}" class="btn btn-info btn-round">Retourner à liste</a>
+
+	    <script>
+	function f() {
+		window.confirm("Voulez-Vous ajouter cette video");
+	}
+</script>
+{% endblock %}

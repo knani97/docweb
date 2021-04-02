@@ -1,0 +1,40 @@
+{% extends 'header.html.twig' %}
+
+{% block title %}Cv{% endblock %}
+
+{% block main %}
+<section id="hero" class="hero d-flex align-items-center">
+    <div class="container">
+        <div class="col-lg-6 d-flex flex-column justify-content-center">
+    <h1>Cv</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ cv.id }}</td>
+            </tr>
+            <tr>
+                <th>Specialite</th>
+                <td>{{ cv.specialite }}</td>
+            </tr>
+            <tr>
+                <th>Diplome</th>
+                <td>{{ cv.diplome }}</td>
+            </tr>
+            <tr>
+                <th>File</th>
+                <td>{{ cv.file }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('cv_index') }}">back to list</a>
+
+    <a href="{{ path('cv_edit', {'id': cv.id}) }}">edit</a>
+
+    {{ include('cv/_delete_form.html.twig') }}
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,17 @@
+<div data-aos="fade-up" data-aos-delay="1000">
+{% if pageCount > 1 %}
+    <h6 style="color: #0b5ed7; margin-right: 530px;">{{ firstItemNumber }} - {{ lastItemNumber }} / {{totalCount}}
+    <div style="display: flex;">
+    {% if previous is defined %}
+        <a style="width: 50px;" type="button" class="btn btn-secondary" rel="prev" href="{{ path(route, query|merge({(pageParameterName): previous})) }}">{{'<'}}</a>
+    {% else %}
+        <button style="width: 50px;" type="button" class="btn btn-secondary" disabled><</button>
+    {% endif %}
+    {% if next is defined %}
+        <a style="width: 50px;" type="button" class="btn btn-secondary" rel="next" href="{{ path(route, query|merge({(pageParameterName): next})) }}"> > </a>
+    {% else %}
+        <button style="width: 50px;" type="button" class="btn btn-secondary" disabled> > </button>
+    {% endif %}
+    </div>
+{% endif %}
+</div>

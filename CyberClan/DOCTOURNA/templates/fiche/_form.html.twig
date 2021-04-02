@@ -1,0 +1,11 @@
+{{ form_start(form) }}
+{{ form_widget(form.nom_commerciale, {'attr' : {'class' : 'form-control' }}) }}
+{{ form_widget(form.dosage, {'attr' : {'class' : 'form-control' }}) }}
+{{ form_widget(form.utilisation, {'attr' : {'class' : 'form-control' }}) }}
+<button class="btn btn-round" onclick="f()">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}
+<script>
+    function f (){
+        window.alert("Voulez-vous vraiment continuer ?");
+    }
+</script>

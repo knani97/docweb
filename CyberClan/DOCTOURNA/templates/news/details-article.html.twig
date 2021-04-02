@@ -1,0 +1,824 @@
+{% extends 'base.html.twig' %}
+    {% block title %}
+        <title>Details Article</title>
+        <style>
+
+            .card {
+                border: none;
+                box-shadow: 5px 6px 6px 2px #e9ecef;
+                border-radius: 4px
+            }
+
+            .dots {
+                height: 4px;
+                width: 4px;
+                margin-bottom: 2px;
+                background-color: #bbb;
+                border-radius: 50%;
+                display: inline-block
+            }
+
+            .badge {
+                padding: 7px;
+                padding-right: 9px;
+                padding-left: 16px;
+                box-shadow: 5px 6px 6px 2px #e9ecef
+            }
+
+            .user-img {
+                margin-top: 4px
+            }
+
+            .check-icon {
+                font-size: 17px;
+                color: #c3bfbf;
+                top: 1px;
+                position: relative;
+                margin-left: 3px
+            }
+
+            .form-check-input {
+                margin-top: 6px;
+                margin-left: -24px !important;
+                cursor: pointer
+            }
+
+            .form-check-input:focus {
+                box-shadow: none
+            }
+
+            .icons i {
+                margin-left: 8px
+            }
+
+            .reply {
+                margin-left: 12px
+            }
+
+            .reply small {
+                color: #b7b4b4
+            }
+
+            .reply small:hover {
+                color: green;
+                cursor: pointer
+            }
+            .categoriesanim {
+                margin: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+
+
+            }
+
+            #wrapper {
+                border-radius:5px;
+                padding:30px;
+                box-shadow: 0px 2px 20px rgba(1, 1, 1, 0.05);
+                position: relative;
+            }
+
+            #carousel {
+                overflow: auto;
+                scroll-behavior: smooth;
+                scrollbar-width: none;
+            }
+
+            #carousel::-webkit-scrollbar {
+                height: 0;
+            }
+
+            #prev,
+            #next {
+                display: flex;
+                justify-content: center;
+                align-content: center;
+                background: white;
+                border: none;
+                padding: 8px;
+                border-radius: 50%;
+                outline: 0;
+                cursor: pointer;
+                position: absolute;
+            }
+
+            #prev {
+                top: 50%;
+                left: 0;
+                transform: translate(50%, -50%);
+                display: none;
+            }
+
+            #next {
+                top: 50%;
+                right: 0;
+                transform: translate(-50%, -50%);
+            }
+
+            #content {
+                display: grid;
+                grid-gap: 16px;
+                grid-auto-flow: column;
+                margin: auto;
+                box-sizing: border-box;
+            }
+
+            .item {
+                width: 180px;
+                height: 180px;
+                background: green;
+            }
+
+            #tooltip {
+                position: relative;
+                display: inline-block;
+                border-bottom: 1px dotted black;
+            }
+            #tooltip .tooltiptext {
+                visibility: hidden;
+                width: 120px;
+                font-size: 15px;
+                background-color: dodgerblue;
+                color: #fff;
+                text-align: center;
+                border-radius: 6px;
+                padding: 5px 0;
+                position: absolute;
+                z-index: 1;
+            }
+            #tooltip:hover .tooltiptext {
+                visibility: visible;
+            }
+            .overlay {
+                position: fixed;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: rgba(0, 0, 0, 0.7);
+                transition: opacity 500ms;
+                visibility: hidden;
+                opacity: 0;
+            }
+            .overlay:target {
+                visibility: visible;
+                opacity: 1;
+            }
+
+            .popup {
+                margin: 70px auto;
+                padding: 20px;
+                background: #fff;
+                border-radius: 5px;
+                width: 30%;
+                position: relative;
+                transition: all 5s ease-in-out;
+            }
+
+            .popup h2 {
+                margin-top: 0;
+                color: #333;
+                font-family: Tahoma, Arial, sans-serif;
+            }
+            .popup .close {
+                position: absolute;
+                top: 20px;
+                right: 30px;
+                transition: all 200ms;
+                font-size: 30px;
+                font-weight: bold;
+                text-decoration: none;
+                color: #333;
+            }
+            .popup .close:hover {
+                color: #06D85F;
+            }
+            .popup .content {
+                max-height: 30%;
+                overflow: auto;
+            }
+
+            @media screen and (max-width: 700px){
+                .box{
+                    width: 70%;
+                }
+                .popup{
+                    width: 70%;
+                }
+            }
+        </style>
+
+    {% endblock %}
+{% block sessionProfil%}
+    <li><a class="getstarted scrollto" href="{{ path('mes-articles') }}">
+            <div class="col-2 d-flex justify-content-start">
+                <img   src="{{ asset('assets/img/team/team-3.jpg') }}" style="width:30px;border-radius:100%;">
+
+            </div>
+            <div class="col-10 d-flex justify-content-end" style="padding-left: 5px;">
+                {{ app.session.get('prenom') }}
+
+            </div>
+        </a></li>
+{% endblock %}
+
+    {% block notif %}
+
+
+        {% for notifAjout in notifAjout %}
+            <a href="{{ path('detailsArt',{'id':notifAjout.id}) }}">
+
+                <div class="col-lg-12 d-flex justify-content-start">
+
+                    <div class="col-xs-1 col-md-2 col-lg-2 userpdp">
+
+                        <img style="width:40px;height:40px;border-radius:100%"
+                             src="/assets/img/clients/{{ notifAjout.imageuser }}">
+
+                    </div>
+
+                    <div class="col-lg-6">
+
+                        Votre demande d'ajout à été accepter
+
+                    </div>
+                </div>
+            </a>
+            <hr>
+
+
+        {% endfor %}
+
+    {% endblock %}
+
+
+{% block hero %}
+
+    <section class="col-lg-12" style="padding-top: 100px;">
+
+    </section><!-- End Breadcrumbs -->
+
+{% endblock %}
+{% block main %}
+
+    <section id="blog" class="blog">
+        <div class="container" data-aos="fade-up">
+
+            <div class="row">
+
+                <div class="col-lg-8 entries">
+
+
+
+                    {% for details in articleDetails  %}
+
+                    <article class="entry">
+
+                        <div class="col-xs-12 col-lg-12" style="background-color: white;">
+                            <!-- l'article ajouter par -->
+                            <div class="col-xs-12 col-lg-12  d-flex justify-content-between" >
+                                <div class="col-xs-1 col-md-1 col-lg-1 userpdp">
+                                    <img style="width:60px;height:60px;border-radius:100%" src="/assets/img/clients/{{ details.imageuser }}">
+
+                                </div>
+                                <div class="col-xs-5 col-sm-7 col-md-9 col-lg-9
+
+                                 flex-column">
+                                    <h5 style="font-family: 'Roboto Medium';color: #606060;">{{ details.prenom|capitalize }} {{ details.nom|capitalize  }}</h5>
+                                    <h6 style="font-family: 'Roboto Medium';color: #B1B1B1;">Dentiste</h6>
+                                </div>
+                                {%  if app.session.get('id')== details.id_user %}
+
+                                <div class="col-xs-1 col-sm-1 col-lg-2 btndetails d-lg-flex justify-content-around" style="background-color: #F5F5F5;height: 40px; border-radius: 8%;padding-top:7px">
+                                    <a href="{{ path('modArt',{'id':details.id}) }}" class="details_article_a"style="display: flex;justify-content: center;">
+                                        <i class="bi bi-pen"></i>
+                                    </a>
+
+                                    <div class="box">
+                                        <a href="#popup2" class="details_article_a"style="display: flex;justify-content: center;">
+                                            <i class="bi bi-trash" style="color: darkred"></i>
+
+                                        </a>
+                                    </div>
+
+                                </div>
+
+                                    {% else %}
+                                        <div class="col-xs-1 col-sm-1 col-lg-2 btndetails d-lg-flex justify-content-around" style="height: 40px; border-radius: 8%;padding-top:7px">
+                                        </div>
+                                {% endif %}
+                            </div>
+
+                        </div>
+
+                        <div class="col-xs-12 col-xl-12 col-lg-12 entry-img" style="padding-top: 50px;padding-left: 35px;">
+
+                                <img class="img-fluid" style="width:max-content;height: 400px;width: 100%;object-fit: cover;border-radius: 15px;" src="/assets/img/article/{{ details.image }}">
+
+                        </div>
+
+                        <h2 class="entry-title">
+                            <a href="blog-single.html">{{ details.titre }}</a>
+                        </h2>
+
+                        <h5 class="">
+                            <a href="blog-single.html"style="font-family: 'Roboto Medium';color: #B1B1B1;font-size: 13px"> {{ details.categorie|capitalize }}</a>
+                        </h5>
+
+
+                        <div class="entry-content">
+                            <p>{{ details.text }}  </p>
+                            <div class="entry-meta">
+                                <ul class="d-flex  justify-content-between">
+                                        <span class="align-items-center">
+
+                                        {% set etat=0 %}
+                                            {% for rl in reagitLike %}
+                                                {%  if app.session.get('id')== rl.id_user_id and rl.id_art_id == details.id %}
+                                                    {% set etat=details.id %}
+                                                {% endif %}
+                                            {% endfor %}
+
+                                            {%  if etat==details.id %}
+                                                <a href="{{ path('DelR',{'id':details.id}) }}">
+                                        <i id="tooltip" class="bi bi-hand-thumbs-up-fill ">
+                                        <span class="tooltiptext"> Annumler votre reaction </span>
+                                        </i>
+                                        </a>
+
+                                        {% else %}
+                                                <a href="{{ path('TestLike',{'id':details.id,'etat':1}) }}">
+                                        <i id="tooltip" class="bi bi-hand-thumbs-up ">
+                                        <span class="tooltiptext"> Ajouter une reaction </span>
+                                        </i>
+                                        </a>
+                                            {% endif %}
+
+
+
+                                        <a href="">
+
+                                        {% set like=0 %}
+                                            {% for rl in reagitLike %}
+                                                {% if rl.id_art_id== details.id %}
+                                                    {% set like=rl.liked %}
+                                                    {{ like }}
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if like==0 %}
+                                                0
+                                            {% endif %}
+</a></span>
+                                    <span class="align-items-center">
+
+                                        {% set etat=0 %}
+                                        {% for rl in reagitDislike %}
+                                            {%  if app.session.get('id')== rl.id_user_id and rl.id_art_id == details.id %}
+                                                {% set etat=details.id %}
+                                            {% endif %}
+                                        {% endfor %}
+
+                                        {%  if etat==details.id %}
+                                            <a href="{{ path('DelR',{'id':details.id}) }}">
+                                        <i id="tooltip" class="bi bi-hand-thumbs-down-fill" style="color:#FF6666;">
+                                        <span class="tooltiptext" style="background-color:#FF6666;"> Annumler votre reaction </span>
+                                        </i>
+                                        </a>
+
+                                        {% else %}
+                                            <a href="{{ path('TestLike',{'id':details.id,'etat':0}) }}">
+                                        <i id="tooltip" class="bi bi-hand-thumbs-down" style="color:#FF6666;">
+                                        <span class="tooltiptext" style="background-color:#FF6666;"> Ajout une reaction</span>
+                                        </i>
+                                                </i>
+                                        </a>
+                                        {% endif %}
+
+                                        <a href="blog-single.html">
+                                        {% set Dislike=0 %}
+                                            {% for rl in reagitDislike %}
+                                                {% if rl.id_art_id== details.id%}
+                                                    {% set Dislike=rl.dislike %}
+                                                    {{ Dislike }}
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if Dislike==0 %}
+                                                0
+                                            {% endif %}
+</a></span>
+                                    <span class="align-items-center">
+                                        <a href="{{ path('detailsArt',{'id':details.id}) }}" class="details_article_a"style="display: flex;justify-content: center;">
+                                        Vois plus <i class="bi bi-box-arrow-in-right"></i>
+                                </a></span>
+                                </ul>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+                        <div id="popup2" class="overlay">
+                            <div class="popup">
+                                <h2>voulez-vous vraiment supprimer !</h2>
+                                <a class="close" href="#">&times;</a>
+                                <div class="content">
+                                    <a class="btn btn-primary" href="{{ path('supp',{'id':details.id }) }}"style="background-color: red;border:none">Supprimer {{ details.id  }}</a>
+                                    <a class="btn btn-primary" href="#" style="background-color: dodgerblue;border:none">Annuler &times;</a>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!--
+                                                <div class="col-lg-12 overflow-auto" style="height:400px;">
+                                                    <div class="row d-flex justify-content-center">
+                                                        <div class="col-lg-12">
+                                                            <div class="headings d-flex justify-content-between align-items-center mb-3">
+                                                                <h5>Unread comments(6)</h5>
+                                                                <div class="buttons"> <span class="badge bg-white d-flex flex-row align-items-center"> <span class="text-primary">Comments "ON"</span>
+                                                <div class="form-check form-switch"> <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked> </div>
+                                            </span> </div>
+                                                            </div>
+
+                                                            <div class="card p-3">
+                                                                <div class="d-flex justify-content-between align-items-center">
+                                                                    <div class="user d-flex flex-row align-items-center"> <img src="https://i.imgur.com/hczKIze.jpg" width="30" class="user-img rounded-circle mr-2"> <span><small class="font-weight-bold text-primary">james_olesenn</small> <small class="font-weight-bold">Hmm, This poster looks cool</small></span> </div> <small>2 days ago</small>
+                                                                </div>
+                                                                <div class="action d-flex justify-content-between mt-2 align-items-center">
+                                                                    <div class="reply px-4"> <small>Remove</small> <span class="dots"></span> <small>Reply</small> <span class="dots"></span> <small>Translate</small> </div>
+                                                                    <div class="icons align-items-center"> <i class="fa fa-star text-warning"></i> <i class="fa fa-check-circle-o check-icon"></i> </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                !-->
+                    {% endfor %}
+
+
+                </div><!-- End blog entries list -->
+
+                <div class="col-lg-4">
+
+                    <div class="sidebar"><h3 class="sidebar-title">Autre(s) </h3>
+
+                        <hr>
+                        {% for autre in autreArticle %}
+
+                        <h3 class="sidebar-title">
+                            {% if app.session.get('id')!=autre.id_user %}
+                            Publier par {{ autre.nom }} {{ autre.prenom }}
+                            {% else %}
+                                Publier par Vous
+                            {% endif %}
+                        </h3>
+                        <div class="col-lg-12">
+                            <div class="sidebar-item recent-posts">
+                                <div class="col-lg-12">
+                                    <div class="col-xs-12 col-lg-12  d-flex justify-content-between" >
+                                        <div class="col-xs-1 col-md-1 col-lg-2 userpdp">
+                                            <img style="width:60px;height:60px;border-radius:100%" src="/assets/img/clients/{{ autre.imageuser }}">
+                                        </div>
+
+                                        <div class=" col-lg-8 flex-column" style="padding-left: 10px;">
+                                            <h6 style="font-family: 'Roboto Medium';color: #606060;font-size: 16px;">{{ autre.nom }} {{ autre.prenom }}</h6>
+                                            <h6 style="font-family: 'Roboto Medium';color: #B1B1B1;font-size: 14px;">Dentiste</h6>
+                                        </div>
+                                        {%  if app.session.get('id')== autre.id_user %}
+                                        <div class="col-xs-1 col-sm-1 col-lg-2 btndetails d-lg-flex justify-content-around" style="background-color: #F5F5F5;height: 40px; border-radius: 8%;padding-top:7px">
+                                            <a href="{{ path('modArt',{'id':5}) }}" class="details_article_a"style="display: flex;justify-content: center;">
+                                                <i class="bi bi-pen"></i>
+                                            </a>
+                                            <div class="box">
+                                                <a href="#popup{{ autre.id }}" class="details_article_a"style="display: flex;justify-content: center;">
+                                                    <i class="bi bi-trash" style="color: darkred"></i>
+
+                                                </a>
+                                            </div>
+                                        </div>
+                                            <div id="popup{{ autre.id }}" class="overlay">
+                                                <div class="popup">
+                                                    <h2>voulez-vous vraiment supprimer !</h2>
+                                                    <a class="close" href="#">&times;</a>
+                                                    <div class="content">
+                                                        <a class="btn btn-primary" href="{{ path('supp',{'id':autre.id }) }}"style="background-color: red;border:none">Supprimer {{ autre.id  }}</a>
+                                                        <a class="btn btn-primary" href="#" style="background-color: dodgerblue;border:none">Annuler &times;</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    {% endif %}
+                                    </div>
+
+                                    <div class="col-xs-12 col-lg-12 " style="padding-top: 20px;">
+
+                                        <div class="col-xs-12 col-xl-12 col-lg-12">
+                                            <img class="col-xs-12 col-lg-12 img-fluid" style="width:max-content;height: 200px;object-fit: cover;border-radius: 15px;" src="/assets/img/article/{{ autre.image }}">
+                                        </div>
+                                        <!-- Details a propos l'article -->
+
+                                        <div class="col-xs-12 col-xl-12  col-lg-12">
+
+
+                                            <div class="entry-content">
+                                                <h3 class="entry-title">
+                                                    <a href="{{ path('detailsArt',{'id':autre.id}) }}" style="font-family: 'Roboto Medium';color: #606060;font-size: 18px">{{ autre.titre }}</a>
+                                                </h3>
+                                                <h5 class="entry-title">
+                                                    <a href="blog-single.html"style="font-family: 'Roboto Medium';color: #B1B1B1;font-size: 13px">{{ autre.categorie }}</a>
+                                                </h5>
+                                                <p style="color: #606060;text-align: justify;font-size: 12px;">
+
+                                                </p>
+                                            </div>
+                                            <div class="entry-meta">
+                                                <ul class="d-flex  justify-content-between">
+                                        <span class="align-items-center">
+
+                                        {% set etat=0 %}
+                                            {% for rl in reagitLike %}
+                                                {%  if app.session.get('id')== rl.id_user_id and rl.id_art_id == autre.id %}
+                                                    {% set etat=autre.id %}
+                                                {% endif %}
+                                            {% endfor %}
+
+                                            {%  if etat==autre.id %}
+                                                <a href="{{ path('DelR',{'id':autre.id}) }}">
+                                        <i id="tooltip" class="bi bi-hand-thumbs-up-fill ">
+                                        <span class="tooltiptext"> Annumler votre reaction </span>
+                                        </i>
+                                        </a>
+
+                                        {% else %}
+                                                <a href="{{ path('TestLike',{'id':autre.id,'etat':1}) }}">
+                                        <i id="tooltip" class="bi bi-hand-thumbs-up ">
+                                        <span class="tooltiptext"> Ajouter une reaction </span>
+                                        </i>
+                                        </a>
+                                            {% endif %}
+
+
+
+                                        <a href="">
+
+                                        {% set like=0 %}
+                                            {% for rl in reagitLike %}
+                                                {% if rl.id_art_id== autre.id %}
+                                                    {% set like=rl.liked %}
+                                                    {{ like }}
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if like==0 %}
+                                                0
+                                            {% endif %}
+</a></span>
+                                                    <span class="align-items-center">
+
+                                        {% set etat=0 %}
+                                                        {% for rl in reagitDislike %}
+                                                            {%  if app.session.get('id')== rl.id_user_id and rl.id_art_id == autre.id %}
+                                                                {% set etat=autre.id %}
+                                                            {% endif %}
+                                                        {% endfor %}
+
+                                                        {%  if etat==autre.id %}
+                                                            <a href="{{ path('DelR',{'id':autre.id}) }}">
+                                        <i id="tooltip" class="bi bi-hand-thumbs-down-fill" style="color:#FF6666;">
+                                        <span class="tooltiptext" style="background-color:#FF6666;"> Annumler votre reaction </span>
+                                        </i>
+                                        </a>
+
+                                        {% else %}
+                                                            <a href="{{ path('TestLike',{'id':autre.id,'etat':0}) }}">
+                                        <i id="tooltip" class="bi bi-hand-thumbs-down" style="color:#FF6666;">
+                                        <span class="tooltiptext" style="background-color:#FF6666;"> Ajout une reaction</span>
+                                        </i>
+                                                                </i>
+                                        </a>
+                                                        {% endif %}
+
+                                        <a href="blog-single.html">
+                                        {% set Dislike=0 %}
+                                            {% for rl in reagitDislike %}
+                                                {% if rl.id_art_id== autre.id%}
+                                                    {% set Dislike=rl.dislike %}
+                                                    {{ Dislike }}
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if Dislike==0 %}
+                                                0
+                                            {% endif %}
+</a></span>
+                                                    <span class="align-items-center">
+                                        <a href="{{ path('detailsArt',{'id':autre.id}) }}" class="details_article_a"style="display: flex;justify-content: center;">
+                                        Vois plus <i class="bi bi-box-arrow-in-right"></i>
+                                </a></span>
+                                                </ul>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                {% endfor %}
+                            </div>
+
+
+                        </div><!-- End sidebar -->
+
+
+
+                    </div><!-- End sidebar recent posts-->
+
+
+
+
+                </div><!-- End sidebar -->
+
+            </div><!-- End blog sidebar -->
+        </div>
+    </section><!-- End Blog Section -->
+
+    <div class="row">
+        <section id="testimonials" class="col-lg-12 testimonials ">
+
+            <div class="col-lg-12 container" data-aos="fade-up">
+
+                <header class="section-header">
+                    <h2>Testimonials</h2>
+                    <p>Articles recommandé</p>
+                </header>
+
+
+                <div class="col-lg-12 testimonials-slider swiper-container" data-aos="fade-up" data-aos-delay="200">
+                    <div class="swiper-wrapper">
+
+                        {% for rec in RecommArticle %}
+                        <div class="swiper-slide">
+                            <div class="testimonial-item">
+                                <div class="stars">
+                                    <img style="width:60px;height:60px;border-radius:100%" src="/assets/img/clients/{{ rec.imageuser }}">
+                                        <h3>{{ rec.prenom|capitalize }} {{ rec.nom|capitalize }}</h3>
+                                        <h4>Dentiste</h4>
+                                </div>
+
+
+                                <img class="img-fluid" style="width:max-content;height: 200px;width: 100%;object-fit: cover;border-radius: 15px;" src="/assets/img/article/{{ rec.image }}">
+
+                                <a href="{{ path('detailsArt',{'id':rec.id}) }}"><h3 style="font-siza:16px;">{{ rec.titre|capitalize }}</h3>
+                                </a>
+                                <h4>{{ rec.categorie|capitalize }}</h4>
+                                <p style="text-align:justify">
+                                    Proin iaculis purus consequat sem cure digni ssim donec porttitora entum suscipit rhoncus.
+                                    Accusantium quam
+                                </p>
+                                <div class="entry-meta">
+
+                                    <ul class="d-flex  justify-content-between">
+                                        <span class="align-items-center">
+
+                                        {% set etat=0 %}
+                                            {% for rl in reagitLike %}
+                                                {%  if app.session.get('id')== rl.id_user_id and rl.id_art_id == rec.id %}
+                                                    {% set etat=rec.id %}
+                                                {% endif %}
+                                            {% endfor %}
+
+                                            {%  if etat==rec.id %}
+                                                <a href="{{ path('DelR',{'id':rec.id}) }}">
+                                        <i id="tooltip" class="bi bi-hand-thumbs-up-fill ">
+                                        <span class="tooltiptext"> Annumler votre reaction </span>
+                                        </i>
+                                        </a>
+
+                                        {% else %}
+                                                <a href="{{ path('TestLike',{'id':rec.id,'etat':1}) }}">
+                                        <i id="tooltip" class="bi bi-hand-thumbs-up ">
+                                        <span class="tooltiptext"> Ajouter une reaction </span>
+                                        </i>
+                                        </a>
+                                            {% endif %}
+
+
+
+                                        <a href="">
+
+                                        {% set like=0 %}
+                                            {% for rl in reagitLike %}
+                                                {% if rl.id_art_id== rec.id %}
+                                                    {% set like=rl.liked %}
+                                                    {{ like }}
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if like==0 %}
+                                                0
+                                            {% endif %}
+</a></span>
+                                        <span class="align-items-center">
+
+                                        {% set etat=0 %}
+                                            {% for rl in reagitDislike %}
+                                                {%  if app.session.get('id')== rl.id_user_id and rl.id_art_id == rec.id %}
+                                                    {% set etat=rec.id %}
+                                                {% endif %}
+                                            {% endfor %}
+
+                                            {%  if etat==rec.id %}
+                                                <a href="{{ path('DelR',{'id':rec.id}) }}">
+                                        <i id="tooltip" class="bi bi-hand-thumbs-down-fill" style="color:#FF6666;">
+                                        <span class="tooltiptext" style="background-color:#FF6666;"> Annumler votre reaction </span>
+                                        </i>
+                                        </a>
+
+                                        {% else %}
+                                                <a href="{{ path('TestLike',{'id':rec.id,'etat':0}) }}">
+                                        <i id="tooltip" class="bi bi-hand-thumbs-down" style="color:#FF6666;">
+                                        <span class="tooltiptext" style="background-color:#FF6666;"> Ajout une reaction</span>
+                                        </i>
+                                                    </i>
+                                        </a>
+                                            {% endif %}
+
+                                        <a href="blog-single.html">
+                                        {% set Dislike=0 %}
+                                            {% for rl in reagitDislike %}
+                                                {% if rl.id_art_id== rec.id%}
+                                                    {% set Dislike=rl.dislike %}
+                                                    {{ Dislike }}
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if Dislike==0 %}
+                                                0
+                                            {% endif %}
+</a></span>
+                                        <span class="align-items-center">
+                                        <a href="{{ path('detailsArt',{'id':rec.id}) }}" class="details_article_a"style="display: flex;justify-content: center;">
+                                        Vois plus <i class="bi bi-box-arrow-in-right"></i>
+                                </a></span>
+                                    </ul>
+
+                                </div>
+
+                            </div>
+                        </div>
+                        {% endfor %}
+
+
+
+
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+
+        </section><!-- End Testimonials Section -->
+
+
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.js') }}"></script>
+    <script src="{{ asset('assets/vendor/aos/aos.js') }}"></script>
+    <script src="{{ asset('assets/vendor/php-email-form/validate.js') }}"></script>
+    <script src="{{ asset('assets/vendor/swiper/swiper-bundle.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/purecounter/purecounter.js') }}"></script>
+    <script src="{{ asset('assets/vendor/isotope-layout/isotope.pkgd.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/glightbox/js/glightbox.min.js') }}"></script>
+
+    <!-- Template Main JS File -->
+    <script src="{{ asset('assets/js/main.js') }}"></script>
+    <script>
+        const gap = 16;
+
+        const carousel = document.getElementById("carousel"),
+            content = document.getElementById("content"),
+            next = document.getElementById("next"),
+            prev = document.getElementById("prev");
+
+        next.addEventListener("click", e => {
+            carousel.scrollBy(width + gap, 0);
+            if (carousel.scrollWidth !== 0) {
+                prev.style.display = "flex";
+            }
+            if (content.scrollWidth - width - gap <= carousel.scrollLeft + width) {
+                next.style.display = "none";
+            }
+        });
+        prev.addEventListener("click", e => {
+            carousel.scrollBy(-(width + gap), 0);
+            if (carousel.scrollLeft - width - gap <= 0) {
+                prev.style.display = "none";
+            }
+            if (!content.scrollWidth - width - gap <= carousel.scrollLeft + width) {
+                next.style.display = "flex";
+            }
+        });
+
+        let width = carousel.offsetWidth;
+        window.addEventListener("resize", e => (width = carousel.offsetWidth));
+    </script>
+
+
+{% endblock %}

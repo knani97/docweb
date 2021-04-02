@@ -1,0 +1,54 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block head %}
+	<base href="C:\wamp64\www\pharm\public\photos\">
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<div class="col-md-12">
+			<div class="card">
+				<div class="card-header card-header-primary">
+					<h2 class="card-title">Ajouter fiche</h2>
+					<p class="card-category">Saisir les coordonnées du fiche</p>
+				</div>
+				<div class="card-body">
+					{{ form_start(form) }}
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group bmd-form-group">
+								<label class="bmd-label-floating">Nom_Commerciale</label>
+								{{ form_widget(form.nom_commerciale, {'attr' : {'class' : 'form-control' }}) }}
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group bmd-form-group">
+									<label class="bmd-label-floating">Dosage</label>
+									{{ form_widget(form.dosage, {'attr' : {'class' : 'form-control' }}) }}
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group bmd-form-group">
+								<label class="bmd-label-floating">Utilisation</label>
+								{{ form_widget(form.utilisation, {'attr' : {'class' : 'form-control' }}) }}
+							</div>
+						</div>
+					</div>
+					<button type="submit" class="btn btn-primary pull-right btn-round" onclick="f()">Ajouter</button>
+					<div class="clearfix"></div>
+					{{ form_end(form) }}
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<a href="{{ path('medicament_index1') }}" class="btn btn-info btn-round">Retourner à liste</a>
+
+	<script>
+		function f (){
+			window.alert("Voulez-vous vraiment continuer ?");
+		}
+	</script>
+{% endblock %}

@@ -1,0 +1,12 @@
+<form method="post" action="{{ path('fiche_delete', {'id': fiche.id}) }}" onsubmit="return confirm('Voulez-vous vraiment supprimer la fiche?');">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ fiche.id) }}">
+    <br>
+    <button class="btn btn-danger btn-round"onclick="f()">Supprimer</button>
+</form>
+
+<script>
+    function f (){
+        window.alert("Voulez-vous vraiment continuer ?");
+    }
+</script>

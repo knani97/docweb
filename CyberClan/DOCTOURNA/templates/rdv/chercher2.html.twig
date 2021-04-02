@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<style>
+    @import url("https://fonts.googleapis.com/css2?family=Raleway&display=swap");
+
+    * {
+        margin: 0;
+        padding: 0;
+        font-family: 'Raleway', sans-serif;
+    }
+
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        width: 100vw;
+        height: 100vh;
+        background: #e6e6ea;
+    }
+
+    .container .input-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 50%;
+        height: 3.5rem;
+        padding: 0 1rem 0 1rem;
+        background: #009fb7;
+        border-radius: 0.8rem;
+        box-sizing: border-box;
+    }
+
+    .container .input-wrapper i {
+        font-size: 1.5rem;
+        color: #f4f4f8;
+    }
+
+    .container .input-wrapper #input-label {
+        display: none;
+    }
+
+    .container .input-wrapper #product-search {
+        width: 100%;
+        height: 100%;
+        font-size: 1.8rem;
+        color: #f4f4f8;
+        padding-left: 1rem;
+        background: #009fb7;
+        border: none;
+        outline: none;
+    }
+
+    .container .input-wrapper #product-search::placeholder {
+        color: #f4f4f8;
+        opacity: 0.7;
+    }
+
+    .container .input-wrapper .fa-times {
+        cursor: pointer;
+    }
+
+    .container .results-wrapper {
+        width: 50%;
+        min-height: 11rem;
+        max-height: auto;
+        margin-top: 1rem;
+        padding: 1rem;
+        box-sizing: border-box;
+    }
+
+    .container .results-wrapper .list .list-item {
+        display: inline-flex;
+        word-wrap: initial;
+        list-style-type: none;
+        font-size: 1.2rem;
+        line-height: 1.5rem;
+        text-transform: capitalize;
+        margin-right: 0.5rem;
+    }
+
+    .container .results-wrapper .list .list-item a {
+        text-decoration: none;
+        color: #6b6b6e;
+    }
+
+    .container .results-wrapper .list .list-item a:hover {
+        color: #fe4a49;
+        transition: 200ms ease-in;
+    }
+
+    @media (max-width: 768px) {
+        .container .input-wrapper {
+            width: 96%;
+        }
+
+        .container .results-wrapper {
+            width: 96%;
+        }
+    }
+</style>
+
+<div class="container">
+    <div class="input-wrapper">
+        <label for="product-search" id="input-label">Chercher Médecin</label>
+        <i class="fas fa-search"></i>
+        <input
+                type="text"
+                name="product-search"
+                id="product-search"
+                placeholder="Chercher Médecin"
+        >
+        <i class="fas fa-times"></i>
+    </div>
+    <div class="results-wrapper"></div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        const productSearch = document.getElementById('product-search');
+        const clearBtn = document.querySelector('.fa-times');
+        const results = document.querySelector('.results-wrapper');
+
+        let products = [];
+
+        const list = document.createElement('ul');
+        list.className = 'list';
+
+        {% for med in meds %}
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.textContent = '{{ med.nom }}';
+            a.href = '{{ path('details', {'id' : med.id}) }}';
+            li.appendChild(a);
+            li.className = 'list-item';
+            list.appendChild(li);
+        {% endfor %}
+
+        results.appendChild(list);
+
+        const displayFiltered = () => {
+            const filter = productSearch.value.toLowerCase();
+            const items = list.getElementsByTagName('li');
+            for (let i = 0; i < items.length; i++) {
+                const a = items[i].getElementsByTagName('a')[0];
+                const txtVal = a.textContent || a.textContent;
+                if (txtVal.toLowerCase().indexOf(filter) > -1) {
+                    items[i].style.display = '';
+                } else {
+                    items[i].style.display = 'none';
+                }
+            }
+        }
+
+        productSearch.addEventListener('keyup', () => {
+            displayFiltered();
+        });
+
+        clearBtn.addEventListener('click', () => {
+            productSearch.value = '';
+            displayFiltered();
+        });
+
+    });
+</script>
+</body>
+</html>

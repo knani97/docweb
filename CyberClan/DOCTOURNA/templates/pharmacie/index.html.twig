@@ -1,0 +1,82 @@
+{% extends 'header.html.twig' %}
+
+{% block header %}
+	<title>Pharmacie index</title>
+{% endblock %}
+
+{% block main %}
+
+		<section id="hero" class="hero d-flex align-items-center">
+
+
+			<div class="container">
+				<h1 class="aos-init aos-animate" data-aos="fade-up">Liste des Pharmacies</h1>
+				<table class="table table-striped">
+					<thead class="table-dark">
+					<tr>
+						<th scope="col">Nom</th>
+						<th scope="col">Adresse</th>
+						<th scope="col">Gouvernorat</th>
+						<th scope="col">Note</th>
+					</tr>
+					</thead>
+					<tbody>
+					{% for pharmacie in pharmacies %}
+						<tr>
+							<td>{{ pharmacie.nom }}</td>
+							<td>{{ pharmacie.adr }}</td>
+							<td>{{ pharmacie.gouv }}</td>
+							<td>
+
+								{% if pharmacie.note != 0 %}
+									{% for i in range(0, pharmacie.note - 1) %}
+										<i class="fas fa-star"></i>
+
+									{% endfor %}
+								{% endif %}
+
+								{% if pharmacie.note != 5 %}
+
+
+									{% for i in range(0, 5 - pharmacie.note - 1) %}
+										{% if i == 0 %}
+											{% set w = 1 %}
+										{% endif %}
+										{% if i == 1 %}
+											{% set w = 2 %}
+										{% endif %}
+										{% if i == 2 %}
+											{% set w = 3 %}
+										{% endif %}
+										{% if i == 3 %}
+											{% set w = 4 %}
+										{% endif %}
+										{% if i == 4 %}
+											{% set w = 5 %}
+										{% endif %}
+
+										<a href="{{ path('note_add', {'n': w , 'id' : pharmacie.id}) }}">
+											<i class="fa fa-star-o"></i>
+										</a>
+
+									{% endfor %}
+								{% endif %}
+							</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="6">no records found</td>
+						</tr>
+					{% endfor %}
+					</tbody>
+				</table>
+				<a href="{{ path('pharmacies_P') }}" class="btn btn-primary btn-round"onclick="f()">Imprimer en PDF</a><br>
+				{{ knp_pagination_render(pharmacies) }}
+			</div>
+		</section>
+
+		<script src="https://use.fontawesome.com/5793d5bd23.js"></script>
+			</div>
+	</div>
+</section>
+{% endblock %}

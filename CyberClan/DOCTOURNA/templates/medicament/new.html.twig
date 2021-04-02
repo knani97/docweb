@@ -1,0 +1,189 @@
+{% extends 'DashboardAdmin.html.twig' %}
+{% block stylecss %}
+	<style>
+		span .bi-trash:hover {
+			/* Start the shake animation and make the animation last for 0.5 seconds */
+			animation: shake 0.5s;
+
+			/* When the animation is finished, start again */
+			animation-iteration-count: infinite;
+		}
+		@keyframes shake {
+			0% { transform: translate(1px, 1px) rotate(0deg); }
+			10% { transform: translate(-1px, -2px) rotate(-1deg); }
+			20% { transform: translate(-3px, 0px) rotate(1deg); }
+			30% { transform: translate(3px, 2px) rotate(0deg); }
+			40% { transform: translate(1px, -1px) rotate(1deg); }
+			50% { transform: translate(-1px, 2px) rotate(-1deg); }
+			60% { transform: translate(-3px, 1px) rotate(0deg); }
+			70% { transform: translate(3px, 1px) rotate(-1deg); }
+			80% { transform: translate(-1px, -1px) rotate(1deg); }
+			90% { transform: translate(1px, 2px) rotate(0deg); }
+			100% { transform: translate(1px, -2px) rotate(-1deg); }
+		}
+
+		.overlay {
+			position: fixed;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			background: rgba(0, 0, 0, 0.7);
+			transition: opacity 500ms;
+			visibility: hidden;
+			opacity: 0;
+			z-index: 2;
+		}
+		.overlay:target {
+			visibility: visible;
+			opacity: 1;
+			z-index: 1;
+		}
+
+		.popup {
+			margin: 70px auto;
+			padding: 20px;
+			background: #fff;
+			border-radius: 5px;
+			width: 30%;
+			position: relative;
+			transition: all 5s ease-in-out;
+			z-index: 1;
+		}
+
+		.popup h2 {
+			margin-top: 0;
+			color: #333;
+			font-family: Tahoma, Arial, sans-serif;
+		}
+		.popup .close {
+			position: absolute;
+			top: 20px;
+			right: 30px;
+			transition: all 200ms;
+			font-size: 30px;
+			font-weight: bold;
+			text-decoration: none;
+			color: #333;
+		}
+		.popup .close:hover {
+			color: #06D85F;
+		}
+		.popup .content {
+			max-height: 30%;
+			overflow: auto;
+
+		}
+
+		@media screen and (max-width: 700px){
+			.box{
+				width: 70%;
+			}
+			.popup{
+				width: 70%;
+			}
+		}
+
+
+
+
+	</style>
+{% endblock %}
+{% block title %}
+	GestionMedicament
+{% endblock %}
+
+{% block GestionMedicament %}
+
+	active
+{% endblock %}
+
+{% block titre_menu %}
+	Ajout Médicament
+{% endblock %}
+
+{% block titredetailsblock %}
+
+
+{% endblock %}
+
+
+{% block backroundCat %}
+	style="background-color:#949494;color:white"
+{% endblock %}
+    {% block iconCat %}
+		style="color:white;"
+	{% endblock %}
+
+
+{% block details %}
+	<div class="content">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="card">
+						<div class="card-header card-header-primary">
+							<h4 class="card-title">Ajout Médicaments</h4>
+							<p class="card-category">Ajouter un nouveau médicament</p>
+						</div>
+						<div class="card-body">
+							{{ form_start(form) }}
+
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group bmd-form-group">
+										<label class="bmd-label-floating">Nom</label>
+										{{ form_widget(form.nom, {'attr' : {'class' : 'form-control' }}) }}
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group bmd-form-group">
+										<label class="bmd-label-floating">Fournisseur</label>
+										{{ form_widget(form.fournisseur, {'attr' : {'class' : 'form-control' }}) }}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group bmd-form-group">
+										<label class="bmd-label-floating">Prix</label>
+										{{ form_widget(form.prix_achat, {'attr' : {'class' : 'form-control' }}) }}
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group bmd-form-group">
+										<label class="bmd-label-floating">Poids</label>
+										{{ form_widget(form.poid, {'attr' : {'class' : 'form-control' }}) }}
+									</div>
+								</div>
+							</div>
+
+							<button type="submit" class="btn btn-primary pull-right btn-round" onclick="f()">Ajouter</button>
+							<div class="clearfix"></div>
+							{{ form_end(form) }}
+						</div>
+					</div>
+
+					<a href="{{ path('medicament_index1') }}" class="btn btn-info btn-round">Retourner à liste</a>
+
+
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+
+{% block body %}
+
+	<script>
+		function f (){
+			window.alert("Voulez-vous vraiment continuer ?");
+		}
+	</script
+{% endblock %}

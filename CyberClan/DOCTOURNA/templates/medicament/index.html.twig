@@ -1,0 +1,44 @@
+{% extends 'header.html.twig' %}
+
+{% block title %}Medicament index
+{% endblock %}
+
+{% block main %}
+<section id="hero" class="hero d-flex align-items-center">
+	<div class="container">
+		<h1 class="aos-init aos-animate" data-aos="fade-up">Liste des médicaments</h1>
+				<table class="table table-striped">
+					<thead class="table-dark">
+					<tr>
+						<th>Nom</th>
+						<th>Fournisseur</th>
+						<th>Prix_achat</th>
+						<th>Poid</th>
+						<th>Actions</th>
+					</tr>
+					</thead>
+					<tbody>
+					{% for medicament in medicaments %}
+						<tr>
+							<td>{{ medicament.nom }}</td>
+							<td>{{ medicament.fournisseur }}</td>
+							<td>{{ medicament.prixAchat }} <span style="color : red;">TND</span></td>
+							<td>{{ medicament.poid }} <span style="color : red;">g</span></td>
+							<td> {% if medicament.ficheExist == true %}
+									<a href="{{ path('fiche_show1', {'id': medicament.id}) }}" class="btn btn-success btn-round">
+										Consulter fiche
+									</a>
+								{% endif %} </td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="6">no records found</td>
+						</tr>
+					{% endfor %}
+					</tbody>
+				</table>
+
+		</div>
+	</section>
+
+{% endblock %}

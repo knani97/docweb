@@ -1,0 +1,155 @@
+{% extends 'header.html.twig' %}
+
+{% block main %}
+    <style>
+        .success-animation { margin:30px auto;}
+
+        .checkmark {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: block;
+            stroke-width: 2;
+            stroke: #4bb71b;
+            stroke-miterlimit: 10;
+            box-shadow: inset 0px 0px 0px #4bb71b;
+            animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+            position:relative;
+            top: 5px;
+            right: 5px;
+            margin: 0 auto;
+        }
+        .checkmark__circle {
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            stroke-width: 2;
+            stroke-miterlimit: 10;
+            stroke: #4bb71b;
+            fill: #fff;
+            animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+
+        }
+
+        .checkmark__check {
+            transform-origin: 50% 50%;
+            stroke-dasharray: 48;
+            stroke-dashoffset: 48;
+            animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+        }
+
+        @keyframes stroke {
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        @keyframes scale {
+            0%, 100% {
+                transform: none;
+            }
+
+            50% {
+                transform: scale3d(1.1, 1.1, 1);
+            }
+        }
+
+        @keyframes fill {
+            100% {
+                box-shadow: inset 0px 0px 0px 30px #4bb71b;
+            }
+        }
+        .svg-icon.search-icon {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            /* On hover: blue strokes */
+            /* On click: thicker black strokes */
+        }
+        .svg-icon.search-icon:focus .search-path, .svg-icon.search-icon:hover .search-path {
+            stroke: #299ecc;
+        }
+        .svg-icon.search-icon:active .search-path {
+            stroke: #111516;
+            stroke-width: 2px;
+        }
+
+    </style>
+<link href="{{ asset('assets/css/calendrier.css') }}" rel="stylesheet">
+<section id="hero" class="hero d-flex align-items-center">
+    <div class="container">
+        <div class="col-lg-6 d-flex flex-column justify-content-center">
+            <h1 data-aos="fade-up">Prise des rendez-vous 👨‍⚕️</h1>
+            {% if cal is not null %}
+                <h2 data-aos="fade-up" data-aos-delay="200">Veuillez remplir le formulaire suivant !</h2>
+                <div data-aos="fade-up" data-aos-delay="400" class="wrapper wrapper--w790">
+                    <div class="card card-5">
+                        <div class="card-heading col-lg-12 d-flex justify-content-center" style="background-color: #0b5ed7;">
+                            <h2 class="title" style="font-family: verdana;">RDV</h2>
+                        </div>
+                        <div class="card-body col-lg-12 d-flex justify-content-center" style="box-shadow: 4px 4px 5px #888888; border-style: none;">
+                            {{ form_start(form) }}
+                            <div class="col-lg-12 form-row m-b-55">
+                                <div class="value">
+                                    <div class="row row-refine">
+                                        <div class="col-lg-12">
+                                            <div class="input-group-desc">
+                                                <label class="label--desc">Veuillez selectionner un medecin!</label>
+                                                    <div style="display: flex; justify-content: space-between;">
+                                                        <div class="success-animation" id="check" style="display: none; margin-top: 7%;">
+                                                            <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52"><circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" /><path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" /></svg>
+                                                        </div>
+                                                        {{ form_row(form.medecin) }}
+                                                        <a id="medSel" href="#popup1" style="margin-top: 12%;">
+                                                            <svg class="svg-icon search-icon" aria-labelledby="title desc" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title id="title">Search Icon</title><desc id="desc">A magnifying glass icon.</desc><g class="search-path" fill="none" stroke="#848F91"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"/><circle cx="8" cy="8" r="7"/></g></svg>
+                                                        </a>
+                                                    </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <h2 data-aos="fade-up" data-aos-delay="200">Veuillez d'abord ajouter un calendrier !</h2>
+            {% endif %}
+            <div id="popup1" class="overlay">
+                <div class="popup" style="width: 1000px; height: 400px">
+                    <a class="close" href="#">&times;</a>
+                    <div class="content" style="height: 200%">
+                        <iframe id="addTDef" frameborder="10" scrolling="no" onload="resizeIframe(this)" src="{{ path('chercher1') }}" width="100%" height="100%"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        var $rdv_medecin = $('#rdv_medecin')
+        var $token = $('#rdv_token')
+
+        $rdv_medecin.change(function() {
+            var $form = $(this).closest('form')
+
+            var data = {}
+
+            data[$token.attr('name')] = $token.val()
+            data[$rdv_medecin.attr('name')] = $rdv_medecin.val()
+
+            $.get($form.attr('action'), data).then(function (response) {
+                $('#rdv_tacheDispo').replaceWith(
+                    $(response).find('#rdv_tacheDispo')
+                )
+            })
+        })
+    </script>
+            <script>
+                function resizeIframe(obj) {
+                    obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
+                }
+            </script>
+{% endblock %}

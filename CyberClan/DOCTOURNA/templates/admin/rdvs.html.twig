@@ -1,0 +1,219 @@
+{% extends 'DashboardAdmin.html.twig' %}
+
+{% block head %}
+{% endblock %}
+
+{% block title %}
+    RDV
+{% endblock %}
+
+{% block titredetailsblock %}
+{% endblock %}
+
+    {% block titrepage %}
+        Liste des RDVs
+    {% endblock %}
+
+    {% block detailtitrepage %}
+        L'administrateur peut consulter les RDVs et leurs états.
+
+    {% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .box {
+            width: 40%;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.2);
+            padding: 35px;
+            border: 2px solid #fff;
+            border-radius: 20px/50px;
+            background-clip: padding-box;
+            text-align: center;
+        }
+
+        .button {
+            font-size: 1em;
+            padding: 10px;
+            color: #fff;
+            background-color: #9f9898;
+            border: 2px solid #06D85F;
+            border-radius: 20px/50px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease-out;
+        }
+        .button:hover {
+            background: #06D85F;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            transition: opacity 500ms;
+            visibility: hidden;
+            opacity: 0;
+        }
+        .overlay:target {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .popup {
+            margin: 70px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 5px;
+            width: 30%;
+            position: relative;
+            transition: all 5s ease-in-out;
+        }
+
+        .popup h2 {
+            margin-top: 0;
+            color: #333;
+            font-family: Tahoma, Arial, sans-serif;
+        }
+        .popup .close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            transition: all 200ms;
+            font-size: 30px;
+            font-weight: bold;
+            text-decoration: none;
+            color: #333;
+        }
+        .popup .close:hover {
+            color: #06D85F;
+        }
+        .popup .content {
+            max-height: 30%;
+            overflow: auto;
+        }
+
+        @media screen and (max-width: 700px){
+            .box{
+                width: 70%;
+            }
+            .popup{
+                width: 70%;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block gestionRDV %}
+    active
+{% endblock %}
+{% block titrepageContainer %}
+    Gestion des RDV
+{% endblock %}
+
+{% block details %}
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header card-header-primary">
+                <h4 class="card-title ">RDVs</h4>
+                <p class="card-category">La liste des RDVs pris sur la plateforme</p>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class=" text-primary">
+                        <tr><th>
+                                ID
+                            </th>
+                            <th>
+                                Patient
+                            </th>
+                            <th>
+                                Médecin
+                            </th>
+                            <th>
+                                Date
+                            </th>
+                            <th>
+
+                            </th>
+                            <th>
+                                Ètat
+                            </th>
+                        </tr></thead>
+                        <tbody>
+                        {% for t in tab %}
+                        <tr>
+                            <td>
+                                {{ t.id }}
+                            </td>
+                            <td>
+                                {{ t.patient.nom~' '~t.patient.prenom }}
+                            </td>
+                            <td>
+                                {{ t.medecin.nom~' '~t.medecin.prenom }}
+                            </td>
+                            <td>
+                                {{ t.date|date('Y-m-d') }}
+                            </td>
+                            <td>
+                                <a class="button" href="#popup1" onclick="setContent('{{ t.description }}');" style="background-color: #2C3E50;">Description</a>
+                                {% if t.etat == 1 or t.etat == 2 %}
+                                    {% if t.date >= date('+2 hours') %}
+                                        <a class="button" href="javascript:window.open('{{ path('reporterRDV', {'id' : t.id}) }}','Reporter RDV','width=600,height=400')" style="background-color: blue">Reporter</a>
+                                        <a class="button" href="#" onclick="onClickC({{ t.id }})" style="background-color: red">Annuler</a>
+                                    {% endif %}
+                                {% endif %}
+                            </td>
+                            <td class="text-primary">
+                                {% if (t.etat == 1 or t.etat == 2) and t.date < date('+2 hours') %}
+                                    <p style="color: orange">Manqué</p>
+                                {% else %}
+                                    {% if t.etat == 1 %}
+                                        <p style="color: green">Disponible</p>
+                                    {% elseif t.etat == 2 %}
+                                        <p style="color: blue">Reporté</p>
+                                    {% elseif t.etat == 3 %}
+                                        <p style="color: red">Annulé</p>
+                                    {% elseif t.etat == 4 %}
+                                        <p style="color: red">Terminé</p>
+                                    {% endif %}
+                                {% endif %}
+                            </td>
+                        </tr>
+                            <div id="popup1" class="overlay">
+                                <div class="popup" style="position:relative; top: 250px; right: -100px;">
+                                    <h2>Description:</h2>
+                                    <a class="close" href="#">&times;</a>
+                                    <div class="content" id="content">
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    {{ knp_pagination_render(tab) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function setContent(content) {
+            document.getElementById('content').innerText = content;
+        }
+    </script>
+    <script>
+        function onClickC(id) {
+            var i = id;
+            var url = '{{ path('annulerRDV', {'id' : 'rdv_id'}) }}';
+            url = url.replace("rdv_id", i);
+            var result = confirm("Voulez vous vraiment annuler le RDV ?");
+            if (result == true) {
+                window.location.replace(url)
+            }
+        }
+    </script>
+{% endblock %}

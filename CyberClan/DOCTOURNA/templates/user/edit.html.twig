@@ -1,0 +1,19 @@
+{% extends 'header.html.twig' %}
+
+{% block title %}Edit User{% endblock %}
+
+{% block main %}
+<section id="hero" class="hero d-flex align-items-center">
+    <div class="container">
+        <div class="col-lg-6 d-flex flex-column justify-content-center">
+    <h1>Edit User</h1>
+
+    {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('user_edit',{'id':app.session.get('id')}) }}" >back to list</a>
+
+    {{ include('user/_delete_form.html.twig') }}
+        </div>
+    </div>
+</section>
+{% endblock %}
