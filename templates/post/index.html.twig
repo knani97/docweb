@@ -1,6 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+
+
+
+
 <!--<div class="post-list">
     <h1>Postes:</h1>
 
@@ -185,6 +189,9 @@
 }
 </style>
 
+
+
+
 <div class="container">
 <div class="main-body p-0">
     <div class="inner-wrapper">
@@ -214,12 +221,26 @@
                 </div>
             {% endfor %}  
             </div>
+
+   
             <!-- /Forum List -->
             <button class="new-post"><a href="{{ path('post_new') }}">Create new</a></button>
             <!-- /Inner main body -->
+        
         </div>
+             <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
+                            <ul class="pagination">
+                                {{ knp_pagination_render(posts) }}
+                               </div>
         <!-- /Inner main -->
     </div>
 </div>
 </div>
+
+
+
+</div>
+
+
+
 {% endblock %}

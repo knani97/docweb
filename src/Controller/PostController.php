@@ -12,6 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\DateTime;
 use App\Entity\Comment;
 use App\Form\CommentType;
+use Knp\Component\Pager\PaginatorInterface;
 
 /**
  * @Route("/post")
@@ -21,11 +22,63 @@ class PostController extends AbstractController
     /**
      * @Route("/", name="post_index", methods={"GET"})
      */
-    public function index(PostRepository $postRepository): Response
+    public function index(PaginatorInterface $paginator , Request $request): Response
     {
+        $repository=$this->getDoctrine()->getRepository(Post::class);
+        $post=$repository->findAll();
+        $data = $paginator->paginate(
+            $post ,
+            $request->query->getInt('page', 1),
+        3
+        );
+
         return $this->render('post/index.html.twig', [
-            'posts' => $postRepository->findAll(),
+            'posts' => $data,
         ]);
+    }
+
+
+    /**
+     * @Route("/image", name="image", methods={"POST"},   options={"expose"=true})
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getImage(Request $request )
+    {
+        if ($request->isXmlHttpRequest()) {
+            $post= new Post();
+            $form = $this->createForm(PostType::class, $post);
+            $form->handleRequest($request);
+            // the file
+            $file = $_FILES['file'];
+            $file = new UploadedFile($file['tmp_name'], $file['name'], $file['type']);
+            $filename = $this->generateUniqueName() . '.' . $file->guessExtension();
+
+            $file->move(
+                $this->getTargetDir(),
+                $filename
+            );
+
+            $post->setAvatar($filename);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($post);
+            $em->flush();
+
+
+
+        }
+        return new JsonResponse("this is not a  bla bla bla");
+    }
+
+    private function generateUniqueName()
+    {
+        return md5(uniqid());
+    }
+
+    private function getTargetDir()
+    {
+        return $this->getParameter('uploads_dir');
     }
 
     /**

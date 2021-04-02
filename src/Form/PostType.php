@@ -7,6 +7,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class PostType extends AbstractType
 {
@@ -14,7 +16,16 @@ class PostType extends AbstractType
     {
         $builder->add('title');
         $builder->add('body', TextareaType::class, ['attr' => ['rows' => '10'],]);
-        $builder->add('user');
+        $builder->add('user');  
+        $builder->add('avatar', FileType::class, [
+            'data_class' => null,
+            'label' => 'image',
+            'attr' => [
+                'id'=> 'medicament_avatar',
+                'onchange'    => 'previewFile()'
+            ]
+        ]);
+       
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+{# <html>
+<head>
+    <title>Your Website Title</title>
+    <!-- You can use Open Graph tags to customize link previews.
+    Learn more: https://developers.facebook.com/docs/sharing/webmasters -->
+    <meta property="og:url"           content="asset('https://www.your-domain.com/your-page.html')" />
+    <meta property="og:type"          content="website" />
+    <meta property="og:title"         content="Your Website Title" />
+    <meta property="og:description"   content="Your description" />
+    <meta property="og:image"         content="https://www.your-domain.com/path/image.jpg" />
+</head>
+<body>
+
+<!-- Load Facebook SDK for JavaScript -->
+<div id="fb-root"></div>
+{% block javascripts %}
+<script>(function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+
+<!-- Your share button code -->
+<div class="fb-share-button"
+     data-href="https://www.your-domain.com/your-page.html"
+     data-layout="button_count">
+</div>
+{% endblock %}
+</body>
+</html>#}
+
+{% block body %}
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GTCoding</title>
+    <link rel="stylesheet" href="{{asset('share/style.css')}}" />
+    <link
+            rel="stylesheet"
+            href="{{asset('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css')}}"
+    />
+</head>
+<body>
+<div class="share-btn-container">
+    <a href="#" class="facebook-btn">
+        <i class="fab fa-facebook"></i>
+    </a>
+
+    <a href="#" class="twitter-btn">
+        <i class="fab fa-twitter"></i>
+    </a>
+
+    <a href="#" class="pinterest-btn">
+        <i class="fab fa-pinterest"></i>
+    </a>
+
+    <a href="#" class="linkedin-btn">
+        <i class="fab fa-linkedin"></i>
+    </a>
+
+    <a href="#" class="whatsapp-btn">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+</div>
+<div class="row justify-content-center">
+<div class="content">
+    <h1>Merci pour votre donation ! </h1>
+    <p>
+        Partager cette statut avec tes amis pour les encourager à aider les autres !
+    </p>
+
+    <img
+            class="pinterest-img" style="border-image-slice: initial"
+            src="{{ asset('share/share.png')}}"
+            alt=""
+    />
+</div>
+</div>
+
+</body>
+
+{% endblock %}
+{% block javascripts %}
+    <script src="{{asset('share/main.js')}}"></script>
+{% endblock %}
