@@ -58,4 +58,15 @@ class CalendrierRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
             ;
     }
+
+    public function findLikeUser($nom)
+    {
+        return $this->createQueryBuilder('c')
+            ->join('c.uid', 'u')
+            ->andWhere('u.nom LIKE :nom')
+            ->setParameter('nom', '%'.$nom.'%')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }

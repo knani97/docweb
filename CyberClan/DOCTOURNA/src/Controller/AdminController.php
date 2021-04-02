@@ -55,6 +55,27 @@ class AdminController extends AbstractController
     }
 
     /**
+     * @Route("/admin/calendrierUser/{nom}", name="adminCNom")
+     */
+    public function calendrierUser($nom, CalendrierRepository $repository, Request $request, PaginatorInterface $paginator, ArticleRepository $articleRepository): Response
+    {
+        $notif=$articleRepository->ValiderArtile();
+        $data = $repository->findLikeUser($nom);
+
+        $tab = $paginator->paginate(
+            $data,
+            $request->query->getInt('page', 1),
+            4
+        );
+
+        return $this->render('admin/calendriers.html.twig', [
+            'controller_name' => 'AdminController',
+            'tab' => $tab,
+            'notif'=>$notif
+        ]);
+    }
+
+    /**
      * @Route("/admin/rdv", name="adminRDV")
      */
     public function rdv(RDVRepository $repository, Request $request, PaginatorInterface $paginator, ArticleRepository $articleRepository): Response
