@@ -100,8 +100,7 @@ class User implements UserInterface
     private $reset_token;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $articles;
 
