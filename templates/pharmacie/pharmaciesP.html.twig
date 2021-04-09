@@ -1,0 +1,33 @@
+{% block main %}
+    <div class="container">
+        <h1 class="aos-init aos-animate" data-aos="fade-up" style="color: #007bff">Liste des Pharmacies</h1>
+    </div>
+
+    <section id="hero" class="hero d-flex align-items-center">
+
+
+        <div class="container">
+
+            <table class="table table-striped">
+                <thead class="table-dark">
+                <tr>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Adresse</th>
+                    <th scope="col">Gouvernorat</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for pharmacie in pharmacies %}
+                    <tr>
+                        <td>{{ pharmacie.nom }}</td>
+                        <td>{{ pharmacie.adr }}</td>
+                        <td>{{ pharmacie.gouv }}</td>
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </section>
+{% endblock %}

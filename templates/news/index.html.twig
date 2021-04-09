@@ -1,0 +1,671 @@
+{% extends 'base.html.twig' %}
+    {% block title %}
+        <title>News et articles</title>
+        <style>
+            .categoriesanim {
+                margin: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+
+
+            }
+
+            #wrapper {
+                border-radius:5px;
+                padding:30px;
+                box-shadow: 0px 2px 20px rgba(1, 1, 1, 0.05);
+                position: relative;
+            }
+
+            #carousel {
+                overflow: auto;
+                scroll-behavior: smooth;
+                scrollbar-width: none;
+            }
+
+            #carousel::-webkit-scrollbar {
+                height: 0;
+            }
+
+            #prev,
+            #next {
+                display: flex;
+                justify-content: center;
+                align-content: center;
+                background: white;
+                border: none;
+                padding: 8px;
+                border-radius: 50%;
+                outline: 0;
+                cursor: pointer;
+                position: absolute;
+            }
+
+            #prev {
+                top: 50%;
+                left: 0;
+                transform: translate(50%, -50%);
+                display: none;
+            }
+
+            #next {
+                top: 50%;
+                right: 0;
+                transform: translate(-50%, -50%);
+            }
+
+            #content {
+                display: grid;
+                grid-gap: 16px;
+                grid-auto-flow: column;
+                margin: auto;
+                box-sizing: border-box;
+            }
+
+            .item {
+                width: 180px;
+                height: 180px;
+                background: green;
+            }
+
+            #tooltip .tooltiptext {
+                visibility: hidden;
+                width: 120px;
+                font-size: 15px;
+                background-color: dodgerblue;
+                color: #fff;
+                text-align: center;
+                border-radius: 6px;
+                padding: 5px 0;
+                position: absolute;
+                z-index: 1;
+            }
+            #tooltip:hover .tooltiptext {
+                visibility: visible;
+            }
+        </style>
+
+    {% endblock %}
+
+{% block sessionProfil%}
+    <li>
+        <a class="getstarted scrollto" href="{{ path('mes-articles') }}">
+            <div class="col-2 d-flex justify-content-start">
+                <img src="{{ asset('assets/img/team/team-3.jpg') }}" style="width:30px;border-radius:100%;">
+
+            </div>
+            <div class="col-10 d-flex justify-content-end" style="padding-left: 5px;">
+                {{ app.session.get('prenom') }}
+
+            </div>
+        </a></li>
+{% endblock %}
+
+{% block notif %}
+
+
+    {% for notifAjout in notifAjout %}
+    <a href="{{ path('detailsArt',{'id':notifAjout.id}) }}">
+
+    <div class="col-lg-12 d-flex justify-content-start">
+
+        <div class="col-xs-1 col-md-2 col-lg-2 userpdp">
+
+            <img style="width:40px;height:40px;border-radius:100%"
+                 src="/assets/img/clients/{{ notifAjout.imageuser }}">
+
+        </div>
+
+        <div class="col-lg-6">
+
+            Votre demande d'ajout à été accepter
+
+        </div>
+    </div>
+    </a>
+    <hr>
+
+
+    {% endfor %}
+
+{% endblock %}
+{% block hero %}
+
+
+    <section class="col-lg-12" style="padding-top: 100px;">
+
+        <div class="container">
+
+
+
+
+            <div class="col-lg-12 d-flex justify-content-end">
+                <a class="btn btn-info" style="color:white;background-color:#4154f1;border: none;text-decoration: none;" href="{{ path('ajoutArticle') }}">
+                    Ajouter un article
+                </a>
+            </div>
+
+        </div>
+    </section><!-- End Breadcrumbs -->
+
+{% endblock %}
+{% block main %}
+
+    <section id="blog" class="blog">
+        <div class="container" data-aos="fade-up">
+
+            <div class="row">
+
+                <div class="col-lg-8 entries">
+
+                    <h2 style="font-family: 'Roboto Medium'">Le meilleur article de tous les temps</h2>
+                    {% set TopClass=0 %}
+                    {% for top in topLike %}
+
+                    {% for articleTop in articleTop %}
+
+                        {% if articleTop.id == top.id_art_id %}
+                            {% set TopClass=TopClass+1 %}
+                    <article class="entry">
+
+
+                        <div class="col-xs-12 col-lg-12" style="background-color: white;">
+                            <!-- l'article ajouter par -->
+                            <div class="col-xs-12 col-lg-12  d-flex justify-content-between" >
+                                <div class="col-xs-1 col-md-1 col-lg-1 userpdp">
+                                    <img style="width:60px;height:60px;border-radius:100%" src="/assets/img/clients/{{ articleTop.imageuser }}">
+
+                                </div>
+                                <div class="col-xs-5 col-sm-9 col-md-9 col-lg-9 flex-column">
+                                    <h5 style="font-family: 'Roboto Medium';color: #606060;text-align: justify-all;">{{ articleTop.nom |capitalize }} {{ articleTop.prenom |capitalize }}</h5>
+                                    <h6 style="font-family: 'Roboto Medium';color: #B1B1B1;">Dentiste</h6>
+                                </div>
+
+                                <div class="col-xs-1 col-sm-1 col-lg-1 btndetails" style="background-color: #F5F5F5;width: 45px;height: 45px; border-radius: 100%;padding: 10px">
+                                        <a href="{{ path('detailsArt',{'id':articleTop.id}) }}" class="details_article_a"style="display: flex;justify-content: center;">
+
+                                        <i class="bi bi-box-arrow-in-right"></i>
+                                    </a>
+                                </div>
+
+                                <div class="col-xs-1 col-sm-1 col-lg-1 btndetails" style="background-color:dodgerblue;width: 70px;height: 70px; border-radius:0px 0px 10px 10px ;position: relative;top:-30px;">
+                                    <span style="font-size: 40px;position: relative;left:15px;"> <i class="bi bi-trophy-fill" style="color:white"></i></span>
+                                    <span style="font-size: 20px; color:dodgerblue; position:relative;top:-10px;left:-14px;">{{  TopClass }}</span>
+
+                                </div>
+
+
+
+                            </div>
+
+                        </div>
+
+                        <div class="entry-img" style="padding-top: 50px;">
+                            <img class="col-xs-12 col-lg-12 img-fluid" style="object-fit: cover;" src="/assets/img/article/{{ articleTop.image }}">
+                        </div>
+
+                        <h2 class="entry-title">
+                            <a  href="{{ path('detailsArt',{'id':articleTop.id}) }}"><h5 style="font-family: 'Roboto Medium';color: #4A90E2;">{{ articleTop.titre |upper }}</h5></a>
+                        </h2>
+
+                        <h5 class="">
+                            <a href="blog-single.html"style="font-family: 'Roboto Medium';color: #B1B1B1;font-size: 13px">{{ articleTop.categorie }}</a>
+                        </h5>
+
+
+                        <div class="entry-content">
+                            <p style="color: #606060;text-align: justify">
+                                {% if articleTop.text|length>=195 %}
+                                    {{ articleTop.text |capitalize |slice(0, 195) }} ...
+                                {% else %}
+                                    {{ articleTop.text |capitalize }}
+                                {% endif %}
+                            </p>                            <div class="entry-meta">
+                                <ul class="d-flex  justify-content-between">
+                                        <span class="align-items-center">
+
+                                        {% set etat=0 %}
+                                            {% for rl in reagitLike %}
+                                                {%  if app.session.get('id')== rl.id_user_id and rl.id_art_id == articleTop.id %}
+                                                    {% set etat=articleTop.id %}
+                                                {% endif %}
+                                            {% endfor %}
+
+                                            {%  if etat==articleTop.id %}
+                                                <a href="{{ path('DelR',{'id':articleTop.id}) }}">
+                                        <i id="tooltip" class="bi bi-hand-thumbs-up-fill ">
+                                        <span class="tooltiptext"> Annumler votre reaction </span>
+                                        </i>
+                                        </a>
+
+                                        {% else %}
+                                                <a href="{{ path('TestLike',{'id':articleTop.id,'etat':1}) }}">
+                                        <i id="tooltip" class="bi bi-hand-thumbs-up ">
+                                        <span class="tooltiptext"> Ajouter une reaction </span>
+                                        </i>
+                                        </a>
+                                            {% endif %}
+
+
+
+                                        <a href="">
+
+                                        {% set like=0 %}
+                                            {% for rl in reagitLike %}
+                                                {% if rl.id_art_id== articleTop.id %}
+                                                    {% set like=rl.liked %}
+                                                    {{ like }}
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if like==0 %}
+                                                0
+                                            {% endif %}
+</a></span>
+                                    <span class="align-items-center">
+
+                                        {% set etat=0 %}
+                                        {% for rl in reagitDislike %}
+                                            {%  if app.session.get('id')== rl.id_user_id and rl.id_art_id == articleTop.id %}
+                                                {% set etat=articleTop.id %}
+                                            {% endif %}
+                                        {% endfor %}
+
+                                        {%  if etat==articleTop.id %}
+                                            <a href="{{ path('DelR',{'id':articleTop.id}) }}">
+                                        <i id="tooltip" class="bi bi-hand-thumbs-down-fill" style="color:#FF6666;">
+                                        <span class="tooltiptext" style="background-color:#FF6666;"> Annumler votre reaction </span>
+                                        </i>
+                                        </a>
+
+                                        {% else %}
+                                            <a href="{{ path('TestLike',{'id':articleTop.id,'etat':0}) }}">
+                                        <i id="tooltip" class="bi bi-hand-thumbs-down" style="color:#FF6666;">
+                                        <span class="tooltiptext" style="background-color:#FF6666;"> Ajout une reaction</span>
+                                        </i>
+                                                </i>
+                                        </a>
+                                        {% endif %}
+
+                                        <a href="blog-single.html">
+                                        {% set Dislike=0 %}
+                                            {% for rl in reagitDislike %}
+                                                {% if rl.id_art_id== articleTop.id%}
+                                                    {% set Dislike=rl.dislike %}
+                                                    {{ Dislike }}
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if Dislike==0 %}
+                                                0
+                                            {% endif %}
+</a></span>
+                                    <span class="align-items-center">
+                                        <a href="{{ path('detailsArt',{'id':articleTop.id}) }}" class="details_article_a"style="display: flex;justify-content: center;">
+                                        Vois plus <i class="bi bi-box-arrow-in-right"></i>
+                                </a></span>
+                                </ul>
+
+                            </div>
+
+                        </div>
+
+                    </article><!-- End blog entry -->
+                        {% endif %}
+                    {% endfor %}
+                    {% endfor %}
+
+                    <!-- Article -->
+                    <h2 style="font-family: 'Roboto Medium'">Autres articles</h2>
+
+
+                    {% for a in article %}
+                    <article class="entry">
+
+                        <!-- l'article ajouter par -->
+                        <div class="col-xs-12 col-lg-12  d-flex justify-content-between" >
+                            <div class="col-xs-1 col-md-1 col-lg-1 userpdp">
+                                <img style="width:60px;height:60px;border-radius:100%" src="/assets/img/clients/{{ a.imageuser }}">
+
+                            </div>
+                            <div class="col-xs-5 col-sm-9 col-md-9 col-lg-10 flex-column">
+                                <h5 style="font-family: 'Roboto Medium';color: #606060;text-align: justify-all;">{{ a.nom |capitalize }} {{ a.prenom |capitalize }}</h5>
+                                <h6 style="font-family: 'Roboto Medium';color: #B1B1B1;">Dentiste</h6>
+                            </div>
+
+                            <div class="col-xs-1 col-sm-1 col-lg-1 btndetails" style="background-color: #F5F5F5;width: 45px;height: 45px; border-radius: 100%;padding: 10px">
+                                <a href="{{ path('detailsArt',{'id':a.id}) }}" class="details_article_a"style="display: flex;justify-content: center;">
+                                    <i class="bi bi-box-arrow-in-right"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Details article -->
+
+                        <!-- img article -->
+                        <div class="col-xs-12 col-lg-12 d-lg-flex" style="padding-top: 20px;">
+
+                            <div class="col-xs-12 col-xl-6 col-lg-6">
+                                <img class="col-xs-12 col-lg-11 img-fluid" style="width:max-content;height: 200px;object-fit: cover;border-radius: 15px;" src="/assets/img/article/{{ a.image }}">
+                            </div>
+                            <!-- Details a propos l'article -->
+
+                            <div class="col-xs-12 col-xl-6  col-lg-6" style="padding-left: 20px;">
+                                <h2 class="entry-title">
+                                    <a  href="{{ path('detailsArt',{'id':a.id}) }}"><h5 style="font-family: 'Roboto Medium';color: #4A90E2;">{{ a.titre |upper }}</h5></a>
+                                </h2>
+                                <h5 class="">
+                                    <a href="blog-single.html"style="font-family: 'Roboto Medium';color: #B1B1B1;font-size: 13px">{{ a.categorie }}</a>
+                                </h5>
+                                <div class="entry-content">
+                                    <p style="color: #606060;text-align: justify">
+                                        {% if a.text|length>=195 %}
+                                        {{ a.text |capitalize |slice(0, 195) }} ...
+                                        {% else %}
+                                        {{ a.text |capitalize }}
+                                            {% endif %}
+                                    </p>
+                                </div>
+                                <div class="entry-meta">
+                                    <ul class="d-flex  justify-content-between">
+                                        <span class="align-items-center">
+
+                                        {% set etat=0 %}
+                                            {% for rl in reagitLike %}
+                                                {%  if app.session.get('id')== rl.id_user_id and rl.id_art_id == a.id %}
+                                                    {% set etat=a.id %}
+                                                {% endif %}
+                                            {% endfor %}
+
+                                            {%  if etat==a.id %}
+                                                <a href="{{ path('DelR',{'id':a.id}) }}">
+                                        <i id="tooltip" class="bi bi-hand-thumbs-up-fill ">
+                                        <span class="tooltiptext"> Annumler votre reaction </span>
+                                        </i>
+                                        </a>
+
+                                        {% else %}
+                                                <a href="{{ path('TestLike',{'id':a.id,'etat':1}) }}">
+                                        <i id="tooltip" class="bi bi-hand-thumbs-up ">
+                                        <span class="tooltiptext"> Ajouter une reaction </span>
+                                        </i>
+                                        </a>
+                                            {% endif %}
+
+
+
+                                        <a href="">
+
+                                        {% set like=0 %}
+                                            {% for rl in reagitLike %}
+                                                {% if rl.id_art_id== a.id %}
+                                                    {% set like=rl.liked %}
+                                                    {{ like }}
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if like==0 %}
+                                                0
+                                            {% endif %}
+</a></span>
+                                        <span class="align-items-center">
+
+                                        {% set etat=0 %}
+                                            {% for rl in reagitDislike %}
+                                                {%  if app.session.get('id')== rl.id_user_id and rl.id_art_id == a.id %}
+                                                    {% set etat=a.id %}
+                                                {% endif %}
+                                            {% endfor %}
+
+                                            {%  if etat==a.id %}
+                                                <a href="{{ path('DelR',{'id':a.id}) }}">
+                                        <i id="tooltip" class="bi bi-hand-thumbs-down-fill" style="color:#FF6666;">
+                                        <span class="tooltiptext" style="background-color:#FF6666;"> Annumler votre reaction </span>
+                                        </i>
+                                        </a>
+
+                                        {% else %}
+                                                <a href="{{ path('TestLike',{'id':a.id,'etat':0}) }}">
+                                        <i id="tooltip" class="bi bi-hand-thumbs-down" style="color:#FF6666;">
+                                        <span class="tooltiptext" style="background-color:#FF6666;"> Ajout une reaction</span>
+                                        </i>
+                                                    </i>
+                                        </a>
+                                            {% endif %}
+
+                                        <a href="blog-single.html">
+                                        {% set Dislike=0 %}
+                                            {% for rl in reagitDislike %}
+                                                {% if rl.id_art_id== a.id%}
+                                                    {% set Dislike=rl.dislike %}
+                                                    {{ Dislike }}
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if Dislike==0 %}
+                                                0
+                                            {% endif %}
+</a></span>
+                                        <span class="align-items-center">
+                                        <a href="{{ path('detailsArt',{'id':a.id}) }}" class="details_article_a"style="display: flex;justify-content: center;">
+                                        Vois plus <i class="bi bi-box-arrow-in-right"></i>
+                                </a></span>
+                                    </ul>
+
+                                </div>
+                            </div>
+                        </div>
+                    </article><!-- End blog entry -->
+
+                    {% endfor %}
+
+
+                    <div class="col-lg-12 d-flex justify-content-center">
+                        {{ knp_pagination_render(article) }}
+                    </div>
+
+                </div><!-- End blog entries list -->
+
+                <div class="col-lg-4">
+
+                    <div class="sidebar"><h3 class="sidebar-title">Détail par catégorie</h3>
+                        <div class="sidebar-item tags">
+                            <ul>
+
+                            </ul>
+                        </div><!-- End sidebar tags-->
+                        <hr>
+                        <h3 class="sidebar-title">Articles recommandé</h3>
+                        <div class="sidebar-item recent-posts">
+                            {% for rec in recom %}
+                            <div class="col-lg-12">
+                                <div class="col-xs-12 col-lg-12  d-flex justify-content-between" >
+                                    <div class="col-xs-1 col-md-1 col-lg-2 userpdp">
+                                        <img style="width:40px;height:40px;border-radius:100%" src="/assets/img/clients/{{ rec.imageuser }}">
+
+
+                                    </div>
+
+                                    <div class=" col-lg-9 flex-column">
+                                        <h6 style="font-family: 'Roboto Medium';color: #606060;font-size: 16px;"> {{ rec.prenom|capitalize }} {{ rec.nom|capitalize }}</h6>
+                                        <h6 style="font-family: 'Roboto Medium';color: #B1B1B1;font-size: 14px;">Dentiste</h6>
+                                    </div>
+
+                                    <div class="col-xs-1 col-sm-1 col-lg-1 btndetails" style="background-color: #F5F5F5;width: 45px;height: 45px; border-radius: 100%;padding: 10px">
+                                        <a href="" class="details_article_a"style="display: flex;justify-content: center;">
+                                            <i class="bi bi-box-arrow-in-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-12 col-lg-12 " style="padding-top: 20px;">
+
+                                    <div class="col-xs-12 col-xl-12 col-lg-12">
+                                        <img class="col-xs-12 col-lg-12 img-fluid" style="width:max-content;height: 200px;object-fit: cover;border-radius: 15px;" src="/assets/img/article/{{ rec.image }}">
+
+                                    </div>
+                                    <!-- Details a propos l'article -->
+
+                                    <div class="col-xs-12 col-xl-12  col-lg-12">
+
+
+                                        <div class="entry-content">
+                                            <h3 class="entry-title">
+                                                <a  href="{{ path('detailsArt',{'id':rec.id}) }}"style="font-family: 'Roboto Medium';color: #606060;font-size: 18px">{{ rec.titre|capitalize }}</a>
+                                            </h3>
+                                            <h5 class="entry-title">
+                                                <a href="blog-single.html"style="font-family: 'Roboto Medium';color: #B1B1B1;font-size: 13px">{{ rec.categorie|capitalize }}</a>
+                                            </h5>
+                                            <p style="color: #606060;text-align: justify;font-size: 12px;">
+                                                {{ rec.text|capitalize }} </p>
+                                        </div>
+                                        <div class="entry-meta">
+                                            <ul class="d-flex  justify-content-between">
+                                        <span class="align-items-center">
+
+                                        {% set etat=0 %}
+                                            {% for rl in reagitLike %}
+                                                {%  if app.session.get('id')== rl.id_user_id and rl.id_art_id == rec.id %}
+                                                    {% set etat=rec.id %}
+                                                {% endif %}
+                                            {% endfor %}
+
+                                            {%  if etat==rec.id %}
+                                                <a href="{{ path('DelR',{'id':rec.id}) }}">
+                                        <i id="tooltip" class="bi bi-hand-thumbs-up-fill ">
+                                        <span class="tooltiptext"> Annumler votre reaction </span>
+                                        </i>
+                                        </a>
+
+                                        {% else %}
+                                                <a href="{{ path('TestLike',{'id':rec.id,'etat':1}) }}">
+                                        <i id="tooltip" class="bi bi-hand-thumbs-up ">
+                                        <span class="tooltiptext"> Ajouter une reaction </span>
+                                        </i>
+                                        </a>
+                                            {% endif %}
+
+
+
+                                        <a href="">
+
+                                        {% set like=0 %}
+                                            {% for rl in reagitLike %}
+                                                {% if rl.id_art_id== rec.id %}
+                                                    {% set like=rl.liked %}
+                                                    {{ like }}
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if like==0 %}
+                                                0
+                                            {% endif %}
+</a></span>
+                                                <span class="align-items-center">
+
+                                        {% set etat=0 %}
+                                                    {% for rl in reagitDislike %}
+                                                        {%  if app.session.get('id')== rl.id_user_id and rl.id_art_id == rec.id %}
+                                                            {% set etat=art.id %}
+                                                        {% endif %}
+                                                    {% endfor %}
+
+                                                    {%  if etat==rec.id %}
+                                                        <a href="{{ path('DelR',{'id':rec.id}) }}">
+                                        <i id="tooltip" class="bi bi-hand-thumbs-down-fill" style="color:#FF6666;">
+                                        <span class="tooltiptext" style="background-color:#FF6666;"> Annumler votre reaction </span>
+                                        </i>
+                                        </a>
+
+                                        {% else %}
+                                                        <a href="{{ path('TestLike',{'id':rec.id,'etat':0}) }}">
+                                        <i id="tooltip" class="bi bi-hand-thumbs-down" style="color:#FF6666;">
+                                        <span class="tooltiptext" style="background-color:#FF6666;"> Ajout une reaction</span>
+                                        </i>
+                                                            </i>
+                                        </a>
+                                                    {% endif %}
+
+                                        <a href="blog-single.html">
+                                        {% set Dislike=0 %}
+                                            {% for rl in reagitDislike %}
+                                                {% if rl.id_art_id== rec.id%}
+                                                    {% set Dislike=rl.dislike %}
+                                                    {{ Dislike }}
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if Dislike==0 %}
+                                                0
+                                            {% endif %}
+</a></span>
+                                                <span class="align-items-center">
+                                        <a href="{{ path('detailsArt',{'id':rec.id}) }}" class="details_article_a"style="display: flex;justify-content: center;">
+                                        Vois plus <i class="bi bi-box-arrow-in-right"></i>
+                                </a></span>
+                                            </ul>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            {% endfor %}
+                        </div>
+
+
+
+                    </div><!-- End sidebar recent posts-->
+
+
+
+
+                </div><!-- End sidebar -->
+
+            </div><!-- End blog sidebar -->
+
+        </div>
+
+        </div>
+    </section><!-- End Blog Section -->
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.js') }}"></script>
+    <script src="{{ asset('assets/vendor/aos/aos.js') }}"></script>
+    <script src="{{ asset('assets/vendor/php-email-form/validate.js') }}"></script>
+    <script src="{{ asset('assets/vendor/swiper/swiper-bundle.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/purecounter/purecounter.js') }}"></script>
+    <script src="{{ asset('assets/vendor/isotope-layout/isotope.pkgd.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/glightbox/js/glightbox.min.js') }}"></script>
+
+    <!-- Template Main JS File -->
+    <script src="{{ asset('assets/js/main.js') }}"></script>
+    <script>
+        const gap = 16;
+
+        const carousel = document.getElementById("carousel"),
+            content = document.getElementById("content"),
+            next = document.getElementById("next"),
+            prev = document.getElementById("prev");
+
+        next.addEventListener("click", e => {
+            carousel.scrollBy(width + gap, 0);
+            if (carousel.scrollWidth !== 0) {
+                prev.style.display = "flex";
+            }
+            if (content.scrollWidth - width - gap <= carousel.scrollLeft + width) {
+                next.style.display = "none";
+            }
+        });
+        prev.addEventListener("click", e => {
+            carousel.scrollBy(-(width + gap), 0);
+            if (carousel.scrollLeft - width - gap <= 0) {
+                prev.style.display = "none";
+            }
+            if (!content.scrollWidth - width - gap <= carousel.scrollLeft + width) {
+                next.style.display = "flex";
+            }
+        });
+
+        let width = carousel.offsetWidth;
+        window.addEventListener("resize", e => (width = carousel.offsetWidth));
+    </script>
+
+
+{% endblock %}

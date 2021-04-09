@@ -1,0 +1,279 @@
+{% extends 'header.html.twig' %}
+
+{% block main %}
+
+{% endblock %}
+
+{% block hero %}
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100);
+
+        body {
+            font-family: "Roboto", helvetica, arial, sans-serif;
+            text-rendering: optimizeLegibility;
+        }
+
+        div.table-title {
+            display: block;
+            margin: auto;
+            max-width: 600px;
+            padding:5px;
+            width: 100%;
+        }
+
+        .table-title h3 {
+            color: #fafafa;
+            font-size: 30px;
+            font-weight: 400;
+            font-style:normal;
+            font-family: "Roboto", helvetica, arial, sans-serif;
+            text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
+            text-transform:uppercase;
+        }
+
+
+        /*** Table Styles **/
+
+        .table-fill {
+            background: white;
+            border-radius:3px;
+            border-collapse: collapse;
+            height: 320px;
+            margin: auto;
+            max-width: 600px;
+            padding:5px;
+            width: 100%;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            animation: float 5s infinite;
+        }
+
+        th {
+            color:#D5DDE5;;
+            background:#49515e;
+            border-bottom:4px solid #9ea7af;
+            border-right: 1px solid #343a45;
+            font-size:23px;
+            font-weight: 100;
+            padding:24px;
+            text-align:left;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+            vertical-align:middle;
+        }
+
+        th:first-child {
+            border-top-left-radius:3px;
+        }
+
+        th:last-child {
+            border-top-right-radius:3px;
+            border-right:none;
+        }
+
+        tr {
+            border-top: 1px solid #C1C3D1;
+            border-bottom-: 1px solid #C1C3D1;
+            color:#666B85;
+            font-size:16px;
+            font-weight:normal;
+            text-shadow: 0 1px 1px rgba(256, 256, 256, 0.1);
+        }
+
+        tr:hover td {
+            background:#4E5066;
+            color:#FFFFFF;
+            border-top: 1px solid #22262e;
+        }
+
+        tr:first-child {
+            border-top:none;
+        }
+
+        tr:last-child {
+            border-bottom:none;
+        }
+
+        tr:nth-child(odd) td {
+            background:#EBEBEB;
+        }
+
+        tr:nth-child(odd):hover td {
+            background:#4E5066;
+        }
+
+        tr:last-child td:first-child {
+            border-bottom-left-radius:3px;
+        }
+
+        tr:last-child td:last-child {
+            border-bottom-right-radius:3px;
+        }
+
+        td {
+            background:#FFFFFF;
+            padding:20px;
+            text-align:left;
+            vertical-align:middle;
+            font-weight:300;
+            font-size:18px;
+            text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
+            border-right: 1px solid #C1C3D1;
+        }
+
+        td:last-child {
+            border-right: 0px;
+        }
+
+        th.text-left {
+            text-align: left;
+        }
+
+        th.text-center {
+            text-align: center;
+        }
+
+        th.text-right {
+            text-align: right;
+        }
+
+        td.text-left {
+            text-align: left;
+        }
+
+        td.text-center {
+            text-align: center;
+        }
+
+        td.text-right {
+            text-align: right;
+        }
+
+        button {
+            appearance: none;
+            outline: 0;
+            background-color: white;
+            border: 0;
+            padding: 10px 15px;
+            color: #53e3a6;
+            border-radius: 3px;
+            width: 250px;
+            cursor: pointer;
+            font-size: 18px;
+            transition-duration: 0.25s;
+        }
+
+        button:hover {
+            background-color: #f5f7f9;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.ui.position.js"></script>
+
+    <!-- ======= Hero Section ======= -->
+    <section id="hero" class="hero d-flex align-items-center">
+        <div class="container">
+            <div class="col-lg-6 d-flex flex-column justify-content-center">
+                <h1 data-aos="fade-up">Liste des rendez-vous</h1>
+                <h2 data-aos="fade-up" data-aos-delay="400">Voici la liste des rendez-vous pris par vous!</h2>
+                <br>
+                <table data-aos="fade-up" data-aos-delay="800" style="width: 200%">
+                    <caption>Liste des RDVs</caption>
+                    <thead>
+                    <tr>
+                        <th scope="col"><b>Num</b></th>
+                        <th scope="col"><b>Date</b></th>
+                        <th scrop="col"><b>Temps</b></th>
+                        {% if app.session.get('type') == 1 %}
+                            <<th scrop="col"><b>Medecin</b></th>
+                        {% elseif app.session.get('type') == 2 %}
+                            <th scrop="col"><b>Patient</b></th>
+                        {% endif %}
+                        <th scope="col"><b>Etat</b></th>
+                        <th scope="col"></th>
+                        {% if app.session.get('type') == 2 %}
+                            <th scope="col"></th>
+                        {% endif %}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% set num = 0 %}
+                    {% for t in tab %}
+                        {% set num = num + 1 %}
+                        <tr>
+                            <td data-label="Num">{{ num }}</td>
+                            <td data-label="Date">{{ t.date|date('Y-m-d') }}</td>
+                            <td data-label="Temps">{{ t.date|date('H:i') }}</td>
+                            {% if app.session.get('type') == 1 %}
+                                <td data-label="Medecin">{{ t.medecin }}</td>
+                            {% elseif app.session.get('type') == 2 %}
+                                <td data-label="Patient">{{ t.patient }}</td>
+                            {% endif %}
+                            {% if (t.etat == 1 or t.etat == 2) and t.date < date('+2 hours') %}
+                                <td data-label="Etat" style="background-color: orange" align="center"><b>Manqué</b></td>
+                            {% else %}
+                                {% if t.etat == 1 %}
+                                    <td data-label="Etat" style="background-color: lightgreen" align="center"><b>Disponible</b></td>
+                                {% elseif t.etat ==  2 %}
+                                    <td data-label="Etat" style="background-color: mediumpurple" align="center"><b>Reporté</b></td>
+                                {% elseif t.etat ==  3 %}
+                                    <td data-label="Etat" style="background-color: indianred; color: white" align="center"><b>Annulé</b></td>
+                                {% elseif t.etat == 4 %}
+                                    <td data-label="Etat" style="background-color: #5c5415; color: white" align="center"><b>Terminé</b></td>
+                                {% else %}
+                                    <td data-label="Etat" style="background-color: #a52834" align="center"><b>Erreur</b></td>
+                                {% endif %}
+                            {% endif %}
+                            {% if t.etat != 3 and t.date >= date('+2 hours') %}
+                                <td>
+                                    <a onclick="onClickC({{ t.id }})" href="#about" class="btn-get-started scrollto d-inline-flex align-items-center justify-content-center align-self-center">
+                                        <span>Annuler</span>
+                                        <i class="bi bi-arrow-right"></i>
+                                    </a>
+                                </td>
+                            {% endif %}
+                            {% if app.session.get('type') == 2 %}
+                                {% if (t.etat == 1 or t.etat == 2) and t.date < date('+2 hours') %}
+                                    <td>
+                                    <a style="background-color: green" href="{{ path('terminerRDV', { 'id' : t.id }) }}" class="btn-get-started scrollto d-inline-flex align-items-center justify-content-center align-self-center">
+                                        <span>Terminer</span>
+                                        <i class="bi bi-arrow-right"></i>
+                                    </a>
+                                    </td>
+                                {% elseif (t.etat != 4) %}
+                                    <td>
+                                        <a href="javascript:window.open('{{ path('reporterRDV', {'id' : t.id}) }}','mypopuptitle','width=600,height=400')" class="btn-get-started scrollto d-inline-flex align-items-center justify-content-center align-self-center">
+                                            <span>Reporter</span>
+                                            <i class="bi bi-arrow-right"></i>
+                                        </a>
+                                    </td>
+                                {% endif %}
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {{ knp_pagination_render(tab) }}
+            </div>
+        </div>
+    </section><!-- End Hero -->
+
+    <script>
+        function onClickC(id) {
+            var i = id;
+            var url = '{{ path('annulerRDV', {'id' : 'rdv_id'}) }}';
+            url = url.replace("rdv_id", i);
+            var result = confirm("Voulez vous vraiment annuler le RDV ?");
+            if (result == true) {
+                window.location.replace(url)
+            }
+        }
+    </script>
+    <script>
+        .
+        $(window).on("load resize ", function() {
+            var scrollWidth = $('.tbl-content').width() - $('.tbl-content table').width();
+            $('.tbl-header').css({'padding-right':scrollWidth});
+        }).resize();
+    </script>
+{% endblock %}

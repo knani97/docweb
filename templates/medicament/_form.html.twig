@@ -1,0 +1,13 @@
+{{ form_start(form) }}
+        {{ form_widget(form.nom, {'attr' : {'class' : 'form-control' }}) }}
+    {{ form_widget(form.fournisseur, {'attr' : {'class' : 'form-control' }}) }}
+    {{ form_widget(form.prix_achat, {'attr' : {'class' : 'form-control' }}) }}
+    {{ form_widget(form.poid, {'attr' : {'class' : 'form-control' }}) }}
+    {{ form_widget(form.img, {'attr' : {'class' : 'form-control' }}) }}
+<button class="btn btn-round" onclick="f()">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}
+<script>
+    function f (){
+        window.alert("Voulez-vous vraiment continuer ?");
+    }
+</script

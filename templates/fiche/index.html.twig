@@ -1,0 +1,98 @@
+{% extends "dashboard.html.twig" %}
+
+{% block title %}Pharmacie index
+{% endblock %}
+
+{% block body %}
+	<section id="hero" class="hero d-flex align-items-center">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="card">
+						<div class="card-header card-header-primary">
+							<h4 class="card-title ">Liste des Fiches</h4>
+
+						</div>
+						<div class="card-body">
+							<div class="table-responsive">
+								<table class="table">
+									<thead class=" text-primary">
+									<tr>
+										<th>Id</th>
+										<th>nom_commerciale</th>
+										<th>dosage</th>
+										<th>utilisation</th>
+										<th>Nom médicament</th>
+										<th>actions</th>
+										<th></th>
+									</tr>
+									</thead>
+									<tbody>
+									{% for fiche in fiches %}
+										<tr>
+											<td>{{ fiche.id }}</td>
+											<td>{{ fiche.nom_commerciale }}</td>
+											<td>{{ fiche.dosage}}</td>
+											<td>{{ fiche.utilisation}}</td>
+											<td>{{ fiche.idMed.nom }}</td>
+											<td>
+												<a href="{{ path('fiche_show', {'id': fiche.id}) }}" class="btn btn-success btn-round">Consulter</a><br>
+												<a href="{{ path('fiche_edit', {'id': fiche.id}) }}" class="btn btn-primary btn-round">Modifier</a>
+											</td>
+											<td>
+												<form action="{{ path('fiche_qtea', {'id' : fiche.id}) }}" method="post" name="form">
+
+													<input type="text" id="{{fiche.id}}" name="dosage1" value="" hidden>
+
+													<input type="submit"  onclick="f1({{fiche.id}})" class="btn btn-success btn-round" value="+">
+													</input><br></form>
+												<form action="{{ path('fiche_qtem', {'id' : fiche.id}) }}" method="post" name="form">
+													<input type="text" id="{{fiche.id}}a" name="dosage2" value="" hidden>
+													<input type="submit" class="btn btn-danger btn-round" onclick="f({{fiche.id}})" value="--">
+													</input>
+												</form>
+											</td>
+										</tr>
+									{% else %}
+										<tr>
+											<td colspan="4">no records found</td>
+										</tr>
+									{% endfor %}
+									</tbody>
+								</table>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	{% block javascripts %}
+		<script>
+			function f1(x){
+				x = x ;
+				var e = document.getElementById(x);
+				console.log(e);
+				console.log(x);
+				var y = window.prompt("Entrer la quantité à ajouter")
+				e.setAttribute('value' , y) ;
+				console.log(y);
+
+
+			}
+			function f(x){
+				x = x + "a"
+				var e = document.getElementById(x);
+				console.log(e);
+				console.log(x);
+				var y = window.prompt("Entrer la quantité à ajouter")
+				e.setAttribute('value' , y) ;
+				console.log(y);
+
+
+			}
+		</script>
+	{% endblock %}
+
+{% endblock %}

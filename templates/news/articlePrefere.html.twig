@@ -1,0 +1,445 @@
+{% extends 'base.html.twig' %}
+    {% block title %}
+        <title>Liste des articles</title>
+        <style>
+            .categoriesanim {
+                margin: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+
+
+            }
+
+            #wrapper {
+                border-radius:5px;
+                padding:30px;
+                box-shadow: 0px 2px 20px rgba(1, 1, 1, 0.05);
+                position: relative;
+            }
+
+            #carousel {
+                overflow: auto;
+                scroll-behavior: smooth;
+                scrollbar-width: none;
+            }
+
+            #carousel::-webkit-scrollbar {
+                height: 0;
+            }
+
+            #prev,
+            #next {
+                display: flex;
+                justify-content: center;
+                align-content: center;
+                background: white;
+                border: none;
+                padding: 8px;
+                border-radius: 50%;
+                outline: 0;
+                cursor: pointer;
+                position: absolute;
+            }
+
+            #prev {
+                top: 50%;
+                left: 0;
+                transform: translate(50%, -50%);
+                display: none;
+            }
+
+            #next {
+                top: 50%;
+                right: 0;
+                transform: translate(-50%, -50%);
+            }
+
+            #content {
+                display: grid;
+                grid-gap: 16px;
+                grid-auto-flow: column;
+                margin: auto;
+                box-sizing: border-box;
+            }
+
+            .item {
+                width: 180px;
+                height: 180px;
+                background: green;
+            }
+            a .bi-trash:hover {
+                /* Start the shake animation and make the animation last for 0.5 seconds */
+                animation: shake 0.5s;
+
+                /* When the animation is finished, start again */
+                animation-iteration-count: infinite;
+            }
+            @keyframes shake {
+                0% { transform: translate(1px, 1px) rotate(0deg); }
+                10% { transform: translate(-1px, -2px) rotate(-1deg); }
+                20% { transform: translate(-3px, 0px) rotate(1deg); }
+                30% { transform: translate(3px, 2px) rotate(0deg); }
+                40% { transform: translate(1px, -1px) rotate(1deg); }
+                50% { transform: translate(-1px, 2px) rotate(-1deg); }
+                60% { transform: translate(-3px, 1px) rotate(0deg); }
+                70% { transform: translate(3px, 1px) rotate(-1deg); }
+                80% { transform: translate(-1px, -1px) rotate(1deg); }
+                90% { transform: translate(1px, 2px) rotate(0deg); }
+                100% { transform: translate(1px, -2px) rotate(-1deg); }
+
+            }
+            #tooltip {
+                position: relative;
+                display: inline-block;
+                border-bottom: 1px dotted black;
+            }
+            #tooltip .tooltiptext {
+                visibility: hidden;
+                width: 120px;
+                font-size: 15px;
+                background-color: dodgerblue;
+                color: #fff;
+                text-align: center;
+                border-radius: 6px;
+                padding: 5px 0;
+                position: absolute;
+                z-index: 1;
+            }
+            #tooltip:hover .tooltiptext {
+                visibility: visible;
+            }
+            .overlay {
+                position: fixed;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: rgba(0, 0, 0, 0.7);
+                transition: opacity 500ms;
+                visibility: hidden;
+                opacity: 0;
+            }
+            .overlay:target {
+                visibility: visible;
+                opacity: 1;
+            }
+
+            .popup {
+                margin: 70px auto;
+                padding: 20px;
+                background: #fff;
+                border-radius: 5px;
+                width: 30%;
+                position: relative;
+                transition: all 5s ease-in-out;
+            }
+
+            .popup h2 {
+                margin-top: 0;
+                color: #333;
+                font-family: Tahoma, Arial, sans-serif;
+            }
+            .popup .close {
+                position: absolute;
+                top: 20px;
+                right: 30px;
+                transition: all 200ms;
+                font-size: 30px;
+                font-weight: bold;
+                text-decoration: none;
+                color: #333;
+            }
+            .popup .close:hover {
+                color: #06D85F;
+            }
+            .popup .content {
+                max-height: 30%;
+                overflow: auto;
+            }
+
+            @media screen and (max-width: 700px){
+                .box{
+                    width: 70%;
+                }
+                .popup{
+                    width: 70%;
+                }
+            }
+        </style>
+
+    {% endblock %}
+    {% block notif %}
+
+
+        {% for notifAjout in notifAjout %}
+            <a href="{{ path('detailsArt',{'id':notifAjout.id}) }}">
+
+                <div class="col-lg-12 d-flex justify-content-start">
+
+                    <div class="col-xs-1 col-md-2 col-lg-2 userpdp">
+
+                        <img style="width:40px;height:40px;border-radius:100%"
+                             src="/assets/img/clients/{{ notifAjout.imageuser }}">
+
+                    </div>
+
+                    <div class="col-lg-6">
+
+                        Votre demande d'ajout à été accepter
+
+                    </div>
+                </div>
+            </a>
+            <hr>
+
+
+        {% endfor %}
+
+    {% endblock %}
+
+{% block hero %}
+
+    <section class="col-lg-12" style="padding-top: 100px;">
+
+        <div class="container">
+
+
+
+
+            <div class="col-lg-12 d-flex justify-content-end">
+                <a class="btn btn-info" style="color:white;background-color:#4154f1;border: none;text-decoration: none;" href="{{ path('ajoutArticle') }}">
+                    Ajouter un article
+                </a>
+            </div>
+
+        </div>
+    </section><!-- End Breadcrumbs -->
+
+{% endblock %}
+{% block main %}
+
+
+    <div class="container">
+        <div class="row">
+            <h3 class="col-lg-12 sidebar-title">Articles Préféré</h3>
+            {% for art in article %}
+
+
+
+                <div class="col-lg-4" style=" box-shadow: 0px 2px 20px rgba(1, 41, 112, 0.1);border-radius: 10px">
+                    <div class="col-lg-12" style="padding: 10px;">
+                        <div class="col-xs-12 col-lg-12  d-flex justify-content-between" >
+                            <div class="col-xs-1 col-md-1 col-lg-2 userpdp">
+                                <img style="width:60px;height:60px;border-radius:100%" src="/assets/img/clients/{{ art.imageuser }}">
+                            </div>
+
+                            <div class=" col-lg-8 flex-column">
+                                <h6 style="font-family: 'Roboto Medium';color: #606060;font-size: 16px;">{{ art.prenom|capitalize  }} {{ art.nom|capitalize  }}</h6>
+                                <h6 style="font-family: 'Roboto Medium';color: #B1B1B1;font-size: 14px;">Dentiste</h6>
+                            </div>
+
+                            <div class="col-xs-1 col-sm-1 col-lg-2 btndetails d-lg-flex justify-content-around" style="background-color: #F5F5F5;height: 40px; border-radius: 8%;padding-top:7px">
+                                <a href="{{ path('detailsArt',{'id':art.id}) }}" class="details_article_a"style="display: flex;justify-content: center;">
+                                    <i class="bi bi-box-arrow-in-right"></i>
+                                </a>
+                                {%  if app.session.get('id')== art.id_user %}
+                                    <div class="box">
+                                        <a href="#popup{{ art.id }}" class="details_article_a"style="display: flex;justify-content: center;">
+                                            <i class="bi bi-trash" style="color: darkred"></i>
+
+                                        </a>
+                                    </div>
+                                    <div id="popup{{ art.id }}" class="overlay">
+                                        <div class="popup">
+                                            <h2>voulez-vous vraiment supprimer !</h2>
+                                            <a class="close" href="#">&times;</a>
+                                            <div class="content">
+                                                <a class="btn btn-primary" href="{{ path('supp',{'id':art.id }) }}"style="background-color: red;border:none">Supprimer {{ art.id  }}</a>
+                                                <a class="btn btn-primary" href="#" style="background-color: dodgerblue;border:none">Annuler &times;</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-lg-12 " style="padding-top: 20px;">
+
+                            <div class="col-xs-12 col-xl-12 col-lg-12">
+
+                                <img class="col-xs-12 col-lg-12 img-fluid" style="width:max-content;height: 200px;object-fit: cover;border-radius: 15px;"
+                                     src="/assets/img/article/{{ art.image }}">
+                            </div>
+                            <!-- Details a propos l'article -->
+
+                            <div class="col-xs-12 col-xl-12  col-lg-12">
+
+
+                                <div class="entry-content">
+                                    <h3 class="entry-title">
+                                        <a href="{{ path('detailsArt',{'id':art.id}) }}" style="font-family: 'Roboto Medium';color: #606060;font-size: 18px">{{ art.titre }}</a>
+                                    </h3>
+                                    <h5 class="entry-title">
+                                        <a href="{{ path('detailsArt',{'id':art.id}) }}" style="font-family: 'Roboto Medium';color: #B1B1B1;font-size: 13px">{{ art.categorie }}</a>
+                                    </h5>
+                                    <p style="color: #606060;text-align: justify;font-size: 12px;">
+                                    <p style="color: #606060;text-align: justify">
+                                        {% if art.text|length>=195 %}
+                                        {{ art.text |capitalize |slice(0, 195) }} ...
+                                        {% else %}
+                                        {{ art.text |capitalize }} </p>
+                                    {% endif %}</p>
+                                </div>
+                                <div class="entry-meta">
+                                    <ul class="d-flex  justify-content-between">
+                                        <span class="align-items-center">
+
+                                        {% set etat=0 %}
+                                            {% for rl in reagitLike %}
+                                                {%  if app.session.get('id')== rl.id_user_id and rl.id_art_id == art.id %}
+                                                    {% set etat=art.id %}
+                                                {% endif %}
+                                            {% endfor %}
+
+                                            {%  if etat==art.id %}
+                                                <a href="{{ path('DelR',{'id':art.id}) }}" class="js-like">
+                                        <i id="tooltip" class="bi bi-hand-thumbs-up-fill ">
+                                        <span class="tooltiptext"> Annumler votre reaction </span>
+                                        </i>
+                                        </a>
+
+                                        {% else %}
+                                                <a href="{{ path('TestLike',{'id':art.id,'etat':1}) }}" class="js-like">
+                                        <i id="tooltip" class="bi bi-hand-thumbs-up ">
+                                        <span class="tooltiptext"> Ajouter une reaction </span>
+                                        </i>
+                                        </a>
+                                            {% endif %}
+
+
+
+                                        <a href="">
+
+                                        {% set like=0 %}
+                                            {% for rl in reagitLike %}
+                                                {% if rl.id_art_id== art.id %}
+                                                    {% set like=rl.liked %}
+                                                    {{ like }}
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if like==0 %}
+                                                0
+                                            {% endif %}
+</a></span>
+                                        <span class="align-items-center">
+
+                                        {% set etat=0 %}
+                                            {% for rl in reagitDislike %}
+                                                {%  if app.session.get('id')== rl.id_user_id and rl.id_art_id == art.id %}
+                                                    {% set etat=art.id %}
+                                                {% endif %}
+                                            {% endfor %}
+
+                                            {%  if etat==art.id %}
+                                                <a href="{{ path('DelR',{'id':art.id}) }}" class="js-like">
+                                        <i id="tooltip" class="bi bi-hand-thumbs-down-fill" style="color:#FF6666;">
+                                        <span class="tooltiptext" style="background-color:#FF6666;"> Annumler votre reaction </span>
+                                        </i>
+                                        </a>
+
+                                        {% else %}
+                                                <a href="{{ path('TestLike',{'id':art.id,'etat':0}) }}" class="js-like">
+                                        <i id="tooltip" class="bi bi-hand-thumbs-down" style="color:#FF6666;">
+                                        <span class="tooltiptext" style="background-color:#FF6666;"> Ajout une reaction</span>
+                                        </i>
+                                                    </i>
+                                        </a>
+                                            {% endif %}
+
+                                        <a href="blog-single.html">
+                                        {% set Dislike=0 %}
+                                            {% for rl in reagitDislike %}
+                                                {% if rl.id_art_id== art.id%}
+                                                    {% set Dislike=rl.dislike %}
+                                                    {{ Dislike }}
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if Dislike==0 %}
+                                                0
+                                            {% endif %}
+</a></span>
+                                        <span class="align-items-center">
+                                        <a href="{{ path('detailsArt',{'id':art.id}) }}" class="details_article_a"style="display: flex;justify-content: center;">
+                                        Vois plus <i class="bi bi-box-arrow-in-right"></i>
+                                </a></span>
+                                    </ul>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="col-lg-12 d-flex justify-content-center">
+                {{ knp_pagination_render(article) }}
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+{% endblock %}
+{% block javascripts %}
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.js') }}"></script>
+    <script src="{{ asset('assets/vendor/aos/aos.js') }}"></script>
+    <script src="{{ asset('assets/vendor/php-email-form/validate.js') }}"></script>
+    <script src="{{ asset('assets/vendor/swiper/swiper-bundle.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/purecounter/purecounter.js') }}"></script>
+    <script src="{{ asset('assets/vendor/isotope-layout/isotope.pkgd.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/glightbox/js/glightbox.min.js') }}"></script>
+
+    <!-- Template Main JS File -->
+    <script src="{{ asset('assets/js/main.js') }}"></script>
+    <script>
+
+
+
+        const gap = 16;
+
+        const carousel = document.getElementById("carousel"),
+            content = document.getElementById("content"),
+            next = document.getElementById("next"),
+            prev = document.getElementById("prev");
+
+        next.addEventListener("click", e => {
+            carousel.scrollBy(width + gap, 0);
+            if (carousel.scrollWidth !== 0) {
+                prev.style.display = "flex";
+            }
+            if (content.scrollWidth - width - gap <= carousel.scrollLeft + width) {
+                next.style.display = "none";
+            }
+        });
+        prev.addEventListener("click", e => {
+            carousel.scrollBy(-(width + gap), 0);
+            if (carousel.scrollLeft - width - gap <= 0) {
+                prev.style.display = "none";
+            }
+            if (!content.scrollWidth - width - gap <= carousel.scrollLeft + width) {
+                next.style.display = "flex";
+            }
+        });
+
+        let width = carousel.offsetWidth;
+        window.addEventListener("resize", e => (width = carousel.offsetWidth));
+    </script>
+
+
+{% endblock %}

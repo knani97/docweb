@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Panier
+{% endblock %}
+
+{% block body %}
+	<style>
+		.badge {
+			padding-left: 9px;
+			padding-right: 9px;
+			-webkit-border-radius: 9px;
+			-moz-border-radius: 9px;
+			border-radius: 9px;
+		}
+
+		.label-warning[href],
+		.badge-warning[href] {
+			background-color: #c67605;
+		}
+		#lblCartCount {
+			font-size: 18px;
+			background: #ff0000;
+			color: #fff;
+			padding: 0 3px;
+			vertical-align: top;
+			margin-left: -10px;
+		}
+
+		.badge {
+			width: 18px;
+			height: 18px;
+		}
+	</style>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+
+	<div class="container">
+		<h1 class="aos-init aos-animate" data-aos="fade-up">Liste des Videos achetées</h1>
+	</div>
+
+	<section id="hero" class="hero d-flex align-items-center">
+
+
+		<div class="container">
+
+			<table class="table table-striped">
+				<thead class="table-dark">
+					<tr>
+
+						<th>Titre</th>
+						<th>Source</th>
+						<th>Paye</th>
+						<th>Prix</th>
+						
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+				{% if videos != NULL %}
+					{% for video in videos %}
+						<tr>
+
+							<td>{{ video.titre }}</td>
+							<td>{{ video.source }}</td>
+							<td>{{ video.paye ? 'Oui' : 'Non' }}</td>
+							<td>{{ video.prix }}</td>
+						
+							<td>
+								<a href="{{ path('panier_delete1', {'id': video.id}) }}" class="btn btn-primary btn-round">Supprimer</a>
+
+
+							</td>
+						</tr>
+					{% else %}
+						
+					{% endfor %}
+					{% else %}
+						<tr>
+							<td colspan="6">no records found</td>
+						</tr>
+					{% endif %}
+
+				</tbody>
+			</table>
+					<h3>La somme à payer : {{ somme }} TND </h3>
+
+					<a href="{{ path('commande_add') }}" class="btn btn-primary btn-round">Confirmer</a><br><br>
+			<a href="{{ path('video_index') }}" class="btn btn-primary btn-round">Back To List</a>
+			
+		</div>
+	</section>
+
+	<script src="https://use.fontawesome.com/5793d5bd23.js"></script>
+{% endblock %}

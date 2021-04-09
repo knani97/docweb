@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    <title>Ajout article</title>
+    <link href="/assets/css/main.css" rel="stylesheet" media="all">
+{%  endblock %}
+
+{% block main %}
+    <div class="page-wrapper" data-aos="fade-up" style="padding-top: 100px;padding-bottom: 100px;">
+        <div class="wrapper wrapper--w790">
+            <div class="card card-5">
+                <div class="card-heading">
+                    <h2 class="title">Modifier votre article</h2>
+                </div>
+                <div class="card-body">
+                    {{ form_start(form) }}
+
+
+
+                    <form class="col-lg-12">
+                        <div class="col-lg-12 form-row m-b-55">
+
+                            <div class="col-lg-12 form-row">
+                                {{ form_label(form.titre, "Titre", {'label_attr': {'class': 'name'}}) }}
+
+
+                                <div class="value">
+                                    <div class="input-group">
+
+                                        {{ form_widget(form.titre, {'attr': {'class': 'input--style-5'}}) }}
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+                            <div class="col-lg-12 form-row">
+                                {{ form_label(form.text, "Texte Article", {'label_attr': {'class': 'name'}}) }}
+                                <div class="value">
+                                    <div class="input-group">
+                                        {{ form_widget(form.text, {'attr': {'class': 'input--style-5'}}) }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 form-row m-b-55">
+                                {{ form_label(form.image, "Image", {'label_attr': {'class': 'name'}}) }}
+                                <div class="value">
+                                    <div class="row row-refine">
+                                        <div class="col-lg-12">
+                                            <div class="input-group-desc">
+                                                {{ form_widget(form.image, {'attr': {'class': 'input--style-5'}}) }}
+                                                <label class="label--desc">Ajouter une image pour l'article</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 form-row">
+                                {{ form_label(form.idCat, "idCat", {'label_attr': {'class': 'name'}}) }}
+
+
+                                <div class="value">
+                                    <div class="col-lg-12 input-group">
+
+                                        {{ form_rest(form, {'attr': {'class': 'input--style-5'}} ) }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 d-flex justify-content-end">
+                                <button class="col-lg-6 btn btn-primary">Ajouter</button>
+                                <div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{%  endblock %}
+
+{% block hero %}
+    <title>Login</title>
+{%  endblock %}
+
+{% block footer %}
+{%  endblock %}

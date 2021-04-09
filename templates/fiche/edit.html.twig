@@ -1,0 +1,13 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block title %}Edit Fiche{% endblock %}
+
+{% block body %}
+    <h1>Modifier la Fiche</h1>
+
+    {{ include('fiche/_form.html.twig', {'button_label': 'Modifier'}) }}
+
+    <a href="{{ path('fiche_index') }}" class="btn btn-info btn-round">Retourner à la liste</a>
+
+    {{ include('fiche/_delete_form.html.twig') }}
+{% endblock %}

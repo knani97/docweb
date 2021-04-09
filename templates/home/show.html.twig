@@ -1,0 +1,100 @@
+{% extends 'header.html.twig' %}
+
+{% block title %}
+	Pharmacie index
+{% endblock %}
+
+{% block main %}
+<section id="hero" class="hero d-flex align-items-center">
+	<div class="container">
+		{% if pharmacies != NULL %}
+			<h1 class="aos-init aos-animate" data-aos="fade-up">Liste des Pharmacies</h1>
+
+			<table class="table table-striped">
+				<thead class="table-dark">
+				<tr>
+					<th scope="col">Nom</th>
+					<th scope="col">Adresse</th>
+					<th scope="col">Gouvernorat</th>
+
+				</tr>
+				</thead>
+				<tbody>
+				{% for pharmacie in pharmacies %}
+					<tr>
+						<td>{{ pharmacie.nom }}</td>
+						<td>{{ pharmacie.adr }}</td>
+						<td>{{ pharmacie.gouv }}</td>
+					</tr>
+				{% else %}
+					<tr>
+						<td colspan="6">no records found</td>
+					</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+		{% elseif medicaments != NULL %}
+
+			<h1 class="aos-init aos-animate" data-aos="fade-up">Liste des médicaments</h1>
+
+			<table class="table table-striped">
+				<thead class="table-dark">
+				<tr>
+					<th>Id</th>
+					<th>Nom</th>
+					<th>Fournisseur</th>
+					<th>Prix_achat</th>
+					<th>Poid</th>
+					<th>actions</th>
+				</tr>
+				</thead>
+				<tbody>
+				{% for medicament in medicaments %}
+					<tr>
+						<td>{{ medicament.id }}</td>
+						<td>{{ medicament.nom }}</td>
+						<td>{{ medicament.fournisseur }}</td>
+						<td>{{ medicament.prixAchat }}</td>
+						<td>{{ medicament.poid }}</td>
+						<td>
+							<a href="{{ path('medicament_show', {'id': medicament.id}) }}" class="btn btn-success btn-round">Consulter</a>
+						</td>
+					</tr>
+				{% else %}
+					<tr>
+						<td colspan="6">no records found</td>
+					</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+
+		{% else %}
+			<h1 class="aos-init aos-animate" data-aos="fade-up">Liste des Pharmacies</h1>
+			<table class="table table-striped">
+				<thead class="table-dark">
+				<tr>
+					<th scope="col">Nom</th>
+					<th scope="col">Adresse</th>
+					<th scope="col">Gouvernorat</th>
+
+				</tr>
+				</thead>
+				<tbody>
+				{% for pharmacie in pharm_gouv %}
+					<tr>
+						<td>{{ pharmacie.nom }}</td>
+						<td>{{ pharmacie.adr }}</td>
+						<td>{{ pharmacie.gouv }}</td>
+					</tr>
+				{% else %}
+					<tr>
+						<td colspan="6">no records found</td>
+					</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+
+		{% endif %}
+	</div>
+</section>
+{% endblock %}

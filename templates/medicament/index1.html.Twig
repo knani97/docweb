@@ -1,0 +1,81 @@
+{% extends "dashboard.html.twig" %}
+
+{% block title %}Pharmacie index
+{% endblock %}
+
+{% block body %}
+	<section id="hero" class="hero d-flex align-items-center">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="card">
+						<div class="card-header card-header-primary">
+							<h4 class="card-title ">Liste des Médicaments</h4>
+							<p class="card-category">
+								Pour ajouter un Médicaments , clique sur
+								<a href="{{ path('medicament_new') }}" class="btn btn-dark btn-round">Ajouter
+								</a>
+							</p>
+						</div>
+						<div class="card-body">
+							<div class="table-responsive">
+								<table class="table">
+									<thead class=" text-primary">
+									<tr>
+										<th>Id</th>
+										<th>Nom</th>
+										<th>Fournisseur</th>
+										<th>Prix d'achat</th>
+										<th>Poids</th>
+										<th>Image</th>
+										<th>actions</th>
+									</tr>
+									</thead>
+									<tbody>
+									{% for medicament in medicaments %}
+										<tr>
+											<td>{{ medicament.id }}</td>
+											<td>{{ medicament.nom }}</td>
+											<td>{{ medicament.fournisseur }}</td>
+											<td>{{ medicament.prixAchat }}</td>
+											<td>{{ medicament.poid }}</td>
+											<td><img src="/photos/{{ medicament.img }}" alt="" srcset="" height="50" width="50"></td>
+											<td>
+												<a href="{{ path('medicament_edit', {'id': medicament.id}) }}" class="btn btn-success btn-round">
+														<span class="material-icons">
+															build
+														</span>
+												</a><br>
+												<a href="{{ path('medicament_delete', {'id': medicament.id}) }}" class="btn btn-danger btn-round">
+														<span class="material-icons">
+															remove_circle_outline
+														</span>
+												</a>
+												{% if medicament.ficheExist == true %}
+													<a href="{{ path('fiche_show', {'id': medicament.id}) }}" class="btn btn-primary btn-round">
+														Consulter fiche
+													</a>
+												{% else %}
+													<a href="{{ path('fiche_new', {'id': medicament.id}) }}" class="btn btn-info btn-round">
+														Créer fiche
+													</a>
+												{% endif %}
+											</td>
+										</tr>
+									{% else %}
+										<tr>
+											<td colspan="6">no records found</td>
+										</tr>
+									{% endfor %}
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+{% endblock %}

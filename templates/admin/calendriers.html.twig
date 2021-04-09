@@ -1,0 +1,172 @@
+{% extends 'DashboardAdmin.html.twig' %}
+
+{% block head %}
+    <link href="{{ asset('assets/css/calendrier.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/calendrier-options.css') }}" rel="stylesheet">
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Open+Sans);
+
+        .search {
+            width: 100%;
+            position: relative;
+            display: flex;
+        }
+
+        .searchTerm {
+            width: 100%;
+            border: 3px solid #00B4CC;
+            border-right: none;
+            padding: 5px;
+            height: 20px;
+            border-radius: 5px 0 0 5px;
+            outline: none;
+            color: #9DBFAF;
+        }
+
+        .searchTerm:focus{
+            color: #00B4CC;
+        }
+
+        .searchButton {
+            width: 40px;
+            height: 36px;
+            border: 1px solid #00B4CC;
+            background: #00B4CC;
+            text-align: center;
+            color: #fff;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        /*Resize the wrap to see the search bar change!*/
+        .wrap{
+            width: 30%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+{% endblock %}
+
+{% block title %}
+    Calendrier
+{% endblock %}
+
+{% block gestionCal %}
+    active
+{% endblock %}
+
+{% block titredetailsblock %}
+{% endblock %}
+
+    {% block titrepage %}
+        Liste des calendriers
+    {% endblock %}
+
+    {% block detailtitrepage %}
+        L'administrateur peut supprimer des calendriers lors du détection d'utilisation 3-rd party,
+        et il peut aussi faire des analyses sur les tâches et leurs types.
+
+        <div class="wrap">
+            <div class="search">
+                <input id="searchText" type="text" class="searchTerm" placeholder="Cherchez par nom.">
+                <button onclick="onSearchClick()" type="submit" class="searchButton">
+                    <i class="fa fa-search"></i>
+                </button>
+            </div>
+        </div>
+    {% endblock %}
+{% block details %}
+    {% for t in tab %}
+        {% set x = 0 %}
+        {% for ta in t.taches %}
+            {% if ta.type == 1 %}
+                {% set x = x + 1 %}
+            {% endif %}
+        {% endfor %}
+        <div class="col-lg-6" style=" box-shadow: 0px 2px 20px rgba(1, 41, 112, 0.1);border-radius: 10px">
+
+            <div class="col-lg-2" style="background-color: white;height:50px;border: 1px solid dodgerblue ;">
+        <span class="col-lg-12 d-flex justify-content-center" style="padding-top: 10px;">
+                           <i class="bi bi-bookmark-dash" style="color: dodgerblue;"></i>
+                            </span>
+
+
+
+            </div>
+            <div class="col-lg-12" style="padding: 10px;">
+
+                <div class="col-xs-12 col-lg-12  d-flex justify-content-between" >
+
+                    <div class="col-xs-1 col-md-1 col-lg-2 userpdp">
+                        <img style="width:40px;height:40px;border-radius:100%" src="/assets/img/clients/{{ t.uid.image }}">
+
+                    </div>
+
+                    <div class=" col-lg-8 flex-column">
+                        <h6 style="font-family: 'Roboto Medium';color: #606060;font-size: 16px;">{{ t.uid.prenom }} {{ t.uid.nom }}</h6>
+                        {% if t.uid.type == 1 %}
+                            <h6 style="font-family: 'Roboto Medium';color: #B1B1B1;font-size: 14px;">Patient</h6>
+                        {% elseif t.uid.type == 2 %}
+                            <h6 style="font-family: 'Roboto Medium';color: #B1B1B1;font-size: 14px;">Medecin: {{ t.uid.specialite }}</h6>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-xs-1 col-sm-1 col-lg-2 btndetails d-lg-flex justify-content-center" style="background-color: #F5F5F5;height: 40px; border-radius: 8%;padding-top:7px">
+                        <a target="_blank" href="{{ path('viewCalAdmin', {'year' : 'now' | date('Y'), 'month' : 'now' | date('M'), 'id' : t.uid.id}) }}" class="details_article_a"style="display: flex;justify-content: center;">
+                            <i class="bi bi-check-circle-fill"></i>
+                        </a>
+                        <a onclick="onClickC()" class="details_article_a"style="display: flex;justify-content: center;">
+                            <i class="bi bi-dash-circle-fill" style="color: darkred"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-lg-12 " style="padding-top: 20px;">
+
+                    <div class="col-xs-12 col-xl-12 col-lg-12">
+
+                        <img class="col-xs-12 col-lg-12 img-fluid" style="width:max-content;height: 200px;object-fit: cover;border-radius: 15px;"
+                             src="{{ asset('assets/img/calendrier/calendrier.png') }}">
+                    </div>
+                    <!-- Details a propos l'article -->
+
+                    <div class="col-xs-12 col-xl-12  col-lg-12">
+
+
+                        <div class="entry-content">
+                            <h3 class="entry-title">
+                                <a href="blog-single.html"style="font-family: 'Roboto Medium';color: #606060;font-size: 18px">{{ t.format }}</a>
+                            </h3>
+
+                            <p style="color: #606060;text-align: justify;font-size: 12px;">
+                        </div>
+                        <div class="entry-meta">
+                            <ul class="d-flex  justify-content-between">
+                                <span class="align-items-center"><i class="bi bi-hand-thumbs-up"></i> <a href="blog-single.html">ID: {{ t.uid.id}}</a></span>
+                                <span class="align-items-center"><i class="bi bi-hand-thumbs-down" style="color:#FF6666;"></i> <a href="blog-single.html">NB TACHES: {{ t.taches|length }}</a></span>
+                                <span class="align-items-center"><i class="bi bi-chat-dots"></i> <a href="blog-single.html">NB RDV: {{ x }}</a></span>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            function onClickC() {
+                if (confirm("Voulez vous vraiment effacer la calendrier et tous ses tâches ?") == true) {
+                    window.location.replace('{{ path('deleteDC', {'id' : t.id}) }}')
+                }
+            }
+            function onSearchClick() {
+                url = '{{ path('adminCNom', {'nom' : 'nom_user'}) }}'
+                url = url.replace('nom_user', document.getElementById('searchText').value);
+                window.location.href = url;
+            }
+        </script>
+    {% endfor %}
+    {{ knp_pagination_render(tab) }}
+{% endblock %}
+

@@ -1,0 +1,14 @@
+{{ form_start(form) }}
+{{ form_widget(form.titre, {'attr' : {'class' : 'form-control', 'required': true , 'pattern': '[a-zA-Z0-9 ]+'}}) }}
+{{ form_widget(form.source, {'attr' : {'class' : 'form-control' , 'required': true}}) }}
+
+{{ form_widget(form.prix, {'attr' : {'class' : 'form-control' , 'required': true, 'min' : 0 }}) }}
+
+<button class="btn btn-round" onclick="f()">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}
+
+    <script>
+	function f() {
+		window.confirm("Voulez-Vous modifier cette video");
+	}
+</script>

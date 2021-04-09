@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<style>
+    @import url("https://fonts.googleapis.com/css?family=Montserrat:200,300,400,400i,700");
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+    }
+    html,
+    body{
+        height: 100vh;
+        display: flex;
+        font-size: 14px;
+        align-items: center;
+        background: whitesmoke;
+        justify-content: center;
+        font-family: Montserrat, sans-serif;
+    }
+    .card{
+        width: 300px;
+        max-width: 100%;
+        text-align: center;
+        border-radius: 12px;
+        background: white;
+        border: 1px solid #d4d4d4;
+    }
+    .card header {
+        height: 160px;
+        border-radius: 12px 12px 0 0;
+        margin-bottom: 140px;
+    }
+    .card header img {
+        margin: 70px 40px 10px 40px;
+        border-radius: 50%;
+        height: 100px;
+        width: 100px;
+        border: 6px solid white;
+    }
+    .card header p {
+        color: #444;
+        font-size: 18px;
+        font-weight: 300;
+    }
+</style>
+<div class="card" id="card">
+    <header>
+        {% if tache.type == 1 %}
+            <img src='{{ asset('assets/img/tache/rdv.jpg') }}' alt=''>
+            <script>
+                document.getElementById('card').style.backgroundColor = 'red';
+            </script>
+        {% elseif tache.type == 2 %}
+            <img src='{{ asset('assets/img/tache/prisemed.jpg') }}' alt=''>
+            <script>
+                document.getElementById('card').style.backgroundColor = 'blue';
+            </script>
+        {% elseif tache.type == 3 %}
+            <img src='{{ asset('assets/img/tache/prisemed.jpg') }}' alt=''>
+            <script>
+                document.getElementById('card').style.backgroundColor = 'blue';
+            </script>
+        {% elseif tache.type == 4 %}
+            <img src='{{ asset('assets/img/tache/dispo.jpg') }}' alt=''>
+            <script>
+                document.getElementById('card').style.backgroundColor = 'green';
+            </script>
+        {% elseif tache.type == 5 %}
+            <img src='{{ asset('assets/img/tache/rdvperso.jpg') }}' alt=''>
+            <script>
+                document.getElementById('card').style.backgroundColor = 'pink';
+            </script>
+        {% endif %}
+        <div style="display: flex; margin-left: 2%">
+        <p class="face__name">Libelle: </p>
+        <h4 style="margin-top: 1%; margin-left: 1%">{{ tache.libelle }}</h4>
+        </div>
+        <div style="display: flex; margin-left: 2%">
+            <p class="face__name">Description: </p>
+            <h4 style="margin-top: 1%; margin-left: 1%">{{ tache.description }}</h4>
+        </div>
+        <div style="display: flex; margin-left: 2%">
+            <p class="face__name">Date: </p>
+            <h4 style="margin-top: 1%; margin-left: 1%">{{ tache.date|date('Y-m-d') }}</h4>
+        </div>
+        <div style="display: flex; margin-left: 2%">
+            <p class="face__name">Durée: </p>
+            <h4 style="margin-top: 1%; margin-left: 1%">{{ tache.duree|date('H:i') }}</h4>
+        </div>
+    </header>
+</div>
+</body>
+</html>

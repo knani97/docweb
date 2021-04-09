@@ -1,0 +1,59 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block title %}New Pharmacie
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<div class="col-md-12">
+			<div class="card">
+				<div class="card-header card-header-primary">
+					<h2 class="card-title">Ajouter pharmacie</h4>
+						<p class="card-category">Saisir les coordonnées de la pharmacie</p>
+				</div>
+				<div class="card-body">
+					{{ form_start(form) }}
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group bmd-form-group">
+								<label class="bmd-label-floating">Nom</label>
+								{{ form_widget(form.nom, {'attr' : {'class' : 'form-control' }}) }}
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group bmd-form-group">
+								<label class="bmd-label-floating">Adresse</label>
+								{{ form_widget(form.adr, {'attr' : {'class' : 'form-control' }}) }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group bmd-form-group">
+								<label class="bmd-label-floating">Gouvernorat</label>
+								{{ form_widget(form.gouv, {'attr' : {'class' : 'form-control' }}) }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							{{ form_widget(form.img_pat, {'attr' : {'class' : 'form-control' }}) }}
+
+						</div>
+					</div>
+					<button type="submit" class="btn btn-primary pull-right btn-round" onclick="f()">Ajouter</button>
+					<div class="clearfix"></div>
+					{{ form_end(form) }}
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<a href="{{ path('pharmacie_index1') }}" class="btn btn-info btn-round">Retourner à liste</a>
+	<script>
+		function f (){
+			window.alert("Voulez-vous vraiment continuer ?");
+		}
+	</script
+{% endblock %}

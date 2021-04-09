@@ -1,0 +1,346 @@
+<style>
+    @import url(https://fonts.googleapis.com/css?family=Montserrat|Lora);
+    body {
+        color: white;
+        font-family: 'Montserrat', sans-serif;
+        background-color: #2C3E50;
+    }
+    h1 {
+        font-size: 72px;
+        letter-spacing: 1px;
+        text-align: center;
+        cursor: default;
+    }
+    .ks-item-filter {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    .ks-item-filter__categories {
+        width: 100%;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+    .ks-item-filter__categories li {
+        float: left;
+        margin: 0 21px;
+        color: #62bbc1;
+        font-size: 14px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: color 200ms ease-in;
+    }
+    .ks-item-filter__categories li:hover, .ks-item-filter__categories li.active {
+        color: white;
+    }
+    .ks-item-filter__categories li.active:hover {
+        cursor: default;
+    }
+    .ks-item-filter__items {
+        list-style: none;
+        margin: 30px 0 0 0;
+        padding: 0;
+    }
+    .ks-item-filter__items li {
+        float: left;
+        margin: 10px 10px 0 0;
+        padding: 5px 15px;
+        font-family: 'Lora', serif;
+        font-size: 24px;
+        background-color: #30332e;
+        opacity: 0.25;
+        cursor: default;
+        transition: background-color 200ms ease-out, color 200ms ease-out, text-shadow 400ms ease-out 100ms, opacity 800ms ease-out;
+    }
+    .ks-item-filter__items li.active {
+        opacity: 1;
+        cursor: pointer;
+    }
+    .ks-item-filter__items li.active:hover {
+        color: #62bbc1;
+        background-color: tint(#30332e, 10%);
+        text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+    }
+    .clearfix:after {
+        visibility: hidden;
+        display: block;
+        font-size: 0;
+        content: " ";
+        clear: both;
+        height: 0;
+    }
+    .clearfix {
+        display: inline-block;
+    }
+    /* start commented backslash hack \*/
+    * html .clearfix {
+        height: 1%;
+    }
+    .clearfix {
+        display: block;
+    }
+    /* close commented backslash hack */
+
+    @import url("https://fonts.googleapis.com/css2?family=Raleway&display=swap");
+
+    * {
+        margin: 0;
+        padding: 0;
+        font-family: 'Raleway', sans-serif;
+    }
+
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        width: 50vw;
+        height: 10vh;
+        background: #1d91e8;
+        margin-left: 20%;
+    }
+
+    .container .input-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        padding: 0 1rem 0 1rem;
+        background: #00e5ff;
+        border-radius: 0.8rem;
+        box-sizing: border-box;
+    }
+
+    .container .input-wrapper i {
+        font-size: 1.5rem;
+        color: #f4f4f8;
+    }
+
+    .container .input-wrapper #input-label {
+        display: none;
+    }
+
+    .container .input-wrapper #product-search {
+        width: 100%;
+        height: 100%;
+        font-size: 1.8rem;
+        color: #f4f4f8;
+        padding-left: 1rem;
+        background: #9fa8da;
+        border: none;
+        outline: none;
+    }
+
+    .container .input-wrapper #product-search::placeholder {
+        color: #f4f4f8;
+        opacity: 0.7;
+    }
+
+    .container .input-wrapper .fa-times {
+        cursor: pointer;
+    }
+
+    .container .results-wrapper {
+        width: 50%;
+        min-height: 11rem;
+        max-height: auto;
+        margin-top: 1rem;
+        padding: 1rem;
+        box-sizing: border-box;
+    }
+
+    .container .results-wrapper .list .list-item {
+        display: inline-flex;
+        word-wrap: initial;
+        list-style-type: none;
+        font-size: 1.2rem;
+        line-height: 1.5rem;
+        text-transform: capitalize;
+        margin-right: 0.5rem;
+    }
+
+    .container .results-wrapper .list .list-item a {
+        text-decoration: none;
+        color: #6b6b6e;
+    }
+
+    .container .results-wrapper .list .list-item a:hover {
+        color: #fe4a49;
+        transition: 200ms ease-in;
+    }
+
+    @media (max-width: 768px) {
+        .container .input-wrapper {
+            width: 96%;
+        }
+
+        .container .results-wrapper {
+            width: 96%;
+        }
+    }
+</style>
+
+<h1>NOS MEDECINS</h1>
+<br>
+
+<div class="container" style="width: 50%; height: 7%;">
+<div class="input-wrapper">
+    <label for="product-search" id="input-label">Chercher Médecin</label>
+    <i class="fas fa-search"></i>
+    <input
+            type="text"
+            name="product-search"
+            id="product-search"
+            placeholder="Chercher Médecin"
+    >
+    <i class="fas fa-times"></i>
+</div>
+</div>
+<br><br>
+<div class="ks-item-filter" ks-filter-selector>
+    <ul class="ks-item-filter__categories clearfix" ks-filter-categories>
+        <li class="active" data-category-all>Tous</li>
+        <li data-category="Psychiatrie">Psychiatrie</li>
+        <li data-category="Chirirugie">Chirirugie</li>
+    </ul>
+    <div class="results-wrapper">
+        <ul id="list" class="ks-item-filter__items list" ks-filter-items>
+            {% for med in meds %}
+            <li class="list-item" data-title="{{ med.prenom }} {{ med.nom }}" data-belongs-to="{{ med.cv.specialite }}" onclick="window.location.href = '{{ path('details', {'id' : med.id}) }}'">{{ med.prenom }} {{ med.nom }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script>
+    class KS_Filter {
+
+        constructor() {
+            this._filterInstances = null;
+            this._init();
+        }
+
+        _init() {
+            // Find all filter selectors
+            this._filterInstances = document.querySelectorAll('[ks-filter-selector]');
+
+            var self = this;
+
+            // Iterate through all filter selectors
+            for(var i = 0; i < this._filterInstances.length; i++) {
+
+                // Assign instance value to this selector instance
+                this._filterInstances[i].setAttribute('ks-filter-instance', i);
+
+                // Set all filter items to active (SHOW_ALL)
+                var filterItems = this._filterInstances[i].querySelector('[ks-filter-items]').children;
+                for(var i2 = 0; i2 < filterItems.length; i2++) {
+                    filterItems[i2].classList.add('active');
+                }
+
+                // Grab category items collection from this filter selector instance
+                var categoryItems = this._filterInstances[i].querySelector('[ks-filter-categories]').children;
+
+                // Add click event listeners for each found category pertaining to this instance
+                for(var j = 0; j < categoryItems.length; j++) {
+
+                    var categoryItem = categoryItems[j];
+                    categoryItem.setAttribute('ks-filter-instance', i);
+
+                    categoryItem.addEventListener('click', function () {
+
+                        var category = this.getAttribute('data-category'),
+                            showAll  = this.getAttribute('data-category-all'),
+                            instance = this.getAttribute('ks-filter-instance');
+
+                        // Set all filters in items to active
+                        if(showAll !== null) {
+                            self.setCategory(this, 'SHOW_ALL', instance);
+                        }
+                        // Set specified filter to active
+                        else {
+                            self.setCategory(this, category, instance);
+                        }
+                    });
+                }
+            }
+        }
+
+        setCategory(categoryEle, category, instance) {
+
+            // Find referenced filter instance
+            var filterInstance;
+            for(var i = 0; i < this._filterInstances.length; i++) {
+                var currInstance = this._filterInstances[i].getAttribute('ks-filter-instance');
+                if(instance === currInstance) {
+                    filterInstance = this._filterInstances[i];
+                    break;
+                }
+            }
+
+            // Remove current category active class
+            var categoryItems = filterInstance.querySelector('[ks-filter-categories]').children;
+            for(var j = 0; j < categoryItems.length; j++) {
+                categoryItems[j].classList.remove('active');
+            }
+
+            // Set the active class
+            categoryEle.classList.add('active');
+
+            // Update active items
+            var filterItems = filterInstance.querySelector('[ks-filter-items]').children;
+            for(var k = 0; k < filterItems.length; k++) {
+                var filterItem = filterItems[k],
+                    belongsTo  = filterItem.dataset.belongsTo;
+
+                if(belongsTo === category || category === 'SHOW_ALL') {
+                    filterItem.classList.add('active');
+                }
+                else {
+                    filterItem.classList.remove('active');
+                }
+            }
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var ksFilter = new KS_Filter();
+    });
+
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        const productSearch = document.getElementById('product-search');
+        const clearBtn = document.querySelector('.fa-times');
+
+        const list = document.getElementById('list');
+
+        const displayFiltered = () => {
+            const filter = productSearch.value.toLowerCase();
+            const items = list.getElementsByTagName('li');
+            for (let i = 0; i < items.length; i++) {
+                const a = items[i].getAttribute('data-title');
+                const txtVal = a || a;
+                if (txtVal.toLowerCase().indexOf(filter) > -1) {
+                    items[i].style.display = '';
+                } else {
+                    items[i].style.display = 'none';
+                }
+            }
+        }
+
+        productSearch.addEventListener('keyup', () => {
+            displayFiltered();
+        });
+
+        clearBtn.addEventListener('click', () => {
+            productSearch.value = '';
+            displayFiltered();
+        });
+
+    });
+</script>
+</body>

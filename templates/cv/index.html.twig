@@ -1,0 +1,45 @@
+{% extends 'header.html.twig' %}
+
+{% block title %}Cv index{% endblock %}
+
+{% block main %}
+<section id="hero" class="hero d-flex align-items-center">
+    <div class="container">
+        <div class="col-lg-6 d-flex flex-column justify-content-center">
+    <h1>Cv index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Specialite</th>
+                <th>Diplome</th>
+                <th>File</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for cv in cvs %}
+            <tr>
+                <td>{{ cv.id }}</td>
+                <td>{{ cv.specialite }}</td>
+                <td>{{ cv.diplome }}</td>
+                <td>{{ cv.file }}</td>
+                <td>
+                    <a href="{{ path('cv_show', {'id': cv.id}) }}">show</a>
+                    <a href="{{ path('cv_edit', {'id': cv.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('cv_new') }}">Create new</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

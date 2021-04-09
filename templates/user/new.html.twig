@@ -1,0 +1,17 @@
+{% extends 'header.html.twig' %}
+
+{% block title %}New User{% endblock %}
+
+{% block main %}
+<section id="hero" class="hero d-flex align-items-center">
+    <div class="container">
+        <div class="col-lg-6 d-flex flex-column justify-content-center">
+    <h1>Create new User</h1>
+
+    {{ include('user/_form.html.twig') }}
+
+    <a href="{{ path('user_index') }}">back to list</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

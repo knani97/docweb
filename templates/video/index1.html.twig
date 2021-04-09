@@ -1,0 +1,77 @@
+{% extends "dashboard.html.twig" %}
+
+{% block title %}Videos index
+{% endblock %}
+
+
+{% block body %}
+
+	<section id="hero" class="hero d-flex align-items-center">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="card">
+						<div class="card-header card-header-primary">
+							<h4 class="card-title ">Liste des Video</h4>
+							<p class="card-category">
+								Pour ajouter une video , clique sur
+								<a href="{{ path('video_new') }}" class="btn btn-dark btn-round">Ajouter
+								</a>
+							</p>
+						</div>
+						<div class="card-body">
+							<div class="table-responsive">
+								<table class="table">
+									<thead class=" text-primary">
+										<tr>
+											<th>Id</th>
+											<th>Titre</th>
+											<th>Source</th>
+											<th>Paye</th>
+											<th>Prix</th>
+											<th>Actions</th>
+										</tr>
+									</thead>
+									<tbody>
+									
+										{% for video in videos %}
+											<tr>
+												<td>{{ video.id }}</td>
+												<td>{{ video.titre }}</td>
+												<td>{{ video.source }}</td>
+												<td>{{ video.paye ? 'Oui' : 'Non' }}</td>
+												<td>{{ video.prix }}</td>
+												<td>
+													<a href="{{ path('video_edit', {'id': video.id}) }}" class="btn btn-success btn-round" onclick="f()">
+														<span class="material-icons">
+															build
+														</span>
+													</a><br>
+													<a href="{{ path('video_delete', {'id': video.id}) }}" class="btn btn-danger btn-round" onclick="f()">
+														<span class="material-icons">
+															remove_circle_outline
+														</span>
+													</a>
+												</td>
+											</tr>
+										{% else %}
+											<tr>
+												<td colspan="6">no records found</td>
+											</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+    <script>
+	function f() {
+		window.confirm("Voulez-Vous supprimer cette video");
+	}
+</script>
+
+{% endblock %}
